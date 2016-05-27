@@ -154,8 +154,8 @@ class Player(pygame.sprite.Sprite): #Hereda de la clase sprite
         self.WIDTH = w
         self.HIGH = h
         #speed
-        self.increment_x = self.getRect()[2] / 15
-        self.increment_y = self.getRect()[3] / 15
+        self.increment_x = 0
+        self.increment_y = 0
 
     def getScore(self):
         return self.score
