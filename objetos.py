@@ -1,4 +1,5 @@
-
+from imports import *
+from funciones import *
 
 class Enemy(pygame.sprite.Sprite): #Hereda de la clase sprite
     #cargar_fondo('zombie1.png',ancho,alto)
@@ -220,7 +221,7 @@ class Player(pygame.sprite.Sprite): #Hereda de la clase sprite
         self.dir = dir
 
     def getMargen(self):
-        return (self.rect[2],self.rect[3])
+        return (self.rect[2],self.rect[3])#x,y
 
 class Weapon(pygame.sprite.Sprite): #Hereda de la clase sprite
     def __init__(self, img_name, pos): #img para cargar, y su padre(de donde debe salir la bala)

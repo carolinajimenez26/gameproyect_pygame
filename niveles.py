@@ -1,6 +1,5 @@
 import pygame
-from libplataforma import *
-
+from imports import *
 
 class Plataforma(pygame.sprite.Sprite):
     """ Plataforma donde el usuario puede subir """
