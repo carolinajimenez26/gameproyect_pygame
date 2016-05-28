@@ -136,6 +136,7 @@ class Zombie(Enemy):#Hereda de la clase Enemigo
             self.i += 1 #para que recorra el siguiente
 
 class Player(pygame.sprite.Sprite): #Hereda de la clase sprite
+    nivel = None
     def __init__(self, img_name, pos,w, h):
     	pygame.sprite.Sprite.__init__(self)
     	self.image = load_image(img_name, curdir, alpha=True)

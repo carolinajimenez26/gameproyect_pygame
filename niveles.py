@@ -8,7 +8,7 @@ class Plataforma(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
 
         self.image = pygame.Surface([ancho, alto])
-        self.image.fill(VERDE)
+        self.image.fill(verde)
 
         self.rect = self.image.get_rect()
 
@@ -22,14 +22,15 @@ class Nivel(object):
 
     # Imagen de Fondo
     #fondo = None
-    fondo=pygame.image.load("espacio.jpg")
+
     #valor desplazamiento de fondo
     mov_fondo=0
 
-    def __init__(self, jugador):
+    def __init__(self, jugador,fondo):
         self.plataforma_lista = pygame.sprite.Group()
         self.enemigos_lista = pygame.sprite.Group()
         self.jugador = jugador
+        self.fondo = pygame.image.load(fondo)
 
     # Actualizamos elementos en el nivel
     def update(self):
@@ -41,7 +42,7 @@ class Nivel(object):
         """ Dibuja lo que se encuentre en el nivel. """
 
         # Dibujamos fondo
-        pantalla.fill(AZUL)
+        pantalla.fill(azul)
 
         pantalla.blit(self.fondo, (0,0))
 
@@ -56,16 +57,19 @@ class Nivel(object):
         for enemigo in self.enemigos_lista:
             enemigo.rect.x += mov_x
 
+    def getFondo(self):
+        return self.fondo
+
 class Nivel_01(Nivel):
     """ Definition for level 1. """
 
-    def __init__(self, jugador):
+    def __init__(self, jugador, fondo):
         """ Creamos nivel 1. """
 
         # Llamamos al padre
-        Nivel.__init__(self, jugador)
+        Nivel.__init__(self, jugador, fondo)
         #self.fondo = pygame.image.load("espacio2.jpg")#cambia la img del nivel
-        self.limite=-1000
+        self.limite =- 1000
         # Arreglo con ancho, alto, x, y de la plataforma
         nivel = [ [210, 70, 500, 500],
                   [210, 70, 800, 400],
@@ -84,11 +88,11 @@ class Nivel_01(Nivel):
 class Nivel_02(Nivel):
     """ Definicion para el nivel 2. """
 
-    def __init__(self, jugador):
+    def __init__(self, jugador,fondo):
         """ Creamos nivel 2. """
 
         # Llamamos al padre
-        Nivel.__init__(self, jugador)
+        Nivel.__init__(self, jugador, fondo)
         self.limite=-1000
         # Arreglo con ancho, alto, x, y de la plataforma
         nivel = [ [210, 50, 500, 500],

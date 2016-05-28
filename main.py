@@ -1,6 +1,7 @@
 import pygame
 from funciones import *
 from objetos import *
+from niveles import *
 
 # Constantes
 
@@ -42,11 +43,14 @@ if __name__ == "__main__":
     ls_balase = pygame.sprite.Group()
     ls_jugadores = pygame.sprite.Group()
     ls_vidas = pygame.sprite.Group()
+    # Lista de sprites activos
+    activos_sp_lista = pygame.sprite.Group()
 
     #--------------Creacion de personajes--------------
     maximus = Player('maximus_der.jpg',[0,0], ANCHO, ALTO)
-
-    maximus.setPos([maximus.getMargen()[0],ALTO-3*maximus.getMargen()[1]])
+    activos_sp_lista.add(maximus)
+    alto_jugador = ALTO-3*maximus.getMargen()[1]
+    maximus.setPos([maximus.getMargen()[0],alto_jugador])
     maximus.setSpeed([maximus.getMargen()[0]/10, maximus.getMargen()[1]/10])
 
     #Agrega las imagenes del magician
@@ -62,6 +66,18 @@ if __name__ == "__main__":
     ls_todos.add(maximus)
     ls_jugadores.add(maximus)
 
+
+    #---------------Creacion de niveles--------------------
+    nivel_lista = []
+    nivel_lista.append(Nivel_01(maximus,'images/fondo5.jpg'))
+    nivel_lista.append(Nivel_02(maximus,'images/fondo5.jpg'))
+
+    # Establecemos nivel actual
+    nivel_actual_no = 0
+    nivel_actual = nivel_lista[nivel_actual_no]
+
+    # Indicamos a la clase jugador cual es el nivel
+    maximus.nivel = nivel_actual
 
     #Variables del reloj
     con_cuadros = 0
@@ -132,3 +148,19 @@ if __name__ == "__main__":
         ls_todos.update()
         pygame.display.flip()
         reloj.tick(tasa_cambio)
+        activos_sp_lista.update() # Actualizamos al jugador.
+        nivel_actual.update() # Actualizamos elementos en el nivel
+
+        #-------------------Movimiento de pantalla----------------
+
+        #  Si el jugador se aproxima al limite derecho de la pantalla (-x)
+        if maximus.getPos()[0] >= (ANCHO + maximus.getMargen()[0]):
+            dif = maximus.getPos()[0] - (ANCHO + maximus.getMargen()[0])
+            maximus.setPos([(ANCHO + maximus.getMargen()[0]),alto_jugador]) #lo deja estatico
+            nivel_actual.Mover_fondo(-dif) #mueve el fondo
+
+        # Si el jugador se aproxima al limite izquierdo de la pantalla (+x)
+        if maximus.getPos()[0] <= (maximus.getMargen()[0]):
+           dif = (maximus.getMargen()[0]) - maximus.getPos()[0]
+           maximus.setPos([maximus.getMargen()[0],alto_jugador])
+           nivel_actual.Mover_fondo(dif)
