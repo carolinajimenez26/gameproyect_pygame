@@ -100,6 +100,7 @@ if __name__ == "__main__":
               terminar = True
 
             if event.type == pygame.KEYDOWN:
+
                 if event.key == pygame.K_SPACE:
 
                     bala = Bullet('bala.png',maximus.getPos())#la posicion inicial depende de objeto que este disparando
@@ -118,6 +119,9 @@ if __name__ == "__main__":
                     ls_balaj.add(bala)
                     ls_todos.add(bala)
                     disparo = True
+
+                """if event.key == pygame.K_UP:
+                    maximus.jump()"""
 
         if keys[pygame.K_a]:
             maximus.moveLeft()

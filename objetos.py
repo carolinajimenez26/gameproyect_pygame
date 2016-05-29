@@ -195,23 +195,24 @@ class Player(pygame.sprite.Sprite): #Hereda de la clase sprite
         self.increment_x = 0
 
     def jump(self):
-        x = self.getPos()[0]
-        y = self.getPos()[1]
-        self.setPos([x,y - self.increment_y])
+        if(self.getPos()[1] >= ALTO/2): #no puede saltar mas de la mitad de la pantalla
+            self.increment_y -= 5
 
     def gravedad(self):
 
-        if self.increment_y == 0:
-            self.increment_y = 1
-            self.setPos([self.getPos()[0],self.increment_y])
-        else:
-            self.increment_y += .35
-            self.setPos([self.getPos()[0],self.increment_y])
+        #si no esta en el suelo, se le aplica la gravedad
+        if self.increment_y < 0: #esta saltando
+            print "saltando"
+            self.increment_y += 1.5
+            self.setPos([self.getPos()[0],ALTO + self.increment_y - 3*self.getMargen()[1]])
 
-        # Revisamos si estamos en el suelo
-        if self.getPos()[1] >= (ALTO - 3*self.getMargen()[1]) and self.increment_y >= 0:
-            self.increment_y = 0
-            self.setPos([self.getPos()[0],ALTO - 3*self.getMargen()[1]])
+        if self.increment_y >= 0: #ya no salta mas
+            print "ya no esta saltando mas"
+            self.setPos([self.getPos()[0],(ALTO - 3*self.getMargen()[1])])
+
+        if(self.getPos()[1] < (ALTO - 3*self.getMargen()[1])):
+            print "aire"
+
 
     def getLife(self):
     	return self.life
