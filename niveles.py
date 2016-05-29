@@ -1,5 +1,6 @@
 import pygame
 from imports import *
+from funciones import *
 
 class Plataforma(pygame.sprite.Sprite):
     """ Plataforma donde el usuario puede subir """
@@ -24,7 +25,7 @@ class Nivel(object):
     #fondo = None
 
     #valor desplazamiento de fondo
-    mov_fondo=0
+    mov_fondo = 0
 
     def __init__(self, jugador,fondo):
         self.plataforma_lista = pygame.sprite.Group()
@@ -63,11 +64,12 @@ class Nivel(object):
 class Nivel_01(Nivel):
     """ Definition for level 1. """
 
-    def __init__(self, jugador, fondo):
+    def __init__(self, jugador, fondo,sonido):
         """ Creamos nivel 1. """
 
         # Llamamos al padre
         Nivel.__init__(self, jugador, fondo)
+        self.sonido = load_sound(sonido,curdir)
         #self.fondo = pygame.image.load("espacio2.jpg")#cambia la img del nivel
         self.limite =- 1000
         # Arreglo con ancho, alto, x, y de la plataforma
@@ -84,16 +86,23 @@ class Nivel_01(Nivel):
             bloque.rect.y = plataforma[3]
             self.plataforma_lista.add(bloque)
 
+    def startSound(self):
+        self.sonido.play()
+
+    def stopSound(self):
+        self.sonido.stop()
+
 
 class Nivel_02(Nivel):
     """ Definicion para el nivel 2. """
 
-    def __init__(self, jugador,fondo):
+    def __init__(self, jugador,fondo, sonido):
         """ Creamos nivel 2. """
 
         # Llamamos al padre
         Nivel.__init__(self, jugador, fondo)
-        self.limite=-1000
+        self.limite =- 1000
+        self.sonido = load_sound(sonido,curdir)
         # Arreglo con ancho, alto, x, y de la plataforma
         nivel = [ [210, 50, 500, 500],
                  [210, 50, 200, 400],
@@ -107,3 +116,9 @@ class Nivel_02(Nivel):
             bloque.rect.y = plataforma[3]
             bloque.jugador = self.jugador
             self.plataforma_lista.add(bloque)
+
+    def startSound(self):
+        self.sonido.play()
+
+    def stopSound(self):
+        self.sonido.stop()

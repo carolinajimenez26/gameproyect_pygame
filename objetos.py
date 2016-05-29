@@ -151,7 +151,7 @@ class Player(pygame.sprite.Sprite): #Hereda de la clase sprite
         self.imagei = [] #izquierda
         self.imagenar = [] #arriba
         self.imagena = [] #abajo
-        self.enemigos=0
+        self.enemigos = 0
         self.WIDTH = w
         self.HIGH = h
         #speed
@@ -166,7 +166,6 @@ class Player(pygame.sprite.Sprite): #Hereda de la clase sprite
 
     def setSpeed(self, speed):
         self.increment_x = speed[0]
-        self.increment_y = speed[1]
 
     def getRect(self):
     	return self.rect
@@ -192,19 +191,27 @@ class Player(pygame.sprite.Sprite): #Hereda de la clase sprite
             self.setPos([x + self.increment_x,y])
             self.dir = 0
 
-    def moveUp(self):
-        x = self.getPos()[0]
-        y = self.getPos()[1]
-        if(y + self.increment_y >= 10):
-            self.setPos([x,y - self.increment_y])
-            self.dir = 2
+    def stop(self): #dont move
+        self.increment_x = 0
 
-    def moveDown(self):
+    def jump(self):
         x = self.getPos()[0]
         y = self.getPos()[1]
-        if(y + self.increment_y < self.HIGH - self.rect[3]): # si no se pasa de la pantalla
-            self.setPos([x,y + self.increment_y])
-            self.dir = 3
+        self.setPos([x,y - self.increment_y])
+
+    def gravedad(self):
+
+        if self.increment_y == 0:
+            self.increment_y = 1
+            self.setPos([self.getPos()[0],self.increment_y])
+        else:
+            self.increment_y += .35
+            self.setPos([self.getPos()[0],self.increment_y])
+
+        # Revisamos si estamos en el suelo
+        if self.getPos()[1] >= (ALTO - 3*self.getMargen()[1]) and self.increment_y >= 0:
+            self.increment_y = 0
+            self.setPos([self.getPos()[0],ALTO - 3*self.getMargen()[1]])
 
     def getLife(self):
     	return self.life
@@ -223,6 +230,9 @@ class Player(pygame.sprite.Sprite): #Hereda de la clase sprite
 
     def getMargen(self):
         return (self.rect[2],self.rect[3])#x,y
+
+    def update(self):
+        self.gravedad()
 
 class Weapon(pygame.sprite.Sprite): #Hereda de la clase sprite
     def __init__(self, img_name, pos): #img para cargar, y su padre(de donde debe salir la bala)

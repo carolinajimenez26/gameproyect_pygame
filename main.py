@@ -2,19 +2,7 @@ import pygame
 from funciones import *
 from objetos import *
 from niveles import *
-
-# Constantes
-
-# Colores
-NEGRO   = (   0,   0,   0)
-BLANCO    = ( 255, 255, 255)
-AZUL     = (   0,   0, 255)
-ROJO      = ( 255,   0,   0)
-VERDE    = (   0, 255,   0)
-
-# Dimensiones pantalla
-ANCHO  = 600 #depende del fondo
-ALTO = 600
+from imports import *
 
 if __name__ == "__main__":
 
@@ -34,7 +22,7 @@ if __name__ == "__main__":
     reloj = pygame.time.Clock()
 
     #sonidos
-    shot_s=load_sound('shot.wav',curdir)
+    shot_s = load_sound('shot.wav',curdir)
 
     #Grupos de sprites
     ls_todos = pygame.sprite.Group()
@@ -51,7 +39,7 @@ if __name__ == "__main__":
     activos_sp_lista.add(maximus)
     alto_jugador = ALTO-3*maximus.getMargen()[1]
     maximus.setPos([maximus.getMargen()[0],alto_jugador])
-    maximus.setSpeed([maximus.getMargen()[0]/10, maximus.getMargen()[1]/10])
+    maximus.setSpeed([maximus.getMargen()[0]/10, 0]) #no se mueve en y
 
     #Agrega las imagenes del magician
     """magician.imaged.append(load_image('dere_1.png',curdir,alpha=True))
@@ -69,8 +57,8 @@ if __name__ == "__main__":
 
     #---------------Creacion de niveles--------------------
     nivel_lista = []
-    nivel_lista.append(Nivel_01(maximus,'images/fondo5.jpg'))
-    nivel_lista.append(Nivel_02(maximus,'images/fondo5.jpg'))
+    nivel_lista.append(Nivel_01(maximus,'images/fondo6.jpg','sounds/nivel1.mp3'))
+    nivel_lista.append(Nivel_02(maximus,'images/fondo6.jpg','sounds/nivel1.mp3'))
 
     # Establecemos nivel actual
     nivel_actual_no = 0
@@ -87,6 +75,8 @@ if __name__ == "__main__":
 
     terminar = False
     disparo = False
+
+    nivel_actual.startSound()
 
     while (not terminar):
 
@@ -136,6 +126,9 @@ if __name__ == "__main__":
         if keys[pygame.K_d]:
             maximus.moveRight()
             maximus.setDir(0)
+
+        if keys[pygame.K_UP]:
+            maximus.jump()
 
         if keys[pygame.K_ESCAPE]:
           #pantalla_s.stop()

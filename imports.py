@@ -6,6 +6,9 @@ import os
 
 curdir = os.getcwd()#+"/sources"
 
+ANCHO  = 800 #depende del fondo
+ALTO = 600
+
 #Colores RGB#
 rojo=(255,0,0)
 azul=(0,0,255)
