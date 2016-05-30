@@ -149,6 +149,9 @@ class Nivel_01(Nivel):
             bloque = Plataforma("rock2.png",[roca[0],roca[1]])
             self.plataforma_lista.add(bloque)
 
+        mascota = Plataforma("mascota.png",[2150,ALTO - 25])
+        self.plataforma_lista.add(mascota)
+
         pavos = [
                   [1757,ALTO - ALTO/3 - 35],
                   [3300,ALTO - 35]
