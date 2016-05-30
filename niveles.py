@@ -182,6 +182,16 @@ class Nivel_01(Nivel):
         reloj = Plataforma("reloj.png",[3000 - 400 + 65, ALTO/3 - 25 - 45])
         self.plataforma_lista.add(reloj)
 
+        municiones = [
+                       [3500 - 30 - 40*1*2, ALTO/3 - 60],
+                       [3500 - 30 - 40*3*2, ALTO/3 - 60],
+                       [3500 - 30 - 40*5*2, ALTO/3 - 60]
+                     ]
+
+        for municion in municiones:
+            obj = Plataforma("municion.png",[municion[0],municion[1]])
+            self.plataforma_lista.add(obj)
+
         #---------------Enemigos-----------------------
         uno = Zombie("zombies1.png",[505,ALTO - ALTO/5 - 30])
 
