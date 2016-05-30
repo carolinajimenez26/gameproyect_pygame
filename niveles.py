@@ -69,26 +69,38 @@ class Nivel_01(Nivel):
         # Llamamos al padre
         Nivel.__init__(self, jugador)
         #self.fondo = pygame.image.load("espacio2.jpg")#cambia la img del nivel
-        self.limite = -1000
+        self.limite = -3000
         self.jugador = jugador
         self.sonido = load_sound("nivel1.wav",curdir).play()
-        # Arreglo con ancho, alto, x, y de la plataforma
-        nivel = [ [210, 50, 500, 520],
-                  [210, 70, 800, 400],
-                  [210, 70, 1000, 500],
-                  [210, 70, 1120, 300],
-                 ]
+        # Arreglo con posiciones de las plataformas
+        plataforma_tipo1 = [
+                             [500, ALTO - ALTO/5],
+                             [990, ALTO/10]
+                           ]
+        plataforma_tipo2 = [
+                             [1100, ALTO - ALTO/2 + 30],
+                             [1500, ALTO/3 + 30],
+                             [3000 - 400, ALTO/3 - 25]
+                            ]
 
-        """for plataforma in nivel:
-            bloque = Plataforma(plataforma[0], plataforma[1])
-            bloque.rect.x = plataforma[2]
-            bloque.rect.y = plataforma[3]
-            self.plataforma_lista.add(bloque)"""
+        plataforma_tipo3 = [
+                             [1900, ALTO/3 - 25],
+                             [3000 - 30, ALTO/3 - 25]
+                            ]
 
-        plataforma1 = Plataforma("plataforma1.png",[500,ALTO - ALTO/3])
-        self.plataforma_lista.add(plataforma1)
+        for plataforma in plataforma_tipo1:
+            bloque = Plataforma("plataforma1.png",[plataforma[0],plataforma[1]])
+            self.plataforma_lista.add(bloque)
 
-        uno = Zombie("zombies1.png",[505,ALTO - ALTO/3 - 10])
+        for plataforma in plataforma_tipo2:
+            bloque = Plataforma("plataforma2.png",[plataforma[0],plataforma[1]])
+            self.plataforma_lista.add(bloque)
+
+        for plataforma in plataforma_tipo3:
+            bloque = Plataforma("plataforma3.png",[plataforma[0],plataforma[1]])
+            self.plataforma_lista.add(bloque)
+
+        uno = Zombie("zombies1.png",[505,ALTO - ALTO/5 - 10])
 
         self.enemigos_lista.add(uno)# = self.createEnemies()
 
