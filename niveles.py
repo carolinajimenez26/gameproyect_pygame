@@ -129,6 +129,11 @@ class Nivel_01(Nivel):
 
         self.enemigos_lista.add(uno)# = self.createEnemies()
 
+        #Casa boss
+        casa_boss = Plataforma("casa_boss.png",[4100,ALTO - ALTO/3.5])
+        self.plataforma_lista.add(casa_boss)
+
+
     def StopSound(self):
         self.sonido.stop()
 
