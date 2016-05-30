@@ -209,3 +209,12 @@ class Enemy(pygame.sprite.Sprite): #Hereda de la clase sprite
 class Zombie(Enemy):#Hereda de la clase Enemigo
     def __init__(self, img_name, pos):
         Enemy.__init__(self, img_name, pos)
+
+class Plataforma(pygame.sprite.Sprite): #Hereda de la clase sprite
+    def __init__(self, img_name, pos):
+    	pygame.sprite.Sprite.__init__(self)
+    	self.image = load_image(img_name, curdir, alpha=True)
+    	self.rect = self.image.get_rect()
+    	self.pos = pos
+    	self.rect.x = pos[0]
+    	self.rect.y = pos[1]

@@ -2,7 +2,7 @@ import pygame
 from objetos import *
 
 
-class Plataforma(pygame.sprite.Sprite):
+class PlataformaChichi(pygame.sprite.Sprite):
     """ Plataforma donde el usuario puede subir """
 
     def __init__(self, ancho, alto):
@@ -79,15 +79,16 @@ class Nivel_01(Nivel):
                   [210, 70, 1120, 300],
                  ]
 
-
-        for plataforma in nivel:
+        """for plataforma in nivel:
             bloque = Plataforma(plataforma[0], plataforma[1])
             bloque.rect.x = plataforma[2]
             bloque.rect.y = plataforma[3]
-            self.plataforma_lista.add(bloque)
+            self.plataforma_lista.add(bloque)"""
 
+        plataforma1 = Plataforma("plataforma1.png",[500,ALTO - ALTO/3])
+        self.plataforma_lista.add(plataforma1)
 
-        uno = Zombie("zombies1.png",[500,self.jugador.getPos()[1]])
+        uno = Zombie("zombies1.png",[505,ALTO - ALTO/3 - 10])
 
         self.enemigos_lista.add(uno)# = self.createEnemies()
 
@@ -112,12 +113,12 @@ class Nivel_02(Nivel):
                  [210, 50, 1200, 300],
                  ]
 
-        for plataforma in nivel:
+        """for plataforma in nivel:
             bloque = Plataforma(plataforma[0], plataforma[1])
             bloque.rect.x = plataforma[2]
             bloque.rect.y = plataforma[3]
             bloque.jugador = self.jugador
-            self.plataforma_lista.add(bloque)
+            self.plataforma_lista.add(bloque)"""
 
     def StopSound(self):
         self.sonido.stop()
