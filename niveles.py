@@ -106,14 +106,21 @@ class Nivel_01(Nivel):
         caja_tipo1 = [
                         [650,ALTO - ALTO/2 ],
                         [650 + 80,(ALTO - ALTO/2) - 80],
-                        [650 + 2*80,(ALTO - ALTO/2) - 2*80]
+                        [650 + 2*80,(ALTO - ALTO/2) - 2*80],
+                        [3000,ALTO - ALTO/7.5],
+                        [3200,ALTO - ALTO/7.5],
+                        [3200,ALTO - 2*(ALTO/7.5)],
                      ]
 
         caja_tipo2 = [
                         [-80,(ALTO - ALTO/3) + 80 ],
                         [0,(ALTO - ALTO/3) ],
                         [0 + 80,(ALTO - ALTO/3) - 80],
-                        [0 + 2*80,(ALTO - ALTO/3) - 2*80]
+                        [0 + 2*80,(ALTO - ALTO/3) - 2*80],
+                        [1750,ALTO - ALTO/3],
+                        [2500,ALTO - ALTO/3],
+                        [2600,ALTO - ALTO/3],
+                        [2700,ALTO - ALTO/3],
                      ]
 
         for caja in caja_tipo1:
@@ -122,6 +129,24 @@ class Nivel_01(Nivel):
 
         for caja in caja_tipo2:
             bloque = Plataforma("caja2.png",[caja[0],caja[1]])
+            self.plataforma_lista.add(bloque)
+
+        rocas_tipo1 = [
+                        [1500,ALTO - ALTO/10],
+                        [2200,ALTO - ALTO/10]
+                      ]
+
+        rocas_tipo2 = [
+                        [1900,ALTO - ALTO/6],
+                        [2000,ALTO - ALTO/6]
+                      ]
+
+        for roca in rocas_tipo1:
+            bloque = Plataforma("rock.png",[roca[0],roca[1]])
+            self.plataforma_lista.add(bloque)
+
+        for roca in rocas_tipo2:
+            bloque = Plataforma("rock2.png",[roca[0],roca[1]])
             self.plataforma_lista.add(bloque)
 
         #---------------Enemigos-----------------------
