@@ -174,3 +174,38 @@ class Bullet(Weapon): #Hereda de la clase sprite
             self.rect.y -= self.speed
         if(self.magiciandir == 3):#abajo
             self.rect.y += self.speed
+
+class Enemy(pygame.sprite.Sprite): #Hereda de la clase sprite
+    #cargar_fondo('zombie1.png',ancho,alto)
+    def __init__(self, img_name, pos):
+    	pygame.sprite.Sprite.__init__(self)
+    	self.image = load_image(img_name, curdir, alpha=True)
+    	self.rect = self.image.get_rect()
+    	self.pos = pos
+    	self.rect.x = pos[0]
+    	self.rect.y = pos[1]
+        self.jugador = (0,0)
+        self.direccion = 0
+
+    def getDir(self):
+        return self.direccion
+
+    def setDir(self, dir):
+        self.direccion = dir
+
+    def getRect(self):
+    	return self.rect
+
+    def getPos(self):
+    	return [self.rect.x,self.rect.y]
+
+    def setPos(self,pos):
+    	self.rect.x = pos[0]
+    	self.rect.y = pos[1]
+
+    def getMargen(self):
+        return (self.rect[2],self.rect[3])
+
+class Zombie(Enemy):#Hereda de la clase Enemigo
+    def __init__(self, img_name, pos):
+        Enemy.__init__(self, img_name, pos)

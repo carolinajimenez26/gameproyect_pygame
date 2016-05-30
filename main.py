@@ -15,6 +15,9 @@ if __name__ == "__main__":
     # Creamos maximus
     maximus = Jugador("maximus_der.jpg")
 
+    maximus.rect.x = 340
+    maximus.rect.y = ALTO - maximus.rect.height
+
     # Creamos los niveles
     nivel_lista = []
     nivel_lista.append( Nivel_01(maximus) )
@@ -23,6 +26,9 @@ if __name__ == "__main__":
     # Establecemos nivel actual
     nivel_actual_no = 0
     nivel_actual = nivel_lista[nivel_actual_no]
+
+    # Indicamos a la clase jugador cual es el nivel
+    maximus.nivel = nivel_actual
 
     #sonidos
     shot_s = load_sound('shot.wav',curdir)
@@ -37,11 +43,6 @@ if __name__ == "__main__":
     # Lista de sprites activos
     activos_sp_lista = pygame.sprite.Group()
 
-    # Indicamos a la clase jugador cual es el nivel
-    maximus.nivel = nivel_actual
-
-    maximus.rect.x = 340
-    maximus.rect.y = ALTO - maximus.rect.height
     activos_sp_lista.add(maximus)
 
     fin = False
@@ -129,7 +130,7 @@ if __name__ == "__main__":
         #Si llegamos al final del nivel
         pos_actual=maximus.rect.x + nivel_actual.mov_fondo
         if pos_actual < nivel_actual.limite:
-           maximus.rect.x=120
+           maximus.rect.x = 120
            if nivel_actual_no < len(nivel_lista)-1:
               nivel_actual_no += 1
               nivel_actual = nivel_lista[nivel_actual_no]

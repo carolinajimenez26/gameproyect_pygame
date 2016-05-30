@@ -69,7 +69,8 @@ class Nivel_01(Nivel):
         # Llamamos al padre
         Nivel.__init__(self, jugador)
         #self.fondo = pygame.image.load("espacio2.jpg")#cambia la img del nivel
-        self.limite=-1000
+        self.limite = -1000
+        self.jugador = jugador
         self.sonido = load_sound("nivel1.wav",curdir).play()
         # Arreglo con ancho, alto, x, y de la plataforma
         nivel = [ [210, 50, 500, 520],
@@ -86,6 +87,14 @@ class Nivel_01(Nivel):
             self.plataforma_lista.add(bloque)
 
 
+        uno = Zombie("zombies1.png",[500,self.jugador.getPos()[1]])
+
+        self.enemigos_lista.add(uno)# = self.createEnemies()
+
+    def StopSound(self):
+        self.sonido.stop()
+
+
 class Nivel_02(Nivel):
     """ Definicion para el nivel 2. """
 
@@ -95,6 +104,7 @@ class Nivel_02(Nivel):
         # Llamamos al padre
         Nivel.__init__(self, jugador)
         self.limite=-1000
+        self.sonido = load_sound("nivel2.wav",curdir).play()
         # Arreglo con ancho, alto, x, y de la plataforma
         nivel = [ [210, 50, 500, 500],
                  [210, 50, 200, 400],
@@ -108,3 +118,6 @@ class Nivel_02(Nivel):
             bloque.rect.y = plataforma[3]
             bloque.jugador = self.jugador
             self.plataforma_lista.add(bloque)
+
+    def StopSound(self):
+        self.sonido.stop()
