@@ -158,6 +158,27 @@ class Nivel_01(Nivel):
             obj = Plataforma("pavo.png",[pavo[0],pavo[1]])
             self.plataforma_lista.add(obj)
 
+        zapatos = Plataforma("zapatos.png",[650 + 2*80 + 25,(ALTO - ALTO/2) - 2*80 - 25])
+        self.plataforma_lista.add(zapatos)
+
+        obj = Plataforma("pavo.png",[pavo[0],pavo[1]])
+        self.plataforma_lista.add(obj)
+
+        monedas = [
+                    [3150,ALTO - 50],
+                    [3100,ALTO - 50],
+                    [990 + 50 + 50*1, ALTO/10 - 50],
+                    [990 + 50 + 50*3, ALTO/10 - 50],
+                    [990 + 50+ 50*5, ALTO/10 - 50],
+                  ]
+
+        for moneda in monedas:
+            obj = Plataforma("coin.png",[moneda[0],moneda[1]])
+            self.plataforma_lista.add(obj)
+
+        reloj = Plataforma("reloj.png",[3000 - 400 + 65, ALTO/3 - 25 - 45])
+        self.plataforma_lista.add(reloj)
+
         #---------------Enemigos-----------------------
         uno = Zombie("zombies1.png",[505,ALTO - ALTO/5 - 30])
 
