@@ -72,7 +72,8 @@ class Nivel_01(Nivel):
         self.limite = -3000
         self.jugador = jugador
         self.sonido = load_sound("nivel1.wav",curdir).play()
-        # Arreglo con posiciones de las plataformas
+
+        #---------------Plataformas-----------------------
         plataforma_tipo1 = [
                              [500, ALTO - ALTO/5],
                              [990, ALTO/10]
@@ -100,7 +101,31 @@ class Nivel_01(Nivel):
             bloque = Plataforma("plataforma3.png",[plataforma[0],plataforma[1]])
             self.plataforma_lista.add(bloque)
 
-        uno = Zombie("zombies1.png",[505,ALTO - ALTO/5 - 10])
+
+        #---------------Objetos-----------------------
+        caja_tipo1 = [
+                        [650,ALTO - ALTO/2 ],
+                        [650 + 80,(ALTO - ALTO/2) - 80],
+                        [650 + 2*80,(ALTO - ALTO/2) - 2*80]
+                     ]
+
+        caja_tipo2 = [
+                        [-80,(ALTO - ALTO/3) + 80 ],
+                        [0,(ALTO - ALTO/3) ],
+                        [0 + 80,(ALTO - ALTO/3) - 80],
+                        [0 + 2*80,(ALTO - ALTO/3) - 2*80]
+                     ]
+
+        for caja in caja_tipo1:
+            bloque = Plataforma("caja.png",[caja[0],caja[1]])
+            self.plataforma_lista.add(bloque)
+
+        for caja in caja_tipo2:
+            bloque = Plataforma("caja2.png",[caja[0],caja[1]])
+            self.plataforma_lista.add(bloque)
+
+        #---------------Enemigos-----------------------
+        uno = Zombie("zombies1.png",[505,ALTO - ALTO/5 - 30])
 
         self.enemigos_lista.add(uno)# = self.createEnemies()
 
