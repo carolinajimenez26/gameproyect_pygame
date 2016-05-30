@@ -21,6 +21,19 @@ class Jugador(pygame.sprite.Sprite):
         self.image = load_image(imagen, curdir, alpha=True)
         self.rect = self.image.get_rect()
 
+        self.life = 100
+        self.score = 0
+        self.dir = 0 #0 derecha , 1 izquierda, 2 arriba, 3 abajo
+        #imagenes para movimiento
+        self.imaged = [] #derecha
+        self.imagei = [] #izquierda
+        self.imagenar = [] #arriba
+        self.imagena = [] #abajo
+        self.enemigos = 0
+        #speed
+        self.increment_x = 0
+        self.increment_y = 0
+
 
     def update(self):
         """ Mueve el jugador. """
@@ -93,3 +106,71 @@ class Jugador(pygame.sprite.Sprite):
     def no_mover(self):
         """ Usuario no pulsa teclas """
         self.vel_x = 0
+
+    def getLife(self):
+    	return self.life
+
+    def setLife(self,life):
+    	self.life = life
+
+    def crash(self):
+        self.setLife(self.getLife() - 1) #quita una vida
+
+    def getDir(self):
+        return self.dir
+
+    def setDir(self,dir):
+        self.dir = dir
+
+    def getMargen(self):
+        return (self.rect[2],self.rect[3])#x,y
+
+    def getPos(self):
+    	return [self.rect.x,self.rect.y]
+
+    def setPos(self,pos):
+    	self.rect.x = pos[0]
+    	self.rect.y = pos[1]
+
+
+
+class Weapon(pygame.sprite.Sprite): #Hereda de la clase sprite
+    def __init__(self, img_name, pos): #img para cargar, y su padre(de donde debe salir la bala)
+    	pygame.sprite.Sprite.__init__(self)
+    	self.image = load_image(img_name, curdir, alpha=True)
+    	self.rect = self.image.get_rect()
+    	self.pos = pos
+    	self.rect.x = pos[0]
+    	self.rect.y = pos[1]
+        self.speed = 5
+
+    def getRect(self):
+    	return self.rect
+
+    def getPos(self):
+    	return [self.rect.x,self.rect.y]
+
+    def setPos(self,pos):
+    	self.rect.x = pos[0]
+    	self.rect.y = pos[1]
+
+class Bullet(Weapon): #Hereda de la clase sprite
+    def __init__(self, img_name, pos): #img para cargar, y su padre(de donde debe salir la bala)
+    	Weapon.__init__(self, img_name, pos)
+        self.magiciandir = 0 #dispara dependiendo de la posicion del magician
+
+    def setDir(self,dir):
+        self.magiciandir = dir
+
+    def getDir(self):
+        return self.magiciandir
+
+    def update(self):
+        if(self.magiciandir == 0): #derecha
+            self.rect.x += self.speed
+        if(self.magiciandir == 1):#izquierda
+            self.rect.x -= self.speed
+        if(self.magiciandir == 2):#arriba
+            self.rect.y -= self.speed
+        if(self.magiciandir == 3):#abajo
+            self.rect.y += self.speed

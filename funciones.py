@@ -156,7 +156,7 @@ def load_sound(nombre_s,dir_son):
 #Funcion para verificar que las imagenes se cargan correctamente
 def load_image(nombre_a, dir_img, alpha=False):
     # Encontramos la ruta completa de la imagen
-    ruta = os.path.join(dir_img, nombre_a)
+    ruta = os.path.join(dir_img+"/images", nombre_a)
     try:
         image = pygame.image.load(ruta)
     except:
