@@ -149,6 +149,15 @@ class Nivel_01(Nivel):
             bloque = Plataforma("rock2.png",[roca[0],roca[1]])
             self.plataforma_lista.add(bloque)
 
+        pavos = [
+                  [1757,ALTO - ALTO/3 - 35],
+                  [3300,ALTO - 35]
+                ]
+
+        for pavo in pavos:
+            obj = Plataforma("pavo.png",[pavo[0],pavo[1]])
+            self.plataforma_lista.add(obj)
+
         #---------------Enemigos-----------------------
         uno = Zombie("zombies1.png",[505,ALTO - ALTO/5 - 30])
 
