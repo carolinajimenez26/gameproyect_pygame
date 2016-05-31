@@ -135,6 +135,9 @@ class Jugador(pygame.sprite.Sprite):
     def setSpeed(self,speed):
         self.increment_x = speed
 
+    def getScore(self):
+        return self.score
+
 
 class Weapon(pygame.sprite.Sprite): #Hereda de la clase sprite
     def __init__(self, img_name, pos): #img para cargar, y su padre(de donde debe salir la bala)

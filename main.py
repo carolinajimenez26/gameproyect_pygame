@@ -20,8 +20,11 @@ if __name__ == "__main__":
 
     # Creamos los niveles
     nivel_lista = []
-    nivel_lista.append( Nivel_01(maximus,"images/fondo6.jpg","nivel1.wav") )
-    nivel_lista.append( Nivel_02(maximus,"images/dracula.jpg","nivel2.wav") )
+    nivel1 = Nivel_01(maximus,"images/fondo6.jpg","nivel1.wav")
+    nivel_lista.append( nivel1 )
+    nivel2 = Nivel_02(maximus,"images/dracula.jpg","nivel2.wav")
+    nivel_lista.append( nivel2 )
+
 
     # Establecemos nivel actual
     nivel_actual_no = 1
@@ -37,14 +40,15 @@ if __name__ == "__main__":
     #Grupos de sprites
     ls_todos = pygame.sprite.Group()
     ls_balaj = pygame.sprite.Group()
-    ls_enemigos = pygame.sprite.Group()
+    ls_enemigos_nivel1 = nivel1.getEnemies()
+    ls_enemigos_nivel2 = nivel2.getEnemies()
     ls_balase = pygame.sprite.Group()
     ls_jugadores = pygame.sprite.Group()
-    ls_vidas = pygame.sprite.Group()
     # Lista de sprites activos
     activos_sp_lista = pygame.sprite.Group()
 
     activos_sp_lista.add(maximus)
+    ls_jugadores.add(maximus)
 
     fin = False
 
@@ -60,13 +64,37 @@ if __name__ == "__main__":
     terminar = False
     disparo = False
 
+    #para saber que pantalla ejecutar cuando termine el ciclo
+    game_over = False
+    winner = False
+
     nivel_actual.StartSound()
     # -------- Ciclo del juego -----------
     while not fin:
 
+        if(maximus.getLife() <= 0): #si muere
+            ls_todos.draw(pantalla)
+            pygame.display.flip()
+            ls_todos.draw(pantalla)
+            pygame.display.flip()
+            nivel_actual.StopSound()
+            reloj.tick(0.3) #para que no sea un cambio tan repentino
+            fin = True #sale del ciclo
+            game_over = True
+
+        ##En el nivel2 no puede tocar el suelo, pierde
         if((maximus.getPos()[1] == ALTO - maximus.getMargen()[1]) and nivel_actual_no != 0):
             print "gameover"
             #fin = True
+            game_over = True
+
+        #si mato a todos los enemigos y esta en el nivel2
+        """if((len(ls_enemigos_nivel2) == 0 ) and (nivel_actual_no == 2)):
+            nivel_actual.StopSound()
+            reloj.tick(0.6)
+            fin = True
+            winner = True"""
+
         #---------tiempo en pantalla------------
         total_segundos=con_cuadros // tasa_cambio
         minutos= total_segundos // 60
@@ -76,7 +104,15 @@ if __name__ == "__main__":
           total_segundos=0
 
         reloj2 = tipo.render(tiempo_final, True, BLANCO)
+        tipo = pygame.font.SysFont("monospace", 15)
+        blood = tipo.render("Vida actual: " ,1, (255,0,0))
+        pantalla.blit(blood, (0, ALTO))
+        point = tipo.render(("Puntos: " + str(maximus.getScore())),1, (0,0,0))
 
+        if(maximus.getLife() > 0):
+          point = tipo.render(("Puntos: " + str(maximus.getScore())),1, (255,0,0))
+
+        pantalla.fill(pygame.Color(0,0,0))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -153,16 +189,24 @@ if __name__ == "__main__":
                 print "se acabo"
 
 
-        # Dibujamos y refrescamos
+        #renderiza objetos de informacion en la pantalla
+        pantalla.blit(blood,[0,ALTO+15])
+        pantalla.blit(point,[300,ALTO+15]) #+ 15])
+        pantalla.blit(reloj2, [500,ALTO+15])
+        lifebars(maximus,pantalla,[120,ALTO+18])
 
+        # Dibujamos y refrescamos
         nivel_actual.draw(pantalla)
         activos_sp_lista.draw(pantalla)
         reloj.tick(tasa_cambio)
 
         #Actualizaciones
-        #pantalla.blit(fondo,[0,0])
         ls_todos.draw(pantalla)
-        ls_enemigos.draw(pantalla)
         ls_todos.update()
 
         pygame.display.flip()
+
+    if(game_over):
+        print "Perdiste"
+    if(winner):
+        print "ganaste"

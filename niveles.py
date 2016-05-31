@@ -54,6 +54,9 @@ class Nivel(object):
     def StartSound(self):
         self.sonido.play()
 
+    def getEnemies(self):
+        pass
+
 class Nivel_01(Nivel):
     """ Definition for level 1. """
 
@@ -204,7 +207,6 @@ class Nivel_02(Nivel):
         # Llamamos al padre
         Nivel.__init__(self, jugador,imagen,sonido)
         self.limite = -1000
-        self.sonido = load_sound("nivel2.wav",curdir)
 
         plataforma_tipo4 = [
                              [100, ALTO/3 - 25],

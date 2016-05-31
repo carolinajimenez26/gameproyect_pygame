@@ -191,10 +191,10 @@ def pres_boton(button_x,button_y,sprite):
 
 def lifebars(player, surface, pos):
     if(player.getLife() > 75):
-        color = verde
+        color = VERDE
     elif(player.getLife() > 50):
-        color = amarillo
+        color = AMARILLO
     else:
-        color = rojo
+        color = ROJO
     pygame.draw.rect(surface, color, (pos[0],pos[1],player.getLife(),10))
     #pygame.display.update()
