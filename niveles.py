@@ -23,14 +23,15 @@ class Nivel(object):
 
     # Imagen de Fondo
     #fondo = None
-    fondo = pygame.image.load("images/fondo6.jpg")
+
     #valor desplazamiento de fondo
     mov_fondo = 0
 
-    def __init__(self, jugador):
+    def __init__(self, jugador,imagen):
         self.plataforma_lista = pygame.sprite.Group()
         self.enemigos_lista = pygame.sprite.Group()
         self.jugador = jugador
+        self.fondo = pygame.image.load(imagen)
 
     # Actualizamos elementos en el nivel
     def update(self):
@@ -57,17 +58,14 @@ class Nivel(object):
         for enemigo in self.enemigos_lista:
             enemigo.rect.x += mov_x
 
-    def StopSound(self):
-        sonido.stop()
-
 class Nivel_01(Nivel):
     """ Definition for level 1. """
 
-    def __init__(self, jugador):
+    def __init__(self, jugador,imagen):
         """ Creamos nivel 1. """
 
         # Llamamos al padre
-        Nivel.__init__(self, jugador)
+        Nivel.__init__(self, jugador,imagen)
         #self.fondo = pygame.image.load("espacio2.jpg")#cambia la img del nivel
         self.limite = -3000
         self.jugador = jugador
@@ -212,11 +210,11 @@ class Nivel_01(Nivel):
 class Nivel_02(Nivel):
     """ Definicion para el nivel 2. """
 
-    def __init__(self, jugador):
+    def __init__(self, jugador,imagen):
         """ Creamos nivel 2. """
 
         # Llamamos al padre
-        Nivel.__init__(self, jugador)
+        Nivel.__init__(self, jugador,imagen)
         self.limite = -1000
         self.sonido = load_sound("nivel2.wav",curdir)
         # Arreglo con ancho, alto, x, y de la plataforma
