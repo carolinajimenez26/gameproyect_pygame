@@ -24,8 +24,8 @@ if __name__ == "__main__":
     nivel_lista.append( Nivel_02(maximus,"images/dracula.jpg") )
 
     # Establecemos nivel actual
-    nivel_actual_no = 0
-    #maximus.setPos([300, ALTO/2])
+    nivel_actual_no = 1
+    maximus.setPos([300, ALTO/2])
     nivel_actual = nivel_lista[nivel_actual_no]
 
     # Indicamos a la clase jugador cual es el nivel

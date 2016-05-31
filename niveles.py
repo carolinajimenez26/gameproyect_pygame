@@ -219,7 +219,7 @@ class Nivel_02(Nivel):
                              [300, ALTO - ALTO/4],
                              [500, ALTO - ALTO/7],
                              [600, ALTO - ALTO/4],
-                             [2000, ALTO - ALTO/4],
+                             [1800, ALTO - ALTO/4],
                              [1600, ALTO - ALTO/7],
                             ]
 
@@ -239,6 +239,16 @@ class Nivel_02(Nivel):
 
         for plataforma in plataforma_tipo6:
             bloque = Plataforma("plataforma6.png",[plataforma[0],plataforma[1]])
+            self.plataforma_lista.add(bloque)
+
+        caja_tipo3 = [
+                       [400, ALTO/3],
+                       [400 + 100 - 25, ALTO/3 + 100 - 20],
+                       [400 + 100*2 - 45, ALTO/3]
+                     ]
+
+        for caja in caja_tipo3:
+            bloque = Plataforma("caja3.png",[caja[0],caja[1]])
             self.plataforma_lista.add(bloque)
 
     def StopSound(self):
