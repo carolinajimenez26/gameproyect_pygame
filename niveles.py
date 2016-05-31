@@ -6,14 +6,9 @@ class Nivel(object):
     """ Esta es una superclase usada para definir un nivel
         Se crean clases hijas por cada nivel que desee emplearse """
 
-    # Lista de sprites usada en todos los niveles. Add or remove
     plataforma_lista = None
     enemigos_lista = None
 
-    # Imagen de Fondo
-    #fondo = None
-
-    #valor desplazamiento de fondo
     mov_fondo = 0
 
     def __init__(self, jugador,imagen,sonido):
@@ -45,8 +40,8 @@ class Nivel(object):
         self.mov_fondo += mov_x
         for plataforma in self.plataforma_lista:
             plataforma.rect.x += mov_x
-        for enemigo in self.enemigos_lista:
-            enemigo.rect.x += mov_x
+        """for enemigo in self.enemigos_lista:
+            enemigo.rect.x += mov_x"""
 
     def StopSound(self):
         self.sonido.stop()
@@ -55,7 +50,7 @@ class Nivel(object):
         self.sonido.play()
 
     def getEnemies(self):
-        pass
+        return self.enemigos_lista
 
 class Nivel_01(Nivel):
     """ Definition for level 1. """
@@ -189,7 +184,7 @@ class Nivel_01(Nivel):
             self.plataforma_lista.add(obj)
 
         #---------------Enemigos-----------------------
-        uno = Zombie("zombies1.png",[505,ALTO - ALTO/5 - 30])
+        uno = Zombie1("zombies1.png",[505,ALTO - ALTO/5 - 30],[505,525,545,525,505])
 
         self.enemigos_lista.add(uno)# = self.createEnemies()
 

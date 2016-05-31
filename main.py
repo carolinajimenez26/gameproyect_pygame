@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
 
     # Establecemos nivel actual
-    nivel_actual_no = 1
+    nivel_actual_no = 0
     maximus.setPos([300, ALTO/2])
     nivel_actual = nivel_lista[nivel_actual_no]
 
@@ -89,11 +89,11 @@ if __name__ == "__main__":
             game_over = True
 
         #si mato a todos los enemigos y esta en el nivel2
-        """if((len(ls_enemigos_nivel2) == 0 ) and (nivel_actual_no == 2)):
+        if((len(ls_enemigos_nivel2) == 0 ) and (nivel_actual_no == 2)):
             nivel_actual.StopSound()
             reloj.tick(0.6)
             fin = True
-            winner = True"""
+            winner = True
 
         #---------tiempo en pantalla------------
         total_segundos=con_cuadros // tasa_cambio
@@ -190,7 +190,7 @@ if __name__ == "__main__":
 
 
         #renderiza objetos de informacion en la pantalla
-        pantalla.blit(blood,[0,ALTO+15])
+        pantalla.blit(blood,[100,ALTO/2])
         pantalla.blit(point,[300,ALTO+15]) #+ 15])
         pantalla.blit(reloj2, [500,ALTO+15])
         lifebars(maximus,pantalla,[120,ALTO+18])

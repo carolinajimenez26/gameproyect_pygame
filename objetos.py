@@ -211,9 +211,33 @@ class Enemy(pygame.sprite.Sprite): #Hereda de la clase sprite
     def getMargen(self):
         return (self.rect[2],self.rect[3])
 
-class Zombie(Enemy):#Hereda de la clase Enemigo
-    def __init__(self, img_name, pos):
+class Zombie1(Enemy):#Hereda de la clase Enemigo
+    def __init__(self, img_name, pos,movs):
         Enemy.__init__(self, img_name, pos)
+        self.movs = movs #define por donde va a pasar siempre
+        self.i = 0
+        self.cont = True
+        self.reloj = 0
+
+    def setMoves(self,movs):
+        self.movs = movs
+
+    def move(self): #se mueve solo
+        if self.i < len(self.movs) and self.cont: #limite de movimiento
+            self.rect.x = self.movs[self.i] #lo mueve
+            print self.movs[self.i]
+            self.i += 1
+            self.cont = False
+        if self.i >= len(self.movs):
+            self.i = 0 #reinicia
+        if self.reloj <= 60:
+            self.reloj += 1
+        if self.reloj >= 60:
+            self.reloj = 0
+            self.cont = True
+
+    def update(self):
+        self.move()
 
 class Plataforma(pygame.sprite.Sprite): #Hereda de la clase sprite
     def __init__(self, img_name, pos):
