@@ -51,6 +51,8 @@ if __name__ == "__main__":
     ls_jugadores.add(maximus)
 
     fin = False
+    flag = False
+    cont = 0
 
     # Controlamos que tan rapido actualizamos pantalla
     reloj = pygame.time.Clock()
@@ -153,6 +155,31 @@ if __name__ == "__main__":
                     maximus.no_mover()
                 if event.key == pygame.K_RIGHT and maximus.vel_x > 0:
                     maximus.no_mover()
+
+        if(nivel_actual_no == 0):
+            maximus.enemigos = len(ls_enemigos_nivel1)
+            for enemigo in ls_enemigos_nivel1:
+                if(checkCollision(maximus,enemigo)): # si se choco
+                    if(cont == 0):
+                        maximus.crash()
+                        print "life : " , maximus.getLife()
+                        lifebars(maximus,pantalla,[ANCHO/2,ALTO])#cambia la bara de vida
+                        flag = True
+
+        if(nivel_actual_no == 1):
+            maximus.enemigos = len(ls_enemigos_nivel2)
+            for enemigo in ls_enemigos_nivel2:
+                if(checkCollision(maximus,enemigo)): # si se choco
+                    if(cont == 0):
+                        maximus.crash()
+                        print "life : " , maximus.getLife()
+                        lifebars(maximus,pantalla,[ANCHO/2,ALTO])#cambia la bara de vida
+                        flag = True
+
+        if(flag):
+            cont += 1
+        if(cont >= 8):
+            cont = 0
 
         # Actualizamos al maximus.
         activos_sp_lista.update()

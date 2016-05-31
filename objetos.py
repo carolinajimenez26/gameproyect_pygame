@@ -138,6 +138,9 @@ class Jugador(pygame.sprite.Sprite):
     def getScore(self):
         return self.score
 
+    def crash(self):
+        self.setLife(self.getLife() - 1) #quita una vida
+
 
 class Weapon(pygame.sprite.Sprite): #Hereda de la clase sprite
     def __init__(self, img_name, pos): #img para cargar, y su padre(de donde debe salir la bala)
