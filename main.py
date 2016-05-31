@@ -59,7 +59,8 @@ if __name__ == "__main__":
     terminar = False
     disparo = False
 
-     # -------- Ciclo del juego -----------
+    nivel_actual.StartSound()
+    # -------- Ciclo del juego -----------
     while not fin:
 
         #---------tiempo en pantalla------------
@@ -128,13 +129,19 @@ if __name__ == "__main__":
 
         #si pos maximus se ha desplazado hasta el limite del nivel
         #Si llegamos al final del nivel
-        pos_actual=maximus.rect.x + nivel_actual.mov_fondo
+        pos_actual = maximus.rect.x + nivel_actual.mov_fondo
         if pos_actual < nivel_actual.limite:
-           maximus.rect.x = 120
-           if nivel_actual_no < len(nivel_lista)-1:
-              nivel_actual_no += 1
-              nivel_actual = nivel_lista[nivel_actual_no]
-              maximus.nivel=nivel_actual
+            maximus.rect.x = 120
+            if nivel_actual_no < len(nivel_lista)-1:
+                nivel_actual.StopSound()
+                nivel_actual_no += 1
+                nivel_actual = nivel_lista[nivel_actual_no]
+                nivel_actual.StartSound()
+                maximus.nivel = nivel_actual
+            else: #se acabaron los niveles
+                fin = True
+                print "se acabo"
+
 
         # Dibujamos y refrescamos
 

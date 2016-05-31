@@ -71,7 +71,7 @@ class Nivel_01(Nivel):
         #self.fondo = pygame.image.load("espacio2.jpg")#cambia la img del nivel
         self.limite = -3000
         self.jugador = jugador
-        self.sonido = load_sound("nivel1.wav",curdir).play()
+        self.sonido = load_sound("nivel1.wav",curdir)
 
         #---------------Plataformas-----------------------
         plataforma_tipo1 = [
@@ -205,6 +205,9 @@ class Nivel_01(Nivel):
     def StopSound(self):
         self.sonido.stop()
 
+    def StartSound(self):
+        self.sonido.play()
+
 
 class Nivel_02(Nivel):
     """ Definicion para el nivel 2. """
@@ -214,8 +217,8 @@ class Nivel_02(Nivel):
 
         # Llamamos al padre
         Nivel.__init__(self, jugador)
-        self.limite=-1000
-        self.sonido = load_sound("nivel2.wav",curdir).play()
+        self.limite = -1000
+        self.sonido = load_sound("nivel2.wav",curdir)
         # Arreglo con ancho, alto, x, y de la plataforma
         nivel = [ [210, 50, 500, 500],
                  [210, 50, 200, 400],
@@ -223,12 +226,15 @@ class Nivel_02(Nivel):
                  [210, 50, 1200, 300],
                  ]
 
-        """for plataforma in nivel:
-            bloque = Plataforma(plataforma[0], plataforma[1])
+        for plataforma in nivel:
+            bloque = PlataformaChichi(plataforma[0], plataforma[1])
             bloque.rect.x = plataforma[2]
             bloque.rect.y = plataforma[3]
             bloque.jugador = self.jugador
-            self.plataforma_lista.add(bloque)"""
+            self.plataforma_lista.add(bloque)
 
     def StopSound(self):
         self.sonido.stop()
+
+    def StartSound(self):
+        self.sonido.play()
