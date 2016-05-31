@@ -251,6 +251,12 @@ class Nivel_02(Nivel):
             bloque = Plataforma("caja3.png",[caja[0],caja[1]])
             self.plataforma_lista.add(bloque)
 
+        rayo = Plataforma("rayo.png",[1050,ALTO/4 + 20])
+        self.plataforma_lista.add(rayo)
+
+        mascota = Plataforma("mascota.png",[500,ALTO/3 + 100 - 60])
+        self.plataforma_lista.add(mascota)
+
     def StopSound(self):
         self.sonido.stop()
 
