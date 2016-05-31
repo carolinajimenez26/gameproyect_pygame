@@ -20,8 +20,8 @@ if __name__ == "__main__":
 
     # Creamos los niveles
     nivel_lista = []
-    nivel_lista.append( Nivel_01(maximus,"images/fondo6.jpg") )
-    nivel_lista.append( Nivel_02(maximus,"images/dracula.jpg") )
+    nivel_lista.append( Nivel_01(maximus,"images/fondo6.jpg","nivel1.wav") )
+    nivel_lista.append( Nivel_02(maximus,"images/dracula.jpg","nivel2.wav") )
 
     # Establecemos nivel actual
     nivel_actual_no = 1

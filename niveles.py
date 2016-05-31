@@ -16,11 +16,12 @@ class Nivel(object):
     #valor desplazamiento de fondo
     mov_fondo = 0
 
-    def __init__(self, jugador,imagen):
+    def __init__(self, jugador,imagen,sonido):
         self.plataforma_lista = pygame.sprite.Group()
         self.enemigos_lista = pygame.sprite.Group()
         self.jugador = jugador
         self.fondo = pygame.image.load(imagen)
+        self.sonido = load_sound(sonido,curdir)
 
     # Actualizamos elementos en el nivel
     def update(self):
@@ -47,18 +48,23 @@ class Nivel(object):
         for enemigo in self.enemigos_lista:
             enemigo.rect.x += mov_x
 
+    def StopSound(self):
+        self.sonido.stop()
+
+    def StartSound(self):
+        self.sonido.play()
+
 class Nivel_01(Nivel):
     """ Definition for level 1. """
 
-    def __init__(self, jugador,imagen):
+    def __init__(self, jugador,imagen,sonido):
         """ Creamos nivel 1. """
 
         # Llamamos al padre
-        Nivel.__init__(self, jugador,imagen)
+        Nivel.__init__(self, jugador,imagen,sonido)
         #self.fondo = pygame.image.load("espacio2.jpg")#cambia la img del nivel
         self.limite = -3000
         self.jugador = jugador
-        self.sonido = load_sound("nivel1.wav",curdir)
 
         #---------------Plataformas-----------------------
         plataforma_tipo1 = [
@@ -189,21 +195,14 @@ class Nivel_01(Nivel):
         self.plataforma_lista.add(casa_boss)
 
 
-    def StopSound(self):
-        self.sonido.stop()
-
-    def StartSound(self):
-        self.sonido.play()
-
-
 class Nivel_02(Nivel):
     """ Definicion para el nivel 2. """
 
-    def __init__(self, jugador,imagen):
+    def __init__(self, jugador,imagen,sonido):
         """ Creamos nivel 2. """
 
         # Llamamos al padre
-        Nivel.__init__(self, jugador,imagen)
+        Nivel.__init__(self, jugador,imagen,sonido)
         self.limite = -1000
         self.sonido = load_sound("nivel2.wav",curdir)
 
@@ -256,9 +255,3 @@ class Nivel_02(Nivel):
 
         mascota = Plataforma("mascota.png",[500,ALTO/3 + 100 - 60])
         self.plataforma_lista.add(mascota)
-
-    def StopSound(self):
-        self.sonido.stop()
-
-    def StartSound(self):
-        self.sonido.play()
