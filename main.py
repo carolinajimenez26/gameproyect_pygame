@@ -40,15 +40,24 @@ if __name__ == "__main__":
     #Grupos de sprites
     ls_todos = pygame.sprite.Group()
     ls_balaj = pygame.sprite.Group()
+    ls_vida_nivel1 = pygame.sprite.Group()
     ls_enemigos_nivel1 = nivel1.getEnemies()
     ls_enemigos_nivel2 = nivel2.getEnemies()
     ls_balase = pygame.sprite.Group()
     ls_jugadores = pygame.sprite.Group()
+    lista_plataformas_nivel1 = nivel1.getElements()
+    lista_plataformas_nivel2 = nivel2.getElements()
     # Lista de sprites activos
     activos_sp_lista = pygame.sprite.Group()
 
     activos_sp_lista.add(maximus)
     ls_jugadores.add(maximus)
+
+    #para las vidas existentes en el nivel1
+    for e in lista_plataformas_nivel1:
+        if(e.getName() == "pavo"):
+            ls_vida_nivel1.add(e)
+            ls_todos.add(e)
 
     fin = False
     flag = False
@@ -175,6 +184,15 @@ if __name__ == "__main__":
                         print "life : " , maximus.getLife()
                         lifebars(maximus,pantalla,[ANCHO/2,ALTO])#cambia la bara de vida
                         flag = True
+
+        for v in ls_vida_nivel1:
+            ls_vidas_i = pygame.sprite.spritecollide(maximus, ls_vida_nivel1, True)
+            for vida in ls_vidas_i:
+                ls_vida_nivel1.remove(vida)
+                ls_todos.remove(vida)
+                nivel1.removeElement(vida)
+                maximus.setLife(maximus.getLife()+10)
+                lifebars(maximus,pantalla,[ANCHO/2,ALTO])#cambia la bara de vida
 
         if(flag):
             cont += 1

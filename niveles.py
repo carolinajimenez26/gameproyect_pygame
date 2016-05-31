@@ -8,12 +8,14 @@ class Nivel(object):
 
     plataforma_lista = None
     enemigos_lista = None
+    ls_vida = None
 
     mov_fondo = 0
 
     def __init__(self, jugador,imagen,sonido):
         self.plataforma_lista = pygame.sprite.Group()
         self.enemigos_lista = pygame.sprite.Group()
+        self.ls_vida = pygame.sprite.Group()
         self.jugador = jugador
         self.fondo = pygame.image.load(imagen)
         self.sonido = load_sound(sonido,curdir)
@@ -23,6 +25,7 @@ class Nivel(object):
         """ Actualiza todo lo que este en este nivel."""
         self.plataforma_lista.update()
         self.enemigos_lista.update()
+        self.ls_vida.update()
 
     def draw(self, pantalla):
         """ Dibuja lo que se encuentre en el nivel. """
@@ -35,6 +38,7 @@ class Nivel(object):
         # Dibujamos todos los sprites en las listas
         self.plataforma_lista.draw(pantalla)
         self.enemigos_lista.draw(pantalla)
+        self.ls_vida.draw(pantalla)
 
     def Mover_fondo(self, mov_x):
         self.mov_fondo += mov_x
@@ -52,6 +56,12 @@ class Nivel(object):
     def getEnemies(self):
         return self.enemigos_lista
 
+    def getElements(self):
+        return self.plataforma_lista
+
+    def removeElement(self,e):
+        self.plataforma_lista.remove(e)
+
 class Nivel_01(Nivel):
     """ Definition for level 1. """
 
@@ -60,7 +70,6 @@ class Nivel_01(Nivel):
 
         # Llamamos al padre
         Nivel.__init__(self, jugador,imagen,sonido)
-        #self.fondo = pygame.image.load("espacio2.jpg")#cambia la img del nivel
         self.limite = -3000
         self.jugador = jugador
 
@@ -151,6 +160,7 @@ class Nivel_01(Nivel):
         for pavo in pavos:
             obj = Plataforma("pavo.png",[pavo[0],pavo[1]])
             self.plataforma_lista.add(obj)
+            #self.ls_vida.add(obj)
 
         zapatos = Plataforma("zapatos.png",[650 + 2*80 + 25,(ALTO - ALTO/2) - 2*80 - 25])
         self.plataforma_lista.add(zapatos)

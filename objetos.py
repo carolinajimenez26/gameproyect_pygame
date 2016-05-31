@@ -250,3 +250,7 @@ class Plataforma(pygame.sprite.Sprite): #Hereda de la clase sprite
     	self.pos = pos
     	self.rect.x = pos[0]
     	self.rect.y = pos[1]
+        self.name = img_name.split(".png")[0]
+
+    def getName(self):
+        return self.name
