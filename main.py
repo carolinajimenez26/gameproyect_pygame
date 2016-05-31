@@ -24,8 +24,8 @@ if __name__ == "__main__":
     nivel_lista.append( Nivel_02(maximus,"images/dracula.jpg") )
 
     # Establecemos nivel actual
-    nivel_actual_no = 1
-    maximus.setPos([300, ALTO/2])
+    nivel_actual_no = 0
+    #maximus.setPos([300, ALTO/2])
     nivel_actual = nivel_lista[nivel_actual_no]
 
     # Indicamos a la clase jugador cual es el nivel
@@ -64,8 +64,9 @@ if __name__ == "__main__":
     # -------- Ciclo del juego -----------
     while not fin:
 
-        if(maximus.getPos()[1] == ALTO - maximus.getMargen()[1]):
+        if((maximus.getPos()[1] == ALTO - maximus.getMargen()[1]) and nivel_actual_no != 0):
             print "gameover"
+            #fin = True
         #---------tiempo en pantalla------------
         total_segundos=con_cuadros // tasa_cambio
         minutos= total_segundos // 60
@@ -89,9 +90,10 @@ if __name__ == "__main__":
                     maximus.ir_der()
                     maximus.setDir(0)
                 if event.key == pygame.K_UP:
-                    maximus.setDir(2)
                     maximus.salto()
-                if event.key == pygame.K_DOWN:
+                    if(nivel_actual_no != 0):
+                        maximus.setDir(2)
+                if event.key == pygame.K_DOWN and nivel_actual_no != 0:
                     maximus.setDir(3)
                 if event.key == pygame.K_SPACE:
                     bala = Bullet('bala.png',maximus.getPos())#la posicion inicial depende de objeto que este disparando
