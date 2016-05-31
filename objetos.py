@@ -31,7 +31,7 @@ class Jugador(pygame.sprite.Sprite):
         self.imagena = [] #abajo
         self.enemigos = 0
         #speed
-        self.increment_x = 0
+        self.increment_x = 6
         self.increment_y = 0
 
 
@@ -97,11 +97,11 @@ class Jugador(pygame.sprite.Sprite):
     # Control del movimiento
     def ir_izq(self):
         """ Usuario pulsa flecha izquierda """
-        self.vel_x = -6
+        self.vel_x = -self.increment_x
 
     def ir_der(self):
         """ Usuario pulsa flecha derecha """
-        self.vel_x = 6
+        self.vel_x = self.increment_x
 
     def no_mover(self):
         """ Usuario no pulsa teclas """
@@ -132,6 +132,8 @@ class Jugador(pygame.sprite.Sprite):
     	self.rect.x = pos[0]
     	self.rect.y = pos[1]
 
+    def setSpeed(self,speed):
+        self.increment_x = speed
 
 
 class Weapon(pygame.sprite.Sprite): #Hereda de la clase sprite

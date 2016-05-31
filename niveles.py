@@ -2,17 +2,6 @@ import pygame
 from objetos import *
 
 
-class PlataformaChichi(pygame.sprite.Sprite):
-    """ Plataforma donde el usuario puede subir """
-
-    def __init__(self, ancho, alto):
-        pygame.sprite.Sprite.__init__(self)
-
-        self.image = pygame.Surface([ancho, alto])
-        self.image.fill(VERDE)
-
-        self.rect = self.image.get_rect()
-
 class Nivel(object):
     """ Esta es una superclase usada para definir un nivel
         Se crean clases hijas por cada nivel que desee emplearse """
@@ -217,18 +206,25 @@ class Nivel_02(Nivel):
         Nivel.__init__(self, jugador,imagen)
         self.limite = -1000
         self.sonido = load_sound("nivel2.wav",curdir)
-        # Arreglo con ancho, alto, x, y de la plataforma
-        nivel = [ [210, 50, 500, 500],
-                 [210, 50, 200, 400],
-                 [210, 50, 1000, 520],
-                 [210, 50, 1200, 300],
-                 ]
 
-        for plataforma in nivel:
-            bloque = PlataformaChichi(plataforma[0], plataforma[1])
-            bloque.rect.x = plataforma[2]
-            bloque.rect.y = plataforma[3]
-            bloque.jugador = self.jugador
+        plataforma_tipo4 = [
+                             [100, ALTO/3 - 25],
+                             [0, ALTO/2]
+                            ]
+
+        plataforma_tipo5 = [
+                             [400, ALTO - ALTO/7],
+                             [300, ALTO - ALTO/4],
+                             [500, ALTO - ALTO/7],
+                             [600, ALTO - ALTO/4],
+                            ]
+
+        for plataforma in plataforma_tipo4:
+            bloque = Plataforma("plataforma4.png",[plataforma[0],plataforma[1]])
+            self.plataforma_lista.add(bloque)
+
+        for plataforma in plataforma_tipo5:
+            bloque = Plataforma("plataforma5.png",[plataforma[0],plataforma[1]])
             self.plataforma_lista.add(bloque)
 
     def StopSound(self):

@@ -24,7 +24,8 @@ if __name__ == "__main__":
     nivel_lista.append( Nivel_02(maximus,"images/dracula.jpg") )
 
     # Establecemos nivel actual
-    nivel_actual_no = 0
+    nivel_actual_no = 1
+    maximus.setPos([300, ALTO/2])
     nivel_actual = nivel_lista[nivel_actual_no]
 
     # Indicamos a la clase jugador cual es el nivel
@@ -63,6 +64,8 @@ if __name__ == "__main__":
     # -------- Ciclo del juego -----------
     while not fin:
 
+        if(maximus.getPos()[1] == ALTO - maximus.getMargen()[1]):
+            print "gameover"
         #---------tiempo en pantalla------------
         total_segundos=con_cuadros // tasa_cambio
         minutos= total_segundos // 60
@@ -86,8 +89,10 @@ if __name__ == "__main__":
                     maximus.ir_der()
                     maximus.setDir(0)
                 if event.key == pygame.K_UP:
-                    print "salto"
+                    maximus.setDir(2)
                     maximus.salto()
+                if event.key == pygame.K_DOWN:
+                    maximus.setDir(3)
                 if event.key == pygame.K_SPACE:
                     bala = Bullet('bala.png',maximus.getPos())#la posicion inicial depende de objeto que este disparando
                     dir = maximus.getDir()
@@ -96,9 +101,11 @@ if __name__ == "__main__":
                     if(dir == 0):#derecha
                         bala.setPos([maximus.getPos()[0] + maximus.getMargen()[0]/2,maximus.getPos()[1]])
                     if(dir == 1):#izquierda
-                        print "left"
                         bala.setPos([maximus.getPos()[0] - maximus.getMargen()[0]/2,maximus.getPos()[1]])
-
+                    if(dir == 2 and nivel_actual_no != 0):#arriba
+                        bala.setPos([maximus.getPos()[0],maximus.getPos()[1] - maximus.getMargen()[1]])
+                    if(dir == 3 and nivel_actual_no != 0):#abajo
+                        bala.setPos([maximus.getPos()[0],maximus.getPos()[1] + maximus.getMargen()[1]])
                     ls_balaj.add(bala)
                     ls_todos.add(bala)
                     disparo = True
@@ -138,6 +145,7 @@ if __name__ == "__main__":
                 nivel_actual = nivel_lista[nivel_actual_no]
                 nivel_actual.StartSound()
                 maximus.nivel = nivel_actual
+                maximus.setPos([300, ALTO/2])
             else: #se acabaron los niveles
                 fin = True
                 print "se acabo"
