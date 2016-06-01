@@ -33,6 +33,55 @@ def load_image(nombre_a, dir_img, alpha=False):
     else:
         image = image.convert()
     return image
+class buttonz(pygame.sprite.Sprite):
+    def __init__(self,img,img2):
+    	pygame.sprite.Sprite.__init__(self)
+    	self.image = load_image(img, curdir+"/enviroment/main", alpha=True)
+        self.images = [load_image(img, curdir+"/enviroment/main", alpha=True),load_image(img2, curdir+"/enviroment/main", alpha=True)]
+        self.index=0
+        self.clicked=False
+        self.mousepos=[]
+    	self.rect = self.image.get_rect()
+
+    def setclicked(self):
+        self.clicked=True
+    def getrect(self):
+        print self.rect
+
+    def setpos(self,pos):
+        self.rect.x=pos[0]
+        self.rect.y=pos[1]
+
+    def getrect(self):
+        return self.rect[2],self.rect[3]
+
+    def getrectpos(self):
+        return self.rect.x,self.rect.y
+
+    def action(self):
+        print "juego corriendo"
+
+    def update(self):
+        x_len,y_len = self.getrect()
+        button_x,button_y = self.getrectpos()
+        mos_x, mos_y = pygame.mouse.get_pos()
+        if mos_x>button_x and (mos_x<button_x+x_len):
+            x_inside = True
+        else:
+            x_inside = False
+        if mos_y>button_y and (mos_y<button_y+y_len):
+            y_inside = True
+        else:
+            y_inside = False
+        if x_inside and y_inside:
+            if self.clicked:
+                self.image=self.images[1]
+                self.clicked=False
+                self.action()
+            else:
+                self.image=self.images[1]
+        else:
+            self.image=self.images[0]
 
 class mainsplash(pygame.sprite.Sprite): #Hereda de la clase sprite
     #cargar_fondo('zombie1.png',ancho,alto)
@@ -42,6 +91,10 @@ class mainsplash(pygame.sprite.Sprite): #Hereda de la clase sprite
         self.carrusel=[]
         self.index=0
     	self.rect = self.image.get_rect()
+
+    def setpos(self):
+        self.rect.x=0
+        self.rect.y=0
 
     def setindex(self,value):
         self.index=value
