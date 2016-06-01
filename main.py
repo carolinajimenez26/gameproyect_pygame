@@ -38,19 +38,18 @@ if __name__ == "__main__":
     shot_s = load_sound('shot.wav',curdir)
 
     #Grupos de sprites
-    ls_todos_nivel1 = pygame.sprite.Group()
-    ls_todos_nivel2 = pygame.sprite.Group()
-    ls_balaj = pygame.sprite.Group()
-    ls_enemigos_nivel1 = nivel1.getEnemies()
-    ls_enemigos_nivel2 = nivel2.getEnemies()
-    ls_balase = pygame.sprite.Group()
-    ls_jugadores = pygame.sprite.Group()
+    ls_balaj = pygame.sprite.Group() #balas jugador
+    ls_enemigos_nivel1 = nivel1.getEnemies() #lista enemigos nivel1
+    ls_enemigos_nivel2 = nivel2.getEnemies() #lista enemigos nivel2
+    ls_balase = pygame.sprite.Group() #balas enemigos
+    ls_jugadores = pygame.sprite.Group() #jugadores
     # Lista de sprites activos
     activos_sp_lista = pygame.sprite.Group()
 
     #listas para objetos
 
     #NIVEL1
+    ls_todos_nivel1 = pygame.sprite.Group()
     ls_mascota_nivel1 = pygame.sprite.Group()#Mascota
     ls_vida_nivel1 = pygame.sprite.Group()#Pavos(vida)
     ls_mascota_nivel1 = pygame.sprite.Group()#Mascota
@@ -59,6 +58,7 @@ if __name__ == "__main__":
     ls_relojes_nivel1 = pygame.sprite.Group()#Relojes
     ls_municiones_nivel1 = pygame.sprite.Group()#Municiones
     #NIVEL2
+    ls_todos_nivel2 = pygame.sprite.Group()
     ls_vida_nivel2 = pygame.sprite.Group()#Rayo
     ls_mascota_nivel2 = pygame.sprite.Group()#Mascota
 
@@ -119,10 +119,11 @@ if __name__ == "__main__":
     ls_mascota_nivel2.add(mascota)
     ls_todos_nivel2.add(mascota)
 
+    print "len 1 : " ,len(ls_todos_nivel1) , "len 2 : " , len(ls_todos_nivel2)
+
     #Agregando objetos a grupos de sprites
     activos_sp_lista.add(maximus)
     ls_jugadores.add(maximus)
-
 
     fin = False
     flag = False
@@ -172,12 +173,14 @@ if __name__ == "__main__":
             winner = True
 
         #---------tiempo en pantalla------------
-        total_segundos=con_cuadros // tasa_cambio
+        total_segundos = con_cuadros // tasa_cambio
         minutos= total_segundos // 60
         segundos = total_segundos % 60
         tiempo_final = "Tiempo: {0:02}:{1:02}".format(minutos,segundos)
-        if total_segundos >60:
+        if total_segundos > 60:
           total_segundos=0
+
+        con_cuadros+=1
 
         reloj2 = tipo.render(tiempo_final, True, BLANCO)
         tipo = pygame.font.SysFont("monospace", 15)
@@ -221,7 +224,7 @@ if __name__ == "__main__":
                     if(dir == 3 and nivel_actual_no != 0):#abajo
                         bala.setPos([maximus.getPos()[0],maximus.getPos()[1] + maximus.getMargen()[1]])
                     ls_balaj.add(bala)
-                    ls_todos.add(bala)
+                    #ls_todos.add(bala)
                     disparo = True
 
             if event.type == pygame.KEYUP:
@@ -304,35 +307,39 @@ if __name__ == "__main__":
                 print "se acabo"
 
 
-        #------------General--------------
-        #renderiza objetos de informacion en la pantalla
-        pantalla.blit(blood,[100,ALTO/2])
-        pantalla.blit(point,[300,ALTO+15]) #+ 15])
-        pantalla.blit(reloj2, [500,ALTO+15])
-        lifebars(maximus,pantalla,[120,ALTO+18])
+        #------------Nivel1--------------
+        if(nivel_actual_no == 0):
+            ls_todos_nivel1.draw(pantalla)
+            ls_todos_nivel1.update()
+
+        #------------Nivel2--------------
+        if(nivel_actual_no == 1):
+            ls_todos_nivel2.draw(pantalla)
+            ls_todos_nivel2.update()
 
         # Dibujamos y refrescamos
         nivel_actual.draw(pantalla)
         activos_sp_lista.draw(pantalla)
-        reloj.tick(tasa_cambio)
 
         # Actualizamos al jugador
         activos_sp_lista.update()
 
+        ls_balaj.draw(pantalla)
+        ls_balaj.update()
+
         # Actualizamos elementos en el nivel
         nivel_actual.update()
 
-        #------------Nivel1--------------
-        if(nivel_actual_no == 0):
-            ls_todos_nivel1.update()
-            ls_todos_nivel1.draw(pantalla)
-
-        #------------Nivel2--------------
-        if(nivel_actual_no == 1):
-            ls_todos_nivel2.update()
-            ls_todos_nivel2.draw(pantalla)
+        #------------General--------------
+        #renderiza objetos de informacion en la pantalla
+        pantalla.blit(blood,[5,ALTO - ALTO+15])
+        pantalla.blit(point,[5,(ALTO - ALTO+15) + 15]) #+ 15])
+        pantalla.blit(reloj2, [5,(ALTO - ALTO+15) + 15*2])
+        lifebars(maximus,pantalla,[120,(ALTO - ALTO+15)])
 
         pygame.display.flip()
+        reloj.tick(tasa_cambio)
+
 
     if(game_over):
         print "Perdiste"
