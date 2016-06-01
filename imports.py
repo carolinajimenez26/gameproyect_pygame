@@ -3,7 +3,19 @@ import random
 import time
 import sys
 import os
+import ConfigParser
+import inputbox
 
+#Imports del tkinter
+from Tkinter import *
+import tkMessageBox
+from ttk import Frame, Button, Style
+from sympy.stats.frv import SingleFinitePSpace
+from sympy import S, sympify, Rational, binomial
+from PIL import Image, ImageTk
+#Fin
+
+Config = ConfigParser.ConfigParser()
 curdir = os.getcwd()+"/sources"
 
 #Colores RGB#
@@ -17,6 +29,24 @@ negro=(0,0,0)
 cyan=(0,255,255)
 amarillo = (255,255,0)
 #Fin definicion de colores
+
+class window(Frame):
+    def __init__(self, parent):
+        Frame.__init__(self, parent)
+        self.parent = parent
+
+def ConfigSectionMap(section):
+    dict1 = {}
+    options = Config.options(section)
+    for option in options:
+        try:
+            dict1[option] = Config.get(section, option)
+            if dict1[option] == -1:
+                DebugPrint("skip: %s" % option)
+        except:
+            print("exception on %s!" % option)
+            dict1[option] = None
+    return dict1
 
 #Funcion para verificar que las imagenes se cargan correctamente
 def load_image(nombre_a, dir_img, alpha=False):
@@ -122,11 +152,80 @@ class boton_tutorial(buttonz):
     def action(self):
         print "boton de tutorial"
 
+class menu(window):
+    def __init__(self, parent):
+        window.__init__(self,parent)
+        self.initUI()
+    def initUI(self):
+        Config.read("config.ini")
+        Config.sections()
+        derecha = ConfigSectionMap("Movimientos")['derecha']
+        izquierda = ConfigSectionMap("Movimientos")['izquierda']
+        disparo = ConfigSectionMap("Movimientos")['disparo']
+        salto = ConfigSectionMap("Movimientos")['salto']
+        self.parent.title("Place of dead - [Configuration]")
+        self.style = Style()
+        #self.style.theme_use("default")
+        self.style.configure('My.TFrame', background='gray')
+        #Layouts
+        frame1 = Frame(self)
+        frame1.pack(fill=Y)
+        frame2 = Frame(self)
+        frame2.pack(fill=Y)
+        frame3 = Frame(self)
+        frame3.pack(fill=Y)
+        frame6 = Frame(self)
+        frame6.pack(fill=Y)
+        frame4 = Frame(self)
+        frame4.pack(fill=Y)
+        frame5 = Frame(self)
+        frame5.pack(fill=Y)
+
+        self.pack(fill=BOTH, expand=1)
+        self.labela = Label(frame2, text="Movimiento a la derecha: ")#, textvariable=self.var)
+        self.labela.pack(side=LEFT)
+        derechae = Entry(frame2,width=5)
+        derechae.insert(END, derecha)
+        derechae.pack(side=LEFT,padx=1, pady=1, expand=True)
+
+        self.labelb = Label(frame2, text="Movimiento a la derecha: ")#, textvariable=self.var)
+        self.labelb.pack(side=LEFT)
+        izquierdae = Entry(frame2,width=5)
+        izquierdae.insert(END, izquierda)
+        izquierdae.pack(side=LEFT,padx=1, pady=1, expand=True)
+
+        okButton = Button(self, text="Save", command=lambda: self.binomial())
+        okButton.pack(side=RIGHT)
+
 class boton_ajustes(buttonz):
-    def __init__(self,img,img2):
+    def __init__(self,img,img2,ventana,backgrounl,DIM):
         buttonz.__init__(self,img,img2)
+        self.ventana=ventana
+        self.backgrounl=backgrounl
+        self.ANCHO = DIM[0]
+        self.ALTO = DIM [1]
     def action(self):
-        print "boton de ajustes"
+        self.backgrounl.draw(self.ventana)
+        self.ventana = pygame.display.set_mode((2, 2))
+        #pr = self.ventana.subsurface([0,0,100,100]) #Dibuja una surface sobre la pantalla
+        #pr.fill((255,255,255))
+        pygame.display.flip()
+        #inp = str(inputbox.ask(self.ventana, 'Movimiento a la derecha:'))
+        #inp = str(inputbox.ask(self.ventana, 'Movimiento a la izquierda:'))
+        #print inp
+        root = Tk()
+        root.geometry("480x350+300+300")
+        app = menu(root)
+        def on_closing():
+            if tkMessageBox.askokcancel("Quit", "Guardaste los cambios antes de salir?"):
+                root.destroy()
+                self.ventana = pygame.display.set_mode((self.ANCHO, self.ALTO))
+                pygame.display.flip()
+        root.protocol("WM_DELETE_WINDOW", on_closing)
+        root.mainloop()
+
+
+
 
 class boton_acercade(buttonz):
     def __init__(self,img,img2):

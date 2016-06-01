@@ -1,13 +1,15 @@
 from imports import *
 
 def main():
+
     ANCHO = 800
     ALTO = 600
     pygame.init()
     menu_d = pygame.display.set_mode((0, 0))#, pygame.FULLSCREEN)
+    ls = pygame.sprite.Group() #Lista del background
     #Seccion de botones
     btn1 = boton_inicio("btn1.png","btn1_p.png")
-    btn2 = boton_ajustes("btn2.png","btn2_p.png")
+    btn2 = boton_ajustes("btn2.png","btn2_p.png",menu_d,ls,(ANCHO,ALTO))
     btn3 = boton_acercade("btn3.png","btn3_p.png")
     rex,rey = btn1.getrect()
     btn1.setpos([ANCHO/2-rex/2,ALTO/2-rey-50])
@@ -26,7 +28,6 @@ def main():
     sl.setcorrer()
     pygame.display.set_caption("Place of dead - [Menu Principal] ", 'Spine Runtime')
     menu_d = pygame.display.set_mode((ANCHO, ALTO))
-    ls = pygame.sprite.Group()
     ls.add(backgroundm)
     #Fin seccion del background
     #Carga del sonido
@@ -44,7 +45,11 @@ def main():
         events = pygame.event.get()
         for event in events:
             if event.type == pygame.KEYDOWN:
+                print event.key
+
+            if event.type == pygame.QUIT:
                 terminar=True
+
             if event.type == pygame.MOUSEBUTTONUP:
                 for btn in lsbtn:
                     btn.setclicked()
