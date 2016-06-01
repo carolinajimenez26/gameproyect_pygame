@@ -44,6 +44,21 @@ def load_sound(nombre_s,dir_son):
         sys.exit(1)
     return sound
 
+class splashload():
+    def __init__(self):
+        self.correr=True
+        if(self.correr):
+            menu_e = pygame.display.set_mode((700, 700))
+            pygame.display.set_caption("Loading files ", 'Spine Runtime')
+            image = load_image("loading.jpg", curdir+"/enviroment/main", alpha=False)
+            image = pygame.transform.scale(image,(700,700))
+            menu_e.blit(image,(0,0))
+            pygame.display.flip()
+        else:
+            print "YA mori"
+    def setcorrer(self):
+        self.correr=False
+
 class buttonz(pygame.sprite.Sprite):
     def __init__(self,img,img2):
     	pygame.sprite.Sprite.__init__(self)

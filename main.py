@@ -4,7 +4,7 @@ def main():
     ANCHO = 800
     ALTO = 600
     pygame.init()
-    menu_d = pygame.display.set_mode((ANCHO, ALTO))#, pygame.FULLSCREEN)
+    menu_d = pygame.display.set_mode((0, 0))#, pygame.FULLSCREEN)
     #Seccion de botones
     btn1 = boton_inicio("btn1.png","btn1_p.png")
     btn2 = boton_ajustes("btn2.png","btn2_p.png")
@@ -18,17 +18,21 @@ def main():
     lsbtn.add(btn2)
     lsbtn.add(btn3)
     #Fin seccion de botones
+    #seccion del background con su inicializacion
+    sl = splashload()
+    backgroundm = mainsplash()
+    backgroundm.setpos()
+    backgroundm.load()
+    sl.setcorrer()
+    pygame.display.set_caption("Place of dead - [Menu Principal] ", 'Spine Runtime')
+    menu_d = pygame.display.set_mode((ANCHO, ALTO))
+    ls = pygame.sprite.Group()
+    ls.add(backgroundm)
+    #Fin seccion del background
     #Carga del sonido
     pygame.mixer.music.load(os.path.join(curdir+"/enviroment/main", 'background.ogg'))
     pygame.mixer.music.play(-1)
     #Fin carga del sonido
-    #seccion del background con su inicializacion
-    backgroundm = mainsplash()
-    backgroundm.setpos()
-    backgroundm.load()
-    ls = pygame.sprite.Group()
-    ls.add(backgroundm)
-    #Fin seccion del background
     pygame.display.flip() #Refresco la pantalla
     reloj=pygame.time.Clock()
     terminar=False
