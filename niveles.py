@@ -8,14 +8,12 @@ class Nivel(object):
 
     plataforma_lista = None
     enemigos_lista = None
-    ls_vida = None
 
     mov_fondo = 0
 
     def __init__(self, jugador,imagen,sonido):
         self.plataforma_lista = pygame.sprite.Group()
         self.enemigos_lista = pygame.sprite.Group()
-        self.ls_vida = pygame.sprite.Group()
         self.jugador = jugador
         self.fondo = pygame.image.load(imagen)
         self.sonido = load_sound(sonido,curdir)
@@ -25,7 +23,6 @@ class Nivel(object):
         """ Actualiza todo lo que este en este nivel."""
         self.plataforma_lista.update()
         self.enemigos_lista.update()
-        self.ls_vida.update()
 
     def draw(self, pantalla):
         """ Dibuja lo que se encuentre en el nivel. """
@@ -38,7 +35,6 @@ class Nivel(object):
         # Dibujamos todos los sprites en las listas
         self.plataforma_lista.draw(pantalla)
         self.enemigos_lista.draw(pantalla)
-        self.ls_vida.draw(pantalla)
 
     def Mover_fondo(self, mov_x):
         self.mov_fondo += mov_x
@@ -65,6 +61,8 @@ class Nivel(object):
 class Nivel_01(Nivel):
     """ Definition for level 1. """
 
+    ls_vida = None
+
     def __init__(self, jugador,imagen,sonido):
         """ Creamos nivel 1. """
 
@@ -72,6 +70,7 @@ class Nivel_01(Nivel):
         Nivel.__init__(self, jugador,imagen,sonido)
         self.limite = -3000
         self.jugador = jugador
+        self.ls_vida = pygame.sprite.Group()
 
         #---------------Plataformas-----------------------
         plataforma_tipo1 = [
@@ -101,8 +100,6 @@ class Nivel_01(Nivel):
             bloque = Plataforma("plataforma3.png",[plataforma[0],plataforma[1]])
             self.plataforma_lista.add(bloque)
 
-
-        #---------------Objetos-----------------------
         caja_tipo1 = [
                         [650,ALTO - ALTO/2 ],
                         [650 + 80,(ALTO - ALTO/2) - 80],
@@ -149,58 +146,15 @@ class Nivel_01(Nivel):
             bloque = Plataforma("rock2.png",[roca[0],roca[1]])
             self.plataforma_lista.add(bloque)
 
-        mascota = Plataforma("mascota.png",[2150,ALTO - 25])
-        self.plataforma_lista.add(mascota)
 
-        pavos = [
-                  [1757,ALTO - ALTO/3 - 35],
-                  [3300,ALTO - 35]
-                ]
-
-        for pavo in pavos:
-            obj = Plataforma("pavo.png",[pavo[0],pavo[1]])
-            self.plataforma_lista.add(obj)
-            #self.ls_vida.add(obj)
-
-        zapatos = Plataforma("zapatos.png",[650 + 2*80 + 25,(ALTO - ALTO/2) - 2*80 - 25])
-        self.plataforma_lista.add(zapatos)
-
-        obj = Plataforma("pavo.png",[pavo[0],pavo[1]])
-        self.plataforma_lista.add(obj)
-
-        monedas = [
-                    [3150,ALTO - 50],
-                    [3100,ALTO - 50],
-                    [990 + 50 + 50*1, ALTO/10 - 50],
-                    [990 + 50 + 50*3, ALTO/10 - 50],
-                    [990 + 50+ 50*5, ALTO/10 - 50],
-                  ]
-
-        for moneda in monedas:
-            obj = Plataforma("coin.png",[moneda[0],moneda[1]])
-            self.plataforma_lista.add(obj)
-
-        reloj = Plataforma("reloj.png",[3000 - 400 + 65, ALTO/3 - 25 - 45])
-        self.plataforma_lista.add(reloj)
-
-        municiones = [
-                       [3500 - 30 - 40*1*2, ALTO/3 - 60],
-                       [3500 - 30 - 40*3*2, ALTO/3 - 60],
-                       [3500 - 30 - 40*5*2, ALTO/3 - 60]
-                     ]
-
-        for municion in municiones:
-            obj = Plataforma("municion.png",[municion[0],municion[1]])
-            self.plataforma_lista.add(obj)
+        #Casa boss
+        casa_boss = Plataforma("casa_boss.png",[4100,ALTO - ALTO/3.5])
+        self.plataforma_lista.add(casa_boss)
 
         #---------------Enemigos-----------------------
         uno = Zombie1("zombies1.png",[505,ALTO - ALTO/5 - 30],[505,525,545,525,505])
 
         self.enemigos_lista.add(uno)# = self.createEnemies()
-
-        #Casa boss
-        casa_boss = Plataforma("casa_boss.png",[4100,ALTO - ALTO/3.5])
-        self.plataforma_lista.add(casa_boss)
 
 
 class Nivel_02(Nivel):
@@ -256,9 +210,3 @@ class Nivel_02(Nivel):
         for caja in caja_tipo3:
             bloque = Plataforma("caja3.png",[caja[0],caja[1]])
             self.plataforma_lista.add(bloque)
-
-        rayo = Plataforma("rayo.png",[1050,ALTO/4 + 20])
-        self.plataforma_lista.add(rayo)
-
-        mascota = Plataforma("mascota.png",[500,ALTO/3 + 100 - 60])
-        self.plataforma_lista.add(mascota)
