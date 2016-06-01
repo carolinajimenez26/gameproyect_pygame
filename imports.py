@@ -33,6 +33,17 @@ def load_image(nombre_a, dir_img, alpha=False):
     else:
         image = image.convert()
     return image
+
+#Carga los sonidos verificando la ruta
+def load_sound(nombre_s,dir_son):
+    ruta = os.path.join(dir_son, nombre_s)
+    try:
+        sound = pygame.mixer.Sound(ruta)
+    except:
+        print "Error, no se puede cargar el sonido, verifique el formato: ", ruta
+        sys.exit(1)
+    return sound
+
 class buttonz(pygame.sprite.Sprite):
     def __init__(self,img,img2):
     	pygame.sprite.Sprite.__init__(self)
@@ -59,7 +70,7 @@ class buttonz(pygame.sprite.Sprite):
         return self.rect.x,self.rect.y
 
     def action(self):
-        print "juego corriendo"
+        print "Empy button - Report bug"
 
     def update(self):
         x_len,y_len = self.getrect()
@@ -81,7 +92,32 @@ class buttonz(pygame.sprite.Sprite):
             else:
                 self.image=self.images[1]
         else:
+            self.clicked=False
             self.image=self.images[0]
+
+class boton_inicio(buttonz):
+    def __init__(self,img,img2):
+        buttonz.__init__(self,img,img2)
+    def action(self):
+        print "boton de inicio"
+
+class boton_tutorial(buttonz):
+    def __init__(self,img,img2):
+        buttonz.__init__(self,img,img2)
+    def action(self):
+        print "boton de tutorial"
+
+class boton_ajustes(buttonz):
+    def __init__(self,img,img2):
+        buttonz.__init__(self,img,img2)
+    def action(self):
+        print "boton de ajustes"
+
+class boton_acercade(buttonz):
+    def __init__(self,img,img2):
+        buttonz.__init__(self,img,img2)
+    def action(self):
+        print "boton de creditos y mas"
 
 class mainsplash(pygame.sprite.Sprite): #Hereda de la clase sprite
     #cargar_fondo('zombie1.png',ancho,alto)

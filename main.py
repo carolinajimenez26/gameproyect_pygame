@@ -5,21 +5,38 @@ def main():
     ALTO = 600
     pygame.init()
     menu_d = pygame.display.set_mode((ANCHO, ALTO))#, pygame.FULLSCREEN)
-    btn1 = buttonz("btn1.png","btn1_p.png")
+    #Seccion de botones
+    btn1 = boton_inicio("btn1.png","btn1_p.png")
+    btn2 = boton_ajustes("btn2.png","btn2_p.png")
+    btn3 = boton_acercade("btn3.png","btn3_p.png")
     rex,rey = btn1.getrect()
-    btn1.setpos([ANCHO/2-rex/2,ALTO/2-rey])
+    btn1.setpos([ANCHO/2-rex/2,ALTO/2-rey-50])
+    btn2.setpos([ANCHO/2-rex/2,ALTO/2-rey+100])
+    btn3.setpos([ANCHO/2-rex/2,ALTO/2-rey+250])
     lsbtn = pygame.sprite.Group()
     lsbtn.add(btn1)
+    lsbtn.add(btn2)
+    lsbtn.add(btn3)
+    #Fin seccion de botones
+    #Carga del sonido
+    pygame.mixer.music.load(os.path.join(curdir+"/enviroment/main", 'background.ogg'))
+    pygame.mixer.music.play(-1)
+    #Fin carga del sonido
+    #seccion del background con su inicializacion
     backgroundm = mainsplash()
     backgroundm.setpos()
     backgroundm.load()
     ls = pygame.sprite.Group()
     ls.add(backgroundm)
-    pygame.display.flip()
+    #Fin seccion del background
+    pygame.display.flip() #Refresco la pantalla
     reloj=pygame.time.Clock()
     terminar=False
-
+    repeat=False
     while(not terminar):
+        if(repeat):
+            s_fondo.play()
+            repeat=False
         events = pygame.event.get()
         for event in events:
             if event.type == pygame.KEYDOWN:
@@ -27,12 +44,13 @@ def main():
             if event.type == pygame.MOUSEBUTTONUP:
                 for btn in lsbtn:
                     btn.setclicked()
+
         ls.draw(menu_d)
         lsbtn.draw(menu_d)
         pygame.display.flip()
         ls.update()
         lsbtn.update()
-        reloj.tick(30)
+        reloj.tick(30) #Tiempo del ciclo, tambien de la secuencia del carrusel en el background
     pygame.display.flip()
     terminar = False
 
