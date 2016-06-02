@@ -152,12 +152,8 @@ if __name__ == "__main__":
     while not fin:
 
         if(maximus.getLife() <= 0): #si muere
-            ls_todos.draw(pantalla)
-            pygame.display.flip()
-            ls_todos.draw(pantalla)
-            pygame.display.flip()
             nivel_actual.StopSound()
-            reloj.tick(0.3) #para que no sea un cambio tan repentino
+            reloj.tick(60) #para que no sea un cambio tan repentino
             fin = True #sale del ciclo
             game_over = True
 
@@ -271,6 +267,13 @@ if __name__ == "__main__":
                 if(checkCollision(maximus,enemigo)): # si se choco
                     if(cont == 0):
                         maximus.crash()
+
+                        if(enemigo.tipo == 2):
+                            aux = maximus.getMargen()[0]
+                            if(maximus.getDir() == 0):#der
+                                aux *= -1
+                            maximus.setPos([maximus.getPos()[0]+aux,maximus.getPos()[1]])
+
                         print "life : " , maximus.getLife()
                         lifebars(maximus,pantalla,[ANCHO/2,ALTO])#cambia la bara de vida
                         flag = True

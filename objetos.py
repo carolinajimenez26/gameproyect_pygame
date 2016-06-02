@@ -233,6 +233,7 @@ class Zombie1(Enemy):#Hereda de la clase Enemigo
         self.reloj = 0
         self.life = 100
         self.speed = 1
+        self.tipo = 1
 
     def move(self): #se mueve solo
         self.rect.x += self.i
@@ -257,9 +258,12 @@ class Zombie2(Enemy):#Hereda de la clase Enemigo
         self.moves = [0 for x in range(ANCHO)] #movimientos que debe realizar
         self.i = 0
         self.nivel = nivel
+        self.tipo = 2
 
     def restartMovements(self,pos):#calcula el camino por donde debe moverse (recibe el punto final)
         self.moves = Bresenhamrecta([self.getPos(),pos])#carga los nuevos movimientos
+        last_x = self.moves[-1][0]
+        self.moves[-1] = [last_x + self.getMargen()[0], self.moves[-1][1]]
         self.i = 0 #debe empezar a recorrerla desde cero
 
     def update(self): #se mueve
@@ -277,7 +281,6 @@ class Zombie2(Enemy):#Hereda de la clase Enemigo
                         self.setPos([pos[0],self.rect.y])#no vuela
 
             self.i += 1 #para que recorra el siguiente
-
 
         # Revisar si golpeamos con algo (bloques con colision)
         """bloque_col_list = pygame.sprite.spritecollide(self, self.nivel.plataforma_lista, False)
