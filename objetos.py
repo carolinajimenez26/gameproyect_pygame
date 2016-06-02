@@ -218,26 +218,19 @@ class Zombie1(Enemy):#Hereda de la clase Enemigo
     def __init__(self, img_name, pos,movs):
         Enemy.__init__(self, img_name, pos)
         self.movs = movs #define por donde va a pasar siempre
-        self.i = 0
-        self.cont = True
+        self.i = 1
+        self.cont = 0
         self.reloj = 0
 
     def setMoves(self,movs):
         self.movs = movs
 
     def move(self): #se mueve solo
-        if self.i < len(self.movs) and self.cont: #limite de movimiento
-            self.rect.x = self.movs[self.i] #lo mueve
-            print self.movs[self.i]
-            self.i += 1
-            self.cont = False
-        if self.i >= len(self.movs):
-            self.i = 0 #reinicia
-        if self.reloj <= 60:
-            self.reloj += 1
-        if self.reloj >= 60:
-            self.reloj = 0
-            self.cont = True
+        self.rect.x += self.i
+        self.cont += 1
+        if(self.cont == 380):
+            self.cont = 0
+            self.i *= -1
 
     def update(self):
         self.move()

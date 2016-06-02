@@ -66,7 +66,7 @@ if __name__ == "__main__":
 
     mascota = Plataforma("mascota.png",[2150,ALTO - 25])
     ls_mascota_nivel1.add(mascota)
-    ls_todos_nivel1.add(mascota)
+    #ls_todos_nivel1.add(mascota)
 
     pavos = [
               [1757,ALTO - ALTO/3 - 35],
@@ -181,6 +181,7 @@ if __name__ == "__main__":
           total_segundos=0
 
         con_cuadros+=1
+        #-----------------------------------------
 
         reloj2 = tipo.render(tiempo_final, True, BLANCO)
         tipo = pygame.font.SysFont("monospace", 15)
@@ -309,8 +310,26 @@ if __name__ == "__main__":
 
         #------------Nivel1--------------
         if(nivel_actual_no == 0):
-            ls_todos_nivel1.draw(pantalla)
-            ls_todos_nivel1.update()
+            #ls_todos_nivel1.draw(pantalla)
+
+            #ls_todos_nivel1
+            print "ls_mascota: " , ls_mascota_nivel1
+            ls_mascota_nivel1.draw(pantalla)
+            """ls_vida_nivel1.draw(pantalla)
+            ls_mascota_nivel1.draw(pantalla)
+            ls_zapatos_nivel1.draw(pantalla)
+            ls_monedas_nivel1.draw(pantalla)
+            ls_relojes_nivel1.draw(pantalla)
+            ls_municiones_nivel1.draw(pantalla)"""
+
+            #ls_todos_nivel1.update()
+            ls_mascota_nivel1.update()
+            """ls_vida_nivel1.update()
+            ls_mascota_nivel1.update()
+            ls_zapatos_nivel1.update()
+            ls_monedas_nivel1.update()
+            ls_relojes_nivel1.update()
+            ls_municiones_nivel1.update()"""
 
         #------------Nivel2--------------
         if(nivel_actual_no == 1):
@@ -340,6 +359,7 @@ if __name__ == "__main__":
         pygame.display.flip()
         reloj.tick(tasa_cambio)
 
+    #---------------Fin del ciclo-----------------
 
     if(game_over):
         print "Perdiste"

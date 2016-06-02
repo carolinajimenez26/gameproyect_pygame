@@ -40,8 +40,8 @@ class Nivel(object):
         self.mov_fondo += mov_x
         for plataforma in self.plataforma_lista:
             plataforma.rect.x += mov_x
-        """for enemigo in self.enemigos_lista:
-            enemigo.rect.x += mov_x"""
+        for enemigo in self.enemigos_lista:
+            enemigo.rect.x += mov_x
 
     def StopSound(self):
         self.sonido.stop()
