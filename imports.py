@@ -18,6 +18,22 @@ from PIL import Image, ImageTk
 Config = ConfigParser.ConfigParser()
 curdir = os.getcwd()+"/sources"
 
+keys = {'a' : 97,'b' : 98,'c' : 99,'d' : 100,'e': 101,'f' : 102,'g' : 103,'h' : 104,'i' : 105,'j' : 106,'k' : 107
+,'l' : 108,'m' : 109,'n' : 110,'o' : 111,'p' : 112,'q' : 113,'r' : 114,'s' : 115,'t' : 116,'u' : 117,'v' : 118,'w' : 119
+,'x' : 120,'y' : 121,'z' : 122,'0' : 48,'1': 49,'2' : 50,'3' : 51,'4' : 52,'5' : 53,'6' : 54,'7' : 55,'8' : 56,'9' : 57
+,"'" : 39,',' : 44,'-' : 45,'.' : 46,'/' : 47,':' : 58,'=' : 61,'[' : 91,"\\" : 92,']' : 93,'`' : 96,'ESPACIO' : 32,'ESCAPE' : 27,
+'ENTER': 13,'FLECHA IZQ' : 276,'FLECHA DERE' : 275,'FLECHA ARRIB' : 273,'FLECHA ABAJ' : 274}
+
+def retornarkeyascii(letra):
+    for i in keys:
+        if i==letra:
+            return keys[i]
+
+def retornarletra(numero):
+    for i in keys:
+        if keys[i] == numero:
+            return i
+
 #Colores RGB#
 rojo=(255,0,0)
 azul=(0,0,255)
@@ -29,6 +45,21 @@ negro=(0,0,0)
 cyan=(0,255,255)
 amarillo = (255,255,0)
 #Fin definicion de colores
+
+def cargar_fondo(archivo, ancho, alto):
+    imagen = pygame.image.load(archivo).convert_alpha()
+    imagen_ancho, imagen_alto = imagen.get_size()
+    #print 'ancho: ', imagen_ancho, ' xmax: ', imagen_ancho/ancho
+    #print 'alto: ',imagen_alto, ' ymax: ', imagen_alto/alto
+    tabla_fondos = []
+
+    for fondo_x in range(0, imagen_ancho/ancho):
+       linea = []
+       tabla_fondos.append(linea)
+       for fondo_y in range(0, imagen_alto/alto):
+            cuadro = (fondo_x * ancho, fondo_y * alto, ancho, alto)
+            linea.append(imagen.subsurface(cuadro))
+    return tabla_fondos
 
 class window(Frame):
     def __init__(self, parent):
@@ -85,7 +116,7 @@ class splashload():
             menu_e.blit(image,(0,0))
             pygame.display.flip()
         else:
-            print "YA mori"
+            print "Cerrado como tu gfa :v"
     def setcorrer(self):
         self.correr=False
 
@@ -156,13 +187,37 @@ class menu(window):
     def __init__(self, parent):
         window.__init__(self,parent)
         self.initUI()
+    def save(self,derechas,izquierdas,saltos,disparos):
+        derechas = retornarkeyascii(derechas)
+        izquierdas = retornarkeyascii(izquierdas)
+        saltos = retornarkeyascii(saltos)
+        disparos = retornarkeyascii(disparos)
+        if(not(derechas == None or izquierdas==None or saltos == None or disparos==None)):
+            try:
+                Config.set('Movimientos', 'derecha', derechas)
+                Config.set('Movimientos', 'izquierda', izquierdas)
+                Config.set('Movimientos', 'salto', saltos)
+                Config.set('Movimientos', 'disparo', disparos)
+                with open('config.ini', 'w') as configfile:
+                    Config.write(configfile)
+            except:
+                print "Error en la escritura"
+        else:
+            print "error"
     def initUI(self):
+
         Config.read("config.ini")
         Config.sections()
         derecha = ConfigSectionMap("Movimientos")['derecha']
         izquierda = ConfigSectionMap("Movimientos")['izquierda']
         disparo = ConfigSectionMap("Movimientos")['disparo']
         salto = ConfigSectionMap("Movimientos")['salto']
+
+        derecha=int(derecha)
+        izquierda=int(izquierda)
+        disparo=int(disparo)
+        salto=int(salto)
+
         self.parent.title("Place of dead - [Configuration]")
         self.style = Style()
         #self.style.theme_use("default")
@@ -174,27 +229,39 @@ class menu(window):
         frame2.pack(fill=Y)
         frame3 = Frame(self)
         frame3.pack(fill=Y)
-        frame6 = Frame(self)
-        frame6.pack(fill=Y)
         frame4 = Frame(self)
         frame4.pack(fill=Y)
         frame5 = Frame(self)
         frame5.pack(fill=Y)
+        frame6 = Frame(self)
+        frame6.pack(fill=Y)
 
         self.pack(fill=BOTH, expand=1)
         self.labela = Label(frame2, text="Movimiento a la derecha: ")#, textvariable=self.var)
         self.labela.pack(side=LEFT)
-        derechae = Entry(frame2,width=5)
-        derechae.insert(END, derecha)
+        derechae = Entry(frame2,width=9)
+        derechae.insert(END, str(retornarletra(derecha)))
         derechae.pack(side=LEFT,padx=1, pady=1, expand=True)
 
-        self.labelb = Label(frame2, text="Movimiento a la derecha: ")#, textvariable=self.var)
+        self.labelb = Label(frame3, text="Movimiento a la derecha: ")#, textvariable=self.var)
         self.labelb.pack(side=LEFT)
-        izquierdae = Entry(frame2,width=5)
-        izquierdae.insert(END, izquierda)
+        izquierdae = Entry(frame3,width=9)
+        izquierdae.insert(END, str(retornarletra(izquierda)))
         izquierdae.pack(side=LEFT,padx=1, pady=1, expand=True)
 
-        okButton = Button(self, text="Save", command=lambda: self.binomial())
+        self.labelc = Label(frame4, text="Salto: ")#, textvariable=self.var)
+        self.labelc.pack(side=LEFT)
+        saltoe = Entry(frame4,width=9)
+        saltoe.insert(END, str(retornarletra(salto)))
+        saltoe.pack(side=LEFT,padx=1, pady=1, expand=True)
+
+        self.labeld = Label(frame5, text="Ataque: ")#, textvariable=self.var)
+        self.labeld.pack(side=LEFT)
+        disparoe = Entry(frame5,width=9)
+        disparoe.insert(END, str(retornarletra(disparo)))
+        disparoe.pack(side=LEFT,padx=1, pady=1, expand=True)
+
+        okButton = Button(frame6, text="Save", command=lambda: self.save(derechae.get(),izquierdae.get(),saltoe.get(),disparoe.get()))
         okButton.pack(side=RIGHT)
 
 class boton_ajustes(buttonz):
