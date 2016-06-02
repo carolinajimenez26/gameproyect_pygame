@@ -264,7 +264,12 @@ class boton_inicio(buttonz):
 
         # -------- Ciclo del juego -----------
         while not fin:
-
+            for bil in ls_balaj:
+                ls_impactos=pygame.sprite.spritecollide(bil,nivel_actual.getElements(), False)
+                for impacto in ls_impactos:
+                    ls_balaj.remove(bil)
+                    #ls_todos_nivel1.remove(bil)
+                    
             if(maximus.getLife() <= 0): #si muere
                 nivel_actual.StopSound()
                 reloj.tick(60) #para que no sea un cambio tan repentino
