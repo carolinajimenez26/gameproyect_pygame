@@ -128,6 +128,8 @@ if __name__ == "__main__":
     fin = False
     flag = False
     cont = 0
+    flag2 = False
+    cont2 = 0
 
     # Controlamos que tan rapido actualizamos pantalla
     reloj = pygame.time.Clock()
@@ -254,6 +256,17 @@ if __name__ == "__main__":
                 maximus.setLife(maximus.getLife()+10)
                 lifebars(maximus,pantalla,[ANCHO/2,ALTO])#cambia la bara de vida
 
+            for enemigo in ls_enemigos_nivel1:
+                for bala in ls_balaj:
+                    if(checkCollision(bala,enemigo)): # si se choco
+                        if(cont == 0):
+                            enemigo.crash()
+                            flag2 = True
+                            if(enemigo.getLife() <= 0):
+                                ls_enemigos_nivel1.remove(enemigo)
+                            print "enemy life : " , enemigo.getLife()
+
+
         #Collides NIVEL2
         if(nivel_actual_no == 1):
             maximus.enemigos = len(ls_enemigos_nivel2)
@@ -274,10 +287,16 @@ if __name__ == "__main__":
                 maximus.setLife(maximus.getLife()+10)
                 lifebars(maximus,pantalla,[ANCHO/2,ALTO])#cambia la bara de vida
 
+        #Para collide con enemigos
         if(flag):
             cont += 1
         if(cont >= 8):
             cont = 0
+        #Para collide de balas con enemigos
+        if(flag2):
+            cont2 += 1
+        if(cont2 >= 30):
+            cont2 = 0
 
         #  Si el maximus se aproxima al limite derecho de la pantalla (-x)
         if maximus.rect.x >= 500:
@@ -313,7 +332,7 @@ if __name__ == "__main__":
             #ls_todos_nivel1.draw(pantalla)
 
             #ls_todos_nivel1
-            print "ls_mascota: " , ls_mascota_nivel1
+            #print "ls_mascota: " , ls_mascota_nivel1
             ls_mascota_nivel1.draw(pantalla)
             """ls_vida_nivel1.draw(pantalla)
             ls_mascota_nivel1.draw(pantalla)

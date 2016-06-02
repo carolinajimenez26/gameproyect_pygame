@@ -152,9 +152,15 @@ class Nivel_01(Nivel):
         self.plataforma_lista.add(casa_boss)
 
         #---------------Enemigos-----------------------
-        uno = Zombie1("zombies1.png",[505,ALTO - ALTO/5 - 30],[505,525,545,525,505])
 
-        self.enemigos_lista.add(uno)# = self.createEnemies()
+        zombies_tipo1 = [
+                          [505,ALTO - ALTO/5 - 30],
+                          [505 + 490,30]
+                        ]
+
+        for zombie in zombies_tipo1:
+            e = Zombie1("zombies1.png",[zombie[0],zombie[1]])
+            self.enemigos_lista.add(e)
 
 
 class Nivel_02(Nivel):

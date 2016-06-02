@@ -215,15 +215,13 @@ class Enemy(pygame.sprite.Sprite): #Hereda de la clase sprite
         return (self.rect[2],self.rect[3])
 
 class Zombie1(Enemy):#Hereda de la clase Enemigo
-    def __init__(self, img_name, pos,movs):
+    def __init__(self, img_name, pos):
         Enemy.__init__(self, img_name, pos)
-        self.movs = movs #define por donde va a pasar siempre
         self.i = 1
         self.cont = 0
         self.reloj = 0
-
-    def setMoves(self,movs):
-        self.movs = movs
+        self.life = 100
+        self.speed = self.rect.x
 
     def move(self): #se mueve solo
         self.rect.x += self.i
@@ -234,6 +232,15 @@ class Zombie1(Enemy):#Hereda de la clase Enemigo
 
     def update(self):
         self.move()
+
+    def getLife(self):
+        return self.life
+
+    def setLife(self,life):
+        self.life = life
+
+    def crash(self):
+        self.setLife(self.getLife() - 1)
 
 class Plataforma(pygame.sprite.Sprite): #Hereda de la clase sprite
     def __init__(self, img_name, pos):
