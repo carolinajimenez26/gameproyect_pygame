@@ -198,6 +198,7 @@ class Bullet(Weapon): #Hereda de la clase sprite
     def __init__(self, img_name, pos): #img para cargar, y su padre(de donde debe salir la bala)
     	Weapon.__init__(self, img_name, pos)
         self.magiciandir = 0 #dispara dependiendo de la posicion del magician
+        self.tipo = "normal"
 
     def setDir(self,dir):
         self.magiciandir = dir
@@ -221,6 +222,7 @@ class RectBullet(Weapon):
         self.i = 0
         self.moves = [] #movimientos que debe realizar
         self.life = 300
+        self.tipo = "rect"
 
     def getLife(self):
         return self.life
@@ -427,6 +429,7 @@ class Rata(Enemy):#Hereda de la clase Enemigo
         self.nivel = nivel
         self.dir = 0
         self.name = img_name.split(".png")[0]
+        self.tipo = "rata"
 
     def getName(self):
         return self.name

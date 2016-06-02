@@ -26,10 +26,9 @@ if __name__ == "__main__":
     nivel2 = Nivel_02(maximus,"images/dracula.jpg","nivel2.wav")
     nivel_lista.append( nivel2 )
 
-
     # Establecemos nivel actual
-    nivel_actual_no = 1
-    maximus.setPos([300, ALTO/2])
+    nivel_actual_no = 0
+    #maximus.setPos([300, ALTO/2])
     nivel_actual = nivel_lista[nivel_actual_no]
 
     # Indicamos a la clase jugador cual es el nivel
@@ -144,6 +143,8 @@ if __name__ == "__main__":
     cont6 = 0
     flag7 = False
     cont7 = 0
+    flag8 = False
+    cont8 = 0
 
     # Controlamos que tan rapido actualizamos pantalla
     reloj = pygame.time.Clock()
@@ -163,8 +164,8 @@ if __name__ == "__main__":
 
     nivel_actual.StartSound()
 
-    for e in ls_enemigos_nivel2:
-        e.StartMovements()
+    """for e in ls_enemigos_nivel2:
+        e.StartMovements()"""
 
 
     # -------- Ciclo del juego -----------
@@ -173,7 +174,7 @@ if __name__ == "__main__":
         if(maximus.getLife() <= 0): #si muere
             nivel_actual.StopSound()
             reloj.tick(60) #para que no sea un cambio tan repentino
-            fin = True #sale del ciclo
+            #fin = True #sale del ciclo
             game_over = True
 
         ##En el nivel2 no puede tocar el suelo, pierde
@@ -346,12 +347,23 @@ if __name__ == "__main__":
             for enemigo in ls_enemigos_nivel1:
                 if(enemigo.tipo == 5):
                     enemigo.salto()
-
+                    if(cont8 == 0 and abs(enemigo.getPos()[0] - maximus.getPos()[0]) <= 150):
+                        bala = RectBullet('bala2.png',enemigo.getPos())
+                        bala.restartMovements(maximus.getPos())
+                        ls_balase.add(bala)
+                        shot_se.play()
+                        flag8 = True
 
             #----------------------Otros--------------------------
             #Muerte ratas
             for e in ls_balase:
                 if(e.getName() == "rata"):
+                    if(e.getLife() <= 0):
+                        ls_balase.remove(e) #las ratas se mueren
+
+            #Desaparecen balas
+            for e in ls_balase:
+                if(e.tipo == "rect"):
                     if(e.getLife() <= 0):
                         ls_balase.remove(e) #las ratas se mueren
 
@@ -432,6 +444,11 @@ if __name__ == "__main__":
             cont7 += 1
         if(cont7 >= 8):
             cont7 = 0
+        #Para colision balas zombie_tipo5 nivel1 con maximus
+        if(flag8):
+            cont8 += 1
+        if(cont8 >= 200):
+            cont8 = 0
 
         #  Si el maximus se aproxima al limite derecho de la pantalla (-x)
         if maximus.rect.x >= 500:
@@ -461,6 +478,9 @@ if __name__ == "__main__":
 
                 for e in ls_enemigos_nivel2:
                     e.StartMovements()
+
+                for e in ls_balase:
+                    ls_balase.remove(e)
 
             else: #se acabaron los niveles
                 #fin = True
