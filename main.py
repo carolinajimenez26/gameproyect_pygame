@@ -13,7 +13,8 @@ if __name__ == "__main__":
     tipo = pygame.font.SysFont("monospace", 15)
 
     # Creamos maximus
-    maximus = Jugador("maximus_der.jpg")
+    #maximus = Jugador("maximus_der.jpg")
+    maximus = Jugador()
 
     maximus.rect.x = 340
     maximus.rect.y = ALTO - maximus.rect.height
@@ -203,6 +204,7 @@ if __name__ == "__main__":
                     if(nivel_actual_no == 0):
                         for e in ls_enemigos_nivel1:
                             e.restartMovements(maximus.getPos())
+                            e.setDir(1)
                     if(nivel_actual_no == 1):
                         for e in ls_enemigos_nivel1:
                             e.restartMovements(maximus.getPos())
@@ -213,6 +215,7 @@ if __name__ == "__main__":
                     if(nivel_actual_no == 0):
                         for e in ls_enemigos_nivel1:
                             e.restartMovements(maximus.getPos())
+                            e.setDir(0)
                     if(nivel_actual_no == 1):
                         for e in ls_enemigos_nivel1:
                             e.restartMovements(maximus.getPos())

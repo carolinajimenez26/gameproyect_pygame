@@ -6,33 +6,47 @@ class Jugador(pygame.sprite.Sprite):
     # velocidad del jugador
     vel_x = 0
     vel_y = 0
-
+    imaged=[]
+    imagei=[]
     # Lista de elementos con los cuales chocar
     nivel = None
 
-    def __init__(self,imagen):
+    def __init__(self):
         pygame.sprite.Sprite.__init__(self)
 
         # creamos el bloque
         ancho = 40
         alto = 60
-        #self.image = pygame.Surface([ancho, alto])
-        #self.image.fill(ROJO)
-        self.image = load_image(imagen, curdir, alpha=True)
-        self.rect = self.image.get_rect()
+        matrizimg = cargar_fondo(curdir+"/sources/enviroment/levels/images/maximus.png", 32,48)
+    	self.image = matrizimg[0][1]
+        self.imaged.append(self.image)
+        self.image = matrizimg[1][1]
+        self.imaged.append(self.image)
+        self.image = matrizimg[2][1]
+        self.imaged.append(self.image)
+        self.image = matrizimg[3][1]
+        self.imaged.append(self.image)
+        self.image = matrizimg[0][2]
+        self.imagei.append(self.image)
+        self.image = matrizimg[1][2]
+        self.imagei.append(self.image)
+        self.image = matrizimg[2][2]
+        self.imagei.append(self.image)
+        self.image = matrizimg[3][2]
+        self.imagei.append(self.image)
+    	self.rect = self.image.get_rect()
 
         self.life = 100
         self.score = 0
         self.dir = 0 #0 derecha , 1 izquierda, 2 arriba, 3 abajo
         #imagenes para movimiento
-        self.imaged = [] #derecha
-        self.imagei = [] #izquierda
         self.imagenar = [] #arriba
         self.imagena = [] #abajo
         self.enemigos = 0
         #speed
         self.increment_x = 6
         self.increment_y = 0
+        self.cont=0
 
 
     def update(self):
@@ -97,10 +111,21 @@ class Jugador(pygame.sprite.Sprite):
     # Control del movimiento
     def ir_izq(self):
         """ Usuario pulsa flecha izquierda """
+
+        if(self.cont<3):
+            self.cont+=1
+        else:
+            self.cont=0
+        self.image=self.imaged[self.cont]
         self.vel_x = -self.increment_x
 
     def ir_der(self):
         """ Usuario pulsa flecha derecha """
+        if(self.cont<3):
+            self.cont+=1
+        else:
+            self.cont=0
+        self.image=self.imagei[self.cont]
         self.vel_x = self.increment_x
 
     def no_mover(self):
@@ -114,7 +139,9 @@ class Jugador(pygame.sprite.Sprite):
     	self.life = life
 
     def crash(self):
-        self.setLife(self.getLife() - 1) #quita una vida
+        for e in self.nivel.enemigos_lista:
+            if(e.tipo == 1 or e.tipo == 2):
+                self.setLife(self.getLife() - 1) #quita una vida
 
     def getDir(self):
         return self.dir
@@ -137,10 +164,6 @@ class Jugador(pygame.sprite.Sprite):
 
     def getScore(self):
         return self.score
-
-    def crash(self):
-        self.setLife(self.getLife() - 1) #quita una vida
-
 
 class Weapon(pygame.sprite.Sprite): #Hereda de la clase sprite
     def __init__(self, img_name, pos): #img para cargar, y su padre(de donde debe salir la bala)
@@ -259,11 +282,21 @@ class Zombie2(Enemy):#Hereda de la clase Enemigo
         self.i = 0
         self.nivel = nivel
         self.tipo = 2
+        self.dir = 0
+
+    def setDir(self,dir):
+        self.dir = dir
+
+    def getDir(self):
+        return self.dir
 
     def restartMovements(self,pos):#calcula el camino por donde debe moverse (recibe el punto final)
         self.moves = Bresenhamrecta([self.getPos(),pos])#carga los nuevos movimientos
         last_x = self.moves[-1][0]
-        self.moves[-1] = [last_x + self.getMargen()[0], self.moves[-1][1]]
+        aux =  self.getMargen()[0]
+        if(self.getDir() == 0):
+            aux *= -1
+        self.moves[-1] = [last_x + aux, self.moves[-1][1]]
         self.i = 0 #debe empezar a recorrerla desde cero
 
     def update(self): #se mueve
