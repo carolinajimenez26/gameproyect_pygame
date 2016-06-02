@@ -129,10 +129,10 @@ class boton_inicio(buttonz):
         maximus.nivel = nivel_actual
 
         #sonidos
-        shot_s = load_sound('/enviroment/levels/sounds/shot.wav',curdir)
-        shot_se = load_sound('/enviroment/levels/sounds/shot2.wav',curdir)
-        grunt = load_sound('/enviroment/levels/sounds/gruntsound.wav',curdir)
-        scream = load_sound('/enviroment/levels/sounds/scream.ogg',curdir)
+        shot_s = load_sound('enviroment/levels/sounds/shot.wav',curdir)
+        shot_se = load_sound('enviroment/levels/sounds/shot2.wav',curdir)
+        grunt = load_sound('enviroment/levels/sounds/gruntsound.wav',curdir)
+        scream = load_sound('enviroment/levels/sounds/scream.ogg',curdir)
 
         #Grupos de sprites
         ls_balaj = pygame.sprite.Group() #balas jugador
