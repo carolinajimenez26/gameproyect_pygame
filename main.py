@@ -204,15 +204,43 @@ if __name__ == "__main__":
                 if event.key == pygame.K_LEFT:
                     maximus.ir_izq()
                     maximus.setDir(1)
+                    if(nivel_actual_no == 0):
+                        for e in ls_enemigos_nivel1:
+                            e.restartMovements(maximus.getPos())
+                    if(nivel_actual_no == 1):
+                        for e in ls_enemigos_nivel1:
+                            e.restartMovements(maximus.getPos())
+
                 if event.key == pygame.K_RIGHT:
                     maximus.ir_der()
                     maximus.setDir(0)
+                    if(nivel_actual_no == 0):
+                        for e in ls_enemigos_nivel1:
+                            e.restartMovements(maximus.getPos())
+                    if(nivel_actual_no == 1):
+                        for e in ls_enemigos_nivel1:
+                            e.restartMovements(maximus.getPos())
+
                 if event.key == pygame.K_UP:
                     maximus.salto()
                     if(nivel_actual_no != 0):
                         maximus.setDir(2)
+                    if(nivel_actual_no == 0):
+                        for e in ls_enemigos_nivel1:
+                            e.restartMovements(maximus.getPos())
+                    if(nivel_actual_no == 1):
+                        for e in ls_enemigos_nivel1:
+                            e.restartMovements(maximus.getPos())
+
                 if event.key == pygame.K_DOWN and nivel_actual_no != 0:
                     maximus.setDir(3)
+                    if(nivel_actual_no == 0):
+                        for e in ls_enemigos_nivel1:
+                            e.restartMovements(maximus.getPos())
+                    if(nivel_actual_no == 1):
+                        for e in ls_enemigos_nivel1:
+                            e.restartMovements(maximus.getPos())
+
                 if event.key == pygame.K_SPACE:
                     bala = Bullet('bala.png',maximus.getPos())#la posicion inicial depende de objeto que este disparando
                     dir = maximus.getDir()
@@ -264,7 +292,6 @@ if __name__ == "__main__":
                             flag2 = True
                             if(enemigo.getLife() <= 0):
                                 ls_enemigos_nivel1.remove(enemigo)
-                            print "enemy life : " , enemigo.getLife()
 
 
         #Collides NIVEL2

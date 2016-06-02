@@ -158,8 +158,17 @@ class Nivel_01(Nivel):
                           [505 + 490,30]
                         ]
 
+        zombies_tipo2 = [
+                          [505 + 100,ALTO - 30],
+                          [505 + 490 + 100, ALTO - 30 ]
+                        ]
+
         for zombie in zombies_tipo1:
             e = Zombie1("zombies1.png",[zombie[0],zombie[1]])
+            self.enemigos_lista.add(e)
+
+        for zombie in zombies_tipo2:
+            e = Zombie2("zombies2.png",[zombie[0],zombie[1]],self)
             self.enemigos_lista.add(e)
 
 
