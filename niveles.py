@@ -169,8 +169,8 @@ class Nivel_01(Nivel):
                         ]
 
         zombies_tipo5 = [
-                          [100, ALTO - 50],
-                          [200, ALTO - 50]
+                          [1200, ALTO - ALTO/2],
+                          [1600, ALTO/3],
                         ]
 
         for zombie in zombies_tipo1:

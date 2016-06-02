@@ -474,15 +474,15 @@ class Zombie5(Enemy):#Hereda de la clase Enemigo
         """ Calculamos efecto de la gravedad. """
 
         if self.increment_y < 0: #esta saltando
-            print "saltando"
             self.jumping = True
             self.increment_y += 1#1.5
-            self.setPos([self.getPos()[0],ALTO + self.increment_y - self.getMargen()[1]])
+            #self.setPos([self.getPos()[0],ALTO + self.increment_y - self.getMargen()[1]])
+            self.setPos([self.getPos()[0],self.increment_y +self.pos[1]])
 
         if self.increment_y >= 0: #ya no salta mas
-            print "ya no esta saltando mas"
             self.jumping = False
-            self.setPos([self.getPos()[0],(ALTO - self.getMargen()[1])])
+            #self.setPos([self.getPos()[0],(ALTO - self.getMargen()[1])])
+            self.setPos([self.getPos()[0],self.pos[1]])
 
     def salto(self):
         if(self.jumping == False): #Si ya no esta saltando, puede vovler a saltar
