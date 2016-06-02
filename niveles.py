@@ -163,6 +163,11 @@ class Nivel_01(Nivel):
                           [505 + 490 + 100, ALTO - 30 ]
                         ]
 
+        zombies_tipo3 = [
+                          [1900, ALTO/3 - 25 - 30],
+                          [3000 - 30, ALTO/3 - 25 - 30]
+                        ]
+
         for zombie in zombies_tipo1:
             e = Zombie1("zombies1.png",[zombie[0],zombie[1]])
             self.enemigos_lista.add(e)
@@ -171,6 +176,9 @@ class Nivel_01(Nivel):
             e = Zombie2("zombies2.png",[zombie[0],zombie[1]],self)
             self.enemigos_lista.add(e)
 
+        for zombie in zombies_tipo3:
+            e = Zombie3("zombies3.png",[zombie[0],zombie[1]],self)
+            self.enemigos_lista.add(e)
 
 class Nivel_02(Nivel):
     """ Definicion para el nivel 2. """

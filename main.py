@@ -37,6 +37,8 @@ if __name__ == "__main__":
 
     #sonidos
     shot_s = load_sound('shot.wav',curdir)
+    shot_se = load_sound('shot2.wav',curdir)
+    grunt = load_sound('gruntsound.wav',curdir)
 
     #Grupos de sprites
     ls_balaj = pygame.sprite.Group() #balas jugador
@@ -131,6 +133,10 @@ if __name__ == "__main__":
     cont = 0
     flag2 = False
     cont2 = 0
+    flag3 = False
+    cont3 = 0
+    flag4 = False
+    cont4 = 0
 
     # Controlamos que tan rapido actualizamos pantalla
     reloj = pygame.time.Clock()
@@ -295,9 +301,28 @@ if __name__ == "__main__":
                     if(checkCollision(bala,enemigo)): # si se choco
                         if(cont == 0):
                             enemigo.crash()
+                            grunt.play() #se queja
                             flag2 = True
                             if(enemigo.getLife() <= 0):
                                 ls_enemigos_nivel1.remove(enemigo)
+
+            #Colision bala enemigo
+            for bala in ls_balase:
+                if(checkCollision(bala,maximus)): # si le disparan a maximus
+                    if(cont4 == 0):
+                        maximus.crash()
+                        flag4 = True
+
+            #Ataque zombie3
+            for enemigo in ls_enemigos_nivel1:
+                if(enemigo.tipo == 3):
+                    if(cont3 == 0):
+                        if(abs(enemigo.getPos()[0] - maximus.getPos()[0]) <= 300):#le dispara si se encuentra cerca
+                            flag3 = True
+                            bala = Bullet('bala2.png',enemigo.getPos())
+                            bala.setDir(enemigo.getDir())
+                            shot_se.play()
+                            ls_balase.add(bala) #lista balas enemigos
 
 
         #Collides NIVEL2
@@ -330,6 +355,16 @@ if __name__ == "__main__":
             cont2 += 1
         if(cont2 >= 30):
             cont2 = 0
+        #Para disparo zombie tipo3
+        if(flag3):
+            cont3 += 1
+        if(cont3 >= 50):
+            cont3 = 0
+        #Para dano de balaenemigo con maximus
+        if(flag4):
+            cont4 += 1
+        if(cont4 >= 8):
+            cont4 = 0
 
         #  Si el maximus se aproxima al limite derecho de la pantalla (-x)
         if maximus.rect.x >= 500:
@@ -358,6 +393,7 @@ if __name__ == "__main__":
             else: #se acabaron los niveles
                 #fin = True
                 print "se acabo"
+
 
 
         #------------Nivel1--------------
@@ -396,7 +432,9 @@ if __name__ == "__main__":
         activos_sp_lista.update()
 
         ls_balaj.draw(pantalla)
+        ls_balase.draw(pantalla)
         ls_balaj.update()
+        ls_balase.update()
 
         # Actualizamos elementos en el nivel
         nivel_actual.update()

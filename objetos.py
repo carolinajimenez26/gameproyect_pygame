@@ -140,8 +140,13 @@ class Jugador(pygame.sprite.Sprite):
 
     def crash(self):
         for e in self.nivel.enemigos_lista:
+            #Quita vida segun el tipo de zombie
             if(e.tipo == 1 or e.tipo == 2):
-                self.setLife(self.getLife() - 1) #quita una vida
+                self.setLife(self.getLife() - 1) #dano normal
+            if(e.tipo == 3 or e.tipo == 5):
+                self.setLife(self.getLife() - 3)#dano muy alto
+            if(e.tipo == 4):
+                self.setLife(self.getLife() - 0.5)#dano bajo
 
     def getDir(self):
         return self.dir
@@ -342,6 +347,38 @@ class Zombie2(Enemy):#Hereda de la clase Enemigo
             # Detener movimiento vertical
             self.vel_y = 0"""
 
+class Zombie3(Enemy):
+    def __init__(self, img_name, pos,nivel):
+        Enemy.__init__(self, img_name, pos)
+        self.life = 150
+        self.speed = 1
+        self.rect.x = pos[0]
+    	self.rect.y = pos[1]
+        self.cont = 0
+        self.tipo = 3
+        self.dir = 0
+        self.speed_aux = 0
+
+    def setDir(self,dir):
+        self.dir = dir
+
+    def getDir(self):
+        return self.dir
+
+    def move(self): #se mueve solo
+        if(self.speed_aux >= 1):
+            self.speed_aux = 0
+            self.rect.x += self.speed
+            self.cont += 1
+            if(self.cont == 400):
+                self.cont = 0
+                self.speed *= -1
+                print "speed : " , self.speed
+        else:
+            self.speed_aux += 1
+
+    def update(self):
+        self.move()
 
 
 class Plataforma(pygame.sprite.Sprite): #Hereda de la clase sprite
