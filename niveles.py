@@ -248,8 +248,9 @@ class Nivel_02(Nivel):
 
         #---------------------Enemigos----------------------
         zombies_tipo6 = [
-                          [400, ALTO - ALTO/2],
-                          [600, ALTO/3],
+                          [0, ALTO - ALTO/2],
+                          [400, ALTO/3],
+                          [800, ALTO - ALTO/3]
                         ]
 
         for zombie in zombies_tipo6:

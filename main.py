@@ -140,6 +140,10 @@ if __name__ == "__main__":
     cont4 = 0
     flag5 = False
     cont5 = 0
+    flag6 = False
+    cont6 = 0
+    flag7 = False
+    cont7 = 0
 
     # Controlamos que tan rapido actualizamos pantalla
     reloj = pygame.time.Clock()
@@ -158,6 +162,11 @@ if __name__ == "__main__":
     winner = False
 
     nivel_actual.StartSound()
+
+    for e in ls_enemigos_nivel2:
+        e.StartMovements()
+
+
     # -------- Ciclo del juego -----------
     while not fin:
 
@@ -221,10 +230,6 @@ if __name__ == "__main__":
                             if(e.getName() == "rata"):
                                 e.restartMovements(maximus.getPos())
 
-                    if(nivel_actual_no == 1):
-                        for e in ls_enemigos_nivel2:
-                            e.restartMovements(maximus.getPos())
-
                 if event.key == pygame.K_RIGHT:
                     maximus.ir_der()
                     maximus.setDir(0)
@@ -239,10 +244,6 @@ if __name__ == "__main__":
                             if(e.getName() == "rata"):
                                 e.restartMovements(maximus.getPos())
 
-                    if(nivel_actual_no == 1):
-                        for e in ls_enemigos_nivel2:
-                            e.restartMovements(maximus.getPos())
-
                 if event.key == pygame.K_UP:
                     maximus.salto()
 
@@ -251,10 +252,6 @@ if __name__ == "__main__":
 
                     for e in ls_balase:
                         if(e.getName() == "rata"):
-                            e.restartMovements(maximus.getPos())
-
-                    if(nivel_actual_no == 1):
-                        for e in ls_enemigos_nivel2:
                             e.restartMovements(maximus.getPos())
 
                 if event.key == pygame.K_SPACE:
@@ -345,7 +342,7 @@ if __name__ == "__main__":
                             rata = Rata('rata.png',enemigo.getPos(),nivel_actual)
                             ls_balase.add(rata) #lista balas enemigos
                             scream.play()
-
+            #Salto zombie tipo5
             for enemigo in ls_enemigos_nivel1:
                 if(enemigo.tipo == 5):
                     enemigo.salto()
@@ -379,6 +376,27 @@ if __name__ == "__main__":
                 maximus.setLife(maximus.getLife()+10)
                 lifebars(maximus,pantalla,[ANCHO/2,ALTO])#cambia la bara de vida
 
+            #Colision bala enemigo
+            for bala in ls_balase:
+                if(checkCollision(bala,maximus)): # si le disparan a maximus
+                    if(cont7 == 0):
+                        maximus.setLife(maximus.getLife()-1)
+                        flag7 = True
+
+            #------------------Ataques---------------------------
+            for enemigo in ls_enemigos_nivel2:
+                if(cont6 == 0):
+                    bala = RectBullet('bala3.png',enemigo.getPos())
+                    bala.restartMovements(maximus.getPos())
+                    ls_balase.add(bala)
+                    flag6 = True
+
+            #----------------------Otros--------------------------
+            #Desaparecen balas
+            for e in ls_balase:
+                if(e.getLife() <= 0):
+                    ls_balase.remove(e) #las ratas se mueren
+
         #Para collide con enemigos
         if(flag):
             cont += 1
@@ -404,6 +422,16 @@ if __name__ == "__main__":
             cont5 += 1
         if(cont5 >= 50):
             cont5 = 0
+        #Para ataque enemigos nivel2
+        if(flag6):
+            cont6 += 1
+        if(cont6 >= 200):
+            cont6 = 0
+        #Para colision balas enemigos nivel2 con maximus
+        if(flag7):
+            cont7 += 1
+        if(cont7 >= 8):
+            cont7 = 0
 
         #  Si el maximus se aproxima al limite derecho de la pantalla (-x)
         if maximus.rect.x >= 500:
@@ -430,6 +458,10 @@ if __name__ == "__main__":
                 nivel_actual.StartSound()
                 maximus.nivel = nivel_actual
                 maximus.setPos([300, ALTO/2])
+
+                for e in ls_enemigos_nivel2:
+                    e.StartMovements()
+
             else: #se acabaron los niveles
                 #fin = True
                 print "se acabo"
