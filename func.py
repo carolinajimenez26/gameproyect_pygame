@@ -16,6 +16,15 @@ keys = {'a' : 97,'b' : 98,'c' : 99,'d' : 100,'e': 101,'f' : 102,'g' : 103,'h' : 
 ,"'" : 39,',' : 44,'-' : 45,'.' : 46,'/' : 47,':' : 58,'=' : 61,'[' : 91,"\\" : 92,']' : 93,'`' : 96,'ESPACIO' : 32,'ESCAPE' : 27,
 'ENTER': 13,'FLECHA IZQ' : 276,'FLECHA DERE' : 275,'FLECHA ARRIB' : 273,'FLECHA ABAJ' : 274}
 
+
+# Colores
+NEGRO = (0,0,0)
+BLANCO = (255,255,255)
+AZUL = (0,0,255)
+ROJO = (255,0,0)
+VERDE = (0,255,0)
+AMARILLO = (255,255,0)
+
 ###########################################################################################################################################
 #FUNCIONES#################################################################################################################################
 #  _________                   .__                    .___         _____                   .__                             ################
@@ -26,6 +35,25 @@ keys = {'a' : 97,'b' : 98,'c' : 99,'d' : 100,'e': 101,'f' : 102,'g' : 103,'h' : 
 #        \/     \/     \/    \/               \/       \/    \/                   \/     \/               \/     \/     \/ ################
 ###########################################################################################################################################
 ###########################################################################################################################################
+def lifebars(player, surface, pos):
+    if(player.getLife() > 75):
+        color = VERDE
+    elif(player.getLife() > 50):
+        color = AMARILLO
+    else:
+        color = ROJO
+    pygame.draw.rect(surface, color, (pos[0],pos[1],player.getLife(),10))
+    #pygame.display.update()
+
+
+def checkCollision(sprite1, sprite2):
+    col = pygame.sprite.collide_rect(sprite1, sprite2)
+    if col == True:
+        return True
+    else:
+        return False
+
+
 #Seccion donde saco el numero o la letra de las letras del teclado
 def retornarkeyascii(letra):
     for i in keys:
@@ -92,6 +120,125 @@ def load_sound(nombre_s,dir_son):
         sys.exit(1)
     return sound
 
+def Bresenhamrecta(p): #algoritmo para dibujar rectas
+
+    x0 = p[0][0]
+    y0 = p[0][1]
+    x1 = p[1][0]
+    y1 = p[1][1]
+    res = []
+    dx = (x1 - x0)
+    dy = (y1 - y0)
+    #determinar que punto usar para empezar, cual para terminar
+    if (dy < 0) :
+        dy = -1*dy
+        stepy = -1
+    else :
+        stepy = 1
+    if (dx < 0) :
+        dx = -1*dx
+        stepx = -1
+    else :
+        stepx = 1
+    x = x0
+    y = y0
+    #se cicla hasta llegar al extremo de la linea
+    if(dx>dy) :
+        p = 2*dy - dx
+        incE = 2*dy
+        incNE = 2*(dy-dx)
+        while (x != x1) :
+            x = x + stepx
+            if (p < 0) :
+                p = p + incE
+            else :
+                y = y + stepy
+                p = p + incNE
+            p_new = [x, y]
+            res.append(p_new)
+
+    else :
+        p = 2*dx - dy
+        incE = 2*dx
+        incNE = 2*(dx-dy)
+        while (y != y1) :
+            y = y + stepy
+            if (p < 0) :
+                p = p + incE
+            else :
+                x = x + stepx
+                p = p + incNE
+
+            p_new = [x, y]
+            res.append(p_new)
+    return res
+
+def tras((x0,y0),(x,y)):
+    x=x0+x
+    y=y0-y
+    return (x,y)
+
+def CircunfPtoMedio((x0,y0),r):
+	l=[]
+	l2=[]
+	l3=[]
+	l4=[]
+	l5=[]
+	l6=[]
+	l7=[]
+	l8=[]
+	x=0
+	y=r
+	d=5/4-r
+	punto=tras((x0,y0),(x,y)) #X0+X Y0-Y
+	l.append(punto)
+	punto=tras((x0,y0),(x,-y))#X0+X Y0+Y
+	l2.append(punto)
+	punto=tras((x0,y0),(-x,y))#X0-X Y0-Y
+	l3.append(punto)
+	punto=tras((x0,y0),(-x,-y))#X0-X Y0+Y
+	l4.append(punto)
+	punto=tras((x0,y0),(y,x)) #X0+Y Y0-X
+	l5.append(punto)
+	punto=tras((x0,y0),(y,-x))#X0+Y Y0+X
+	l6.append(punto)
+	punto=tras((x0,y0),(-y,x))#X0-Y Y0-X
+	l7.append(punto)
+	punto=tras((x0,y0),(-y,-x))#X0-Y Y0+X
+	l8.append(punto)
+	#simetria(pantalla,(x0,y0),(x,y))
+
+	while y>x:
+		if d<0:
+			d=d+x*2+3
+			x=x+1
+		else:
+			d=d+2*(x-y)+5
+			x=x+1
+			y=y-1
+		#simetria(pantalla,(x0,y0),(x,y))
+		punto=tras((x0,y0),(x,y))
+		l.append(punto)
+		punto=tras((x0,y0),(x,-y))
+		l2.append(punto)
+		punto=tras((x0,y0),(-x,y))
+		l3.append(punto)
+		punto=tras((x0,y0),(-x,-y))
+		l4.append(punto)
+		punto=tras((x0,y0),(y,x))
+		l5.append(punto)
+		punto=tras((x0,y0),(y,-x))
+		l6.append(punto)
+		punto=tras((x0,y0),(-y,x))
+		l7.append(punto)
+		punto=tras((x0,y0),(-y,-x))
+		l8.append(punto)
+	l5.reverse()
+	l2.reverse()
+	l8.reverse()
+	l3.reverse()
+	res = l+l5+l6+l2+l4+l8+l7+l3
+	return res
 ####################################################################################
 ################################# _____.__         #################################
 #################################_/ ____\__| ____  #################################

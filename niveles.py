@@ -1,6 +1,7 @@
 import pygame
 from func import *
 from objetos import *
+
 class Nivel(object):
     """ Esta es una superclase usada para definir un nivel
         Se crean clases hijas por cada nivel que desee emplearse """
@@ -177,18 +178,18 @@ class Nivel_01(Nivel):
             self.enemigos_lista.add(e)
 
         for zombie in zombies_tipo2:
-            e = Zombie2(dirimg+"zombies1.png",[zombie[0],zombie[1]],self)
+            e = Zombie2(dirimg+"zombies2.png",[zombie[0],zombie[1]],self)
             self.enemigos_lista.add(e)
 
         for zombie in zombies_tipo3:
-            e = Zombie3(dirimg+"zombies1.png",[zombie[0],zombie[1]])
+            e = Zombie3(dirimg+"zombies3.png",[zombie[0],zombie[1]])
             self.enemigos_lista.add(e)
 
-        e = Zombie4(dirimg+"zombies1.png",[3230,ALTO - 2*(ALTO/7.5) - 30])
+        e = Zombie4(dirimg+"zombies4.png",[3230,ALTO - 2*(ALTO/7.5) - 30])
         self.enemigos_lista.add(e)
 
         for zombie in zombies_tipo5:
-            e = Zombie5(dirimg+"zombies1.png",[zombie[0],zombie[1]])
+            e = Zombie5(dirimg+"zombies5.png",[zombie[0],zombie[1]])
             self.enemigos_lista.add(e)
 
 class Nivel_02(Nivel):
@@ -253,5 +254,5 @@ class Nivel_02(Nivel):
                         ]
 
         for zombie in zombies_tipo6:
-            e = Zombie1(dirimg+"zombies1.png",[zombie[0],zombie[1]])
+            e = Zombie6(dirimg+"zombies6.png",[zombie[0],zombie[1]])
             self.enemigos_lista.add(e)
