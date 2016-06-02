@@ -245,3 +245,13 @@ class Nivel_02(Nivel):
         for caja in caja_tipo3:
             bloque = Plataforma("caja3.png",[caja[0],caja[1]])
             self.plataforma_lista.add(bloque)
+
+        #---------------------Enemigos----------------------
+        zombies_tipo6 = [
+                          [400, ALTO - ALTO/2],
+                          [600, ALTO/3],
+                        ]
+
+        for zombie in zombies_tipo6:
+            e = Zombie6("zombies6.png",[zombie[0],zombie[1]])
+            self.enemigos_lista.add(e)

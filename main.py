@@ -28,8 +28,8 @@ if __name__ == "__main__":
 
 
     # Establecemos nivel actual
-    nivel_actual_no = 0
-    #maximus.setPos([300, ALTO/2])
+    nivel_actual_no = 1
+    maximus.setPos([300, ALTO/2])
     nivel_actual = nivel_lista[nivel_actual_no]
 
     # Indicamos a la clase jugador cual es el nivel
@@ -176,7 +176,7 @@ if __name__ == "__main__":
         #si mato a todos los enemigos y esta en el nivel2
         if((len(ls_enemigos_nivel2) == 0 ) and (nivel_actual_no == 2)):
             nivel_actual.StopSound()
-            reloj.tick(0.6)
+            reloj.tick(0.3)
             fin = True
             winner = True
 
@@ -221,8 +221,8 @@ if __name__ == "__main__":
                             if(e.getName() == "rata"):
                                 e.restartMovements(maximus.getPos())
 
-                    if(nivel_actual_no == 1): #OJOOOOOOOOOOOOOOOOOOOOOOOOOOOO
-                        for e in ls_enemigos_nivel1:
+                    if(nivel_actual_no == 1):
+                        for e in ls_enemigos_nivel2:
                             e.restartMovements(maximus.getPos())
 
                 if event.key == pygame.K_RIGHT:
@@ -240,7 +240,7 @@ if __name__ == "__main__":
                                 e.restartMovements(maximus.getPos())
 
                     if(nivel_actual_no == 1):
-                        for e in ls_enemigos_nivel1:
+                        for e in ls_enemigos_nivel2:
                             e.restartMovements(maximus.getPos())
 
                 if event.key == pygame.K_UP:
@@ -254,7 +254,7 @@ if __name__ == "__main__":
                             e.restartMovements(maximus.getPos())
 
                     if(nivel_actual_no == 1):
-                        for e in ls_enemigos_nivel1:
+                        for e in ls_enemigos_nivel2:
                             e.restartMovements(maximus.getPos())
 
                 if event.key == pygame.K_SPACE:
@@ -425,6 +425,7 @@ if __name__ == "__main__":
             if nivel_actual_no < len(nivel_lista)-1:
                 nivel_actual.StopSound()
                 nivel_actual_no += 1
+                pygame.display.set_caption("Place of Dead - Sake of revenge ", 'Spine Runtime')
                 nivel_actual = nivel_lista[nivel_actual_no]
                 nivel_actual.StartSound()
                 maximus.nivel = nivel_actual
