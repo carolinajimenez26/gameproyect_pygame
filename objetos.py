@@ -456,6 +456,40 @@ class Rata(Enemy):#Hereda de la clase Enemigo
             # Detener movimiento vertical
             self.vel_y = 0"""
 
+class Zombie5(Enemy):#Hereda de la clase Enemigo
+    vel_x = 0
+    vel_y = 0
+    def __init__(self, img_name, pos):
+        Enemy.__init__(self, img_name, pos)
+        self.i = 1
+        self.cont = 0
+        self.reloj = 0
+        self.life = 200
+        self.speed = 1
+        self.tipo = 5
+        self.increment_y = 0
+        self.jumping = False
+
+    def calc_grav(self):
+        """ Calculamos efecto de la gravedad. """
+
+        if self.increment_y < 0: #esta saltando
+            print "saltando"
+            self.jumping = True
+            self.increment_y += 1#1.5
+            self.setPos([self.getPos()[0],ALTO + self.increment_y - self.getMargen()[1]])
+
+        if self.increment_y >= 0: #ya no salta mas
+            print "ya no esta saltando mas"
+            self.jumping = False
+            self.setPos([self.getPos()[0],(ALTO - self.getMargen()[1])])
+
+    def salto(self):
+        if(self.jumping == False): #Si ya no esta saltando, puede vovler a saltar
+            self.increment_y -= 10
+
+    def update(self):
+        self.calc_grav()
 
 
 class Plataforma(pygame.sprite.Sprite): #Hereda de la clase sprite

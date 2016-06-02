@@ -39,6 +39,7 @@ if __name__ == "__main__":
     shot_s = load_sound('shot.wav',curdir)
     shot_se = load_sound('shot2.wav',curdir)
     grunt = load_sound('gruntsound.wav',curdir)
+    scream = load_sound('scream.ogg',curdir)
 
     #Grupos de sprites
     ls_balaj = pygame.sprite.Group() #balas jugador
@@ -343,6 +344,11 @@ if __name__ == "__main__":
                             flag5 = True
                             rata = Rata('rata.png',enemigo.getPos(),nivel_actual)
                             ls_balase.add(rata) #lista balas enemigos
+                            scream.play()
+
+            for enemigo in ls_enemigos_nivel1:
+                if(enemigo.tipo == 5):
+                    enemigo.salto()
 
 
             #----------------------Otros--------------------------
