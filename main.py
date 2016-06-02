@@ -137,6 +137,8 @@ if __name__ == "__main__":
     cont3 = 0
     flag4 = False
     cont4 = 0
+    flag5 = False
+    cont5 = 0
 
     # Controlamos que tan rapido actualizamos pantalla
     reloj = pygame.time.Clock()
@@ -208,10 +210,16 @@ if __name__ == "__main__":
                     maximus.ir_izq()
                     maximus.setDir(1)
                     if(nivel_actual_no == 0):
+
                         for e in ls_enemigos_nivel1:
                             if(e.tipo == 2 ):
                                 e.restartMovements(maximus.getPos())
                                 e.setDir(1)
+
+                        for e in ls_balase:
+                            if(e.getName() == "rata"):
+                                e.restartMovements(maximus.getPos())
+
                     if(nivel_actual_no == 1): #OJOOOOOOOOOOOOOOOOOOOOOOOOOOOO
                         for e in ls_enemigos_nivel1:
                             e.restartMovements(maximus.getPos())
@@ -220,24 +228,30 @@ if __name__ == "__main__":
                     maximus.ir_der()
                     maximus.setDir(0)
                     if(nivel_actual_no == 0):
+
                         for e in ls_enemigos_nivel1:
                             if(e.tipo == 2 ):
                                 e.restartMovements(maximus.getPos())
                                 e.setDir(0)
+
+                        for e in ls_balase:
+                            if(e.getName() == "rata"):
+                                e.restartMovements(maximus.getPos())
+
                     if(nivel_actual_no == 1):
                         for e in ls_enemigos_nivel1:
                             e.restartMovements(maximus.getPos())
 
                 if event.key == pygame.K_UP:
                     maximus.salto()
+
                     if(nivel_actual_no != 0):
                         maximus.setDir(2)
-                    if(nivel_actual_no == 1):
-                        for e in ls_enemigos_nivel1:
+
+                    for e in ls_balase:
+                        if(e.getName() == "rata"):
                             e.restartMovements(maximus.getPos())
 
-                if event.key == pygame.K_DOWN and nivel_actual_no != 0:
-                    maximus.setDir(3)
                     if(nivel_actual_no == 1):
                         for e in ls_enemigos_nivel1:
                             e.restartMovements(maximus.getPos())
@@ -265,7 +279,8 @@ if __name__ == "__main__":
                 if event.key == pygame.K_RIGHT and maximus.vel_x > 0:
                     maximus.no_mover()
 
-        #Collides NIVEL1
+        #---------------NIVEL1--------------------------
+        #----------------Collides-------------------------
         if(nivel_actual_no == 0):
             maximus.enemigos = len(ls_enemigos_nivel1)
             for enemigo in ls_enemigos_nivel1:
@@ -306,9 +321,10 @@ if __name__ == "__main__":
             for bala in ls_balase:
                 if(checkCollision(bala,maximus)): # si le disparan a maximus
                     if(cont4 == 0):
-                        maximus.crash()
+                        maximus.setLife(maximus.getLife()-1)
                         flag4 = True
 
+            #--------------------Ataques--------------------
             #Ataque zombie3
             for enemigo in ls_enemigos_nivel1:
                 if(enemigo.tipo == 3):
@@ -319,9 +335,25 @@ if __name__ == "__main__":
                             shot_se.play()
                             ls_balase.add(bala) #lista balas enemigos
                             bala.setDir(enemigo.getDir())
+            #Ataque zombie4
+            for enemigo in ls_enemigos_nivel1:
+                if(enemigo.tipo == 4):
+                    if(cont5 == 0):
+                        if(abs(enemigo.getPos()[0] - maximus.getPos()[0]) <= 250):#le dispara si se encuentra cerca
+                            flag5 = True
+                            rata = Rata('rata.png',enemigo.getPos(),nivel_actual)
+                            ls_balase.add(rata) #lista balas enemigos
 
 
-        #Collides NIVEL2
+            #----------------------Otros--------------------------
+            #Muerte ratas
+            for e in ls_balase:
+                if(e.getName() == "rata"):
+                    if(e.getLife() <= 0):
+                        ls_balase.remove(e) #las ratas se mueren
+
+        #--------------------NIVEL2----------------------------
+        #--------------------Collides--------------------------
         if(nivel_actual_no == 1):
             maximus.enemigos = len(ls_enemigos_nivel2)
             for enemigo in ls_enemigos_nivel2:
@@ -361,6 +393,11 @@ if __name__ == "__main__":
             cont4 += 1
         if(cont4 >= 8):
             cont4 = 0
+        #Para lanzar ratas
+        if(flag5):
+            cont5 += 1
+        if(cont5 >= 50):
+            cont5 = 0
 
         #  Si el maximus se aproxima al limite derecho de la pantalla (-x)
         if maximus.rect.x >= 500:

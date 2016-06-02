@@ -179,6 +179,10 @@ class Weapon(pygame.sprite.Sprite): #Hereda de la clase sprite
     	self.rect.x = pos[0]
     	self.rect.y = pos[1]
         self.speed = 5
+        self.name = img_name.split(".png")[0]
+
+    def getName(self):
+        return self.name
 
     def getRect(self):
     	return self.rect
@@ -271,7 +275,6 @@ class Zombie1(Enemy):#Hereda de la clase Enemigo
     def update(self):
         self.move()
 
-
 class Zombie2(Enemy):#Hereda de la clase Enemigo
     vel_x = 0
     vel_y = 0
@@ -331,22 +334,19 @@ class Zombie2(Enemy):#Hereda de la clase Enemigo
 
         # Mover arriba/abajo
         """self.rect.y += self.vel_y
-
         # Revisamos si chocamos
         bloque_col_list = pygame.sprite.spritecollide(self, self.nivel.plataforma_lista, False)
         for bloque in bloque_col_list:
-
             # Reiniciamos posicion basado en el arriba/bajo del objeto
             if self.vel_y > 0:
                 self.rect.bottom = bloque.rect.top
             elif self.vel_y < 0:
                 self.rect.top = bloque.rect.bottom
-
             # Detener movimiento vertical
             self.vel_y = 0"""
 
 class Zombie3(Enemy):
-    def __init__(self, img_name, pos,nivel):
+    def __init__(self, img_name, pos):
         Enemy.__init__(self, img_name, pos)
         self.life = 150
         self.speed = 1
@@ -383,6 +383,79 @@ class Zombie3(Enemy):
             self.setDir(1) #izq
         else: #izq
             self.setDir(0)#der
+
+class Zombie4(Enemy):
+    def __init__(self, img_name, pos):
+        Enemy.__init__(self, img_name, pos)
+        self.life = 100
+        self.speed = 1
+        self.rect.x = pos[0]
+    	self.rect.y = pos[1]
+        self.tipo = 4
+
+class Rata(Enemy):#Hereda de la clase Enemigo
+    def __init__(self, img_name, pos,nivel):
+        Enemy.__init__(self, img_name, pos)
+        self.life = 500
+        self.speed = 1
+        self.rect.x = pos[0]
+    	self.rect.y = pos[1]
+        self.moves = [0 for x in range(ANCHO)] #movimientos que debe realizar
+        self.i = 0
+        self.nivel = nivel
+        self.dir = 0
+        self.name = img_name.split(".png")[0]
+
+    def getName(self):
+        return self.name
+
+    def restartMovements(self,pos):#calcula el camino por donde debe moverse (recibe el punto final)
+        self.moves = Bresenhamrecta([self.getPos(),pos])#carga los nuevos movimientos
+        self.i = 0 #debe empezar a recorrerla desde cero
+
+    def update(self): #se mueve
+        self.life -= 1 #para que se muera
+        #print "rata life: ", self.life
+        bloques = self.nivel.plataforma_lista
+
+        if(self.i < len(self.moves)):
+            pos = self.moves[self.i]
+            if(pos == 0):
+                self.setPos([self.rect.x,self.rect.y])
+            else:
+                for e in bloques:
+                    if(checkCollision(self,e) == False): # si no se choca con los objetos del nivel
+                        self.setPos(pos)
+
+            self.i += 1 #para que recorra el siguiente
+
+        # Revisar si golpeamos con algo (bloques con colision)
+        """bloque_col_list = pygame.sprite.spritecollide(self, self.nivel.plataforma_lista, False)
+        for bloque in bloque_col_list:
+            # Si nos movemos a la derecha,
+            # ubicar jugador a la izquierda del objeto golpeado
+            if self.vel_x > 0:
+                self.rect.right = bloque.rect.left
+            elif self.vel_x < 0:
+                # De otra forma nos movemos a la izquierda
+                self.rect.left = bloque.rect.right"""
+
+        # Mover arriba/abajo
+        """self.rect.y += self.vel_y
+
+        # Revisamos si chocamos
+        bloque_col_list = pygame.sprite.spritecollide(self, self.nivel.plataforma_lista, False)
+        for bloque in bloque_col_list:
+
+            # Reiniciamos posicion basado en el arriba/bajo del objeto
+            if self.vel_y > 0:
+                self.rect.bottom = bloque.rect.top
+            elif self.vel_y < 0:
+                self.rect.top = bloque.rect.bottom
+
+            # Detener movimiento vertical
+            self.vel_y = 0"""
+
 
 
 class Plataforma(pygame.sprite.Sprite): #Hereda de la clase sprite
