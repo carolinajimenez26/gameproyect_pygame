@@ -5,6 +5,7 @@ import sys
 import os
 import ConfigParser
 import inputbox
+from niveles import *
 # Dimensiones pantalla
 ANCHO  = 800
 ALTO = 600
@@ -37,7 +38,7 @@ keys = {'a' : 97,'b' : 98,'c' : 99,'d' : 100,'e': 101,'f' : 102,'g' : 103,'h' : 
 'ENTER': 13,'FLECHA IZQ' : 276,'FLECHA DERE' : 275,'FLECHA ARRIB' : 273,'FLECHA ABAJ' : 274}
 
 ###########################################################################################################################################
-###########################################################################################################################################
+#FUNCIONES#################################################################################################################################
 #  _________                   .__                    .___         _____                   .__                             ################
 # /   _____/ ____   ____  ____ |__| ____   ____     __| _/____   _/ ____\_ __  ____   ____ |__| ____   ____   ____   ______################
 # \_____  \_/ __ \_/ ___\/ ___\|  |/  _ \ /    \   / __ |/ __ \  \   __\  |  \/    \_/ ___\|  |/  _ \ /    \_/ __ \ /  ___/################
@@ -207,7 +208,7 @@ class boton_inicio(buttonz):
     def __init__(self,img,img2):
         buttonz.__init__(self,img,img2)
     def action(self):
-        print "inicio"
+        print "boton"
 
 class boton_tutorial(buttonz):
     def __init__(self,img,img2):
@@ -385,7 +386,7 @@ class Jugador(pygame.sprite.Sprite):
         # creamos el bloque
         ancho = 40
         alto = 60
-        matrizimg = cargar_fondo(curdir+"sources/enviroment/levels/images/maximus.png", 32,48)
+        matrizimg = cargar_fondo(curdir+"/enviroment/levels/images/maximus.png", 32,48)
     	self.image = matrizimg[0][1]
         self.imaged.append(self.image)
         self.image = matrizimg[1][1]
@@ -414,6 +415,7 @@ class Jugador(pygame.sprite.Sprite):
         #speed
         self.increment_x = 6
         self.increment_y = 0
+        self.cont=0
 
 
     def update(self):
@@ -478,10 +480,20 @@ class Jugador(pygame.sprite.Sprite):
     # Control del movimiento
     def ir_izq(self):
         """ Usuario pulsa flecha izquierda """
+        if(self.cont<=3):
+            self.cont+=1
+        else:
+            self.cont=0
+        self.image=self.imagei[self.cont]
         self.vel_x = -self.increment_x
 
     def ir_der(self):
         """ Usuario pulsa flecha derecha """
+        if(self.cont<=3):
+            self.cont+=1
+        else:
+            self.cont=0
+        self.image=self.imaged[self.cont]
         self.vel_x = self.increment_x
 
     def no_mover(self):
