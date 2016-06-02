@@ -250,8 +250,6 @@ class Enemy(pygame.sprite.Sprite): #Hereda de la clase sprite
     def crash(self):
         self.setLife(self.getLife() - 1)
 
-    def restartMovements(self,pos):
-        pass
 
 class Zombie1(Enemy):#Hereda de la clase Enemigo
     def __init__(self, img_name, pos):
@@ -356,7 +354,7 @@ class Zombie3(Enemy):
     	self.rect.y = pos[1]
         self.cont = 0
         self.tipo = 3
-        self.dir = 0
+        self.dir = 0 #derecha
         self.speed_aux = 0
 
     def setDir(self,dir):
@@ -373,12 +371,18 @@ class Zombie3(Enemy):
             if(self.cont == 400):
                 self.cont = 0
                 self.speed *= -1
-                print "speed : " , self.speed
+                self.changeDirection()
         else:
             self.speed_aux += 1
 
     def update(self):
         self.move()
+
+    def changeDirection(self):
+        if(self.getDir() == 0): #der
+            self.setDir(1) #izq
+        else: #izq
+            self.setDir(0)#der
 
 
 class Plataforma(pygame.sprite.Sprite): #Hereda de la clase sprite

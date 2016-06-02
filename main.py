@@ -209,9 +209,10 @@ if __name__ == "__main__":
                     maximus.setDir(1)
                     if(nivel_actual_no == 0):
                         for e in ls_enemigos_nivel1:
-                            e.restartMovements(maximus.getPos())
-                            e.setDir(1)
-                    if(nivel_actual_no == 1):
+                            if(e.tipo == 2 ):
+                                e.restartMovements(maximus.getPos())
+                                e.setDir(1)
+                    if(nivel_actual_no == 1): #OJOOOOOOOOOOOOOOOOOOOOOOOOOOOO
                         for e in ls_enemigos_nivel1:
                             e.restartMovements(maximus.getPos())
 
@@ -220,8 +221,9 @@ if __name__ == "__main__":
                     maximus.setDir(0)
                     if(nivel_actual_no == 0):
                         for e in ls_enemigos_nivel1:
-                            e.restartMovements(maximus.getPos())
-                            e.setDir(0)
+                            if(e.tipo == 2 ):
+                                e.restartMovements(maximus.getPos())
+                                e.setDir(0)
                     if(nivel_actual_no == 1):
                         for e in ls_enemigos_nivel1:
                             e.restartMovements(maximus.getPos())
@@ -230,18 +232,12 @@ if __name__ == "__main__":
                     maximus.salto()
                     if(nivel_actual_no != 0):
                         maximus.setDir(2)
-                    if(nivel_actual_no == 0):
-                        for e in ls_enemigos_nivel1:
-                            e.restartMovements(maximus.getPos())
                     if(nivel_actual_no == 1):
                         for e in ls_enemigos_nivel1:
                             e.restartMovements(maximus.getPos())
 
                 if event.key == pygame.K_DOWN and nivel_actual_no != 0:
                     maximus.setDir(3)
-                    if(nivel_actual_no == 0):
-                        for e in ls_enemigos_nivel1:
-                            e.restartMovements(maximus.getPos())
                     if(nivel_actual_no == 1):
                         for e in ls_enemigos_nivel1:
                             e.restartMovements(maximus.getPos())
@@ -320,9 +316,9 @@ if __name__ == "__main__":
                         if(abs(enemigo.getPos()[0] - maximus.getPos()[0]) <= 300):#le dispara si se encuentra cerca
                             flag3 = True
                             bala = Bullet('bala2.png',enemigo.getPos())
-                            bala.setDir(enemigo.getDir())
                             shot_se.play()
                             ls_balase.add(bala) #lista balas enemigos
+                            bala.setDir(enemigo.getDir())
 
 
         #Collides NIVEL2
