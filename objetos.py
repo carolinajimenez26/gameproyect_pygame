@@ -17,7 +17,7 @@ class Jugador(pygame.sprite.Sprite):
         # creamos el bloque
         ancho = 40
         alto = 60
-        matrizimg = cargar_fondo(curdir+"/sources/enviroment/levels/images/maximus.png", 32,48)
+        matrizimg = cargar_fondo(curdir+"/enviroment/levels/images/maximus.png", 32,48)
     	self.image = matrizimg[0][1]
         self.imaged.append(self.image)
         self.image = matrizimg[1][1]

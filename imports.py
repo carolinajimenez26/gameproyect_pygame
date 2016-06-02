@@ -24,7 +24,6 @@ amarillo = (255,255,0)
 #Fin definicion de colores
 
 
-
 #################################################################################################
 # _________                   .__                       .__                                ######
 # /   _____/ ____   ____  ____ |__| ____   ____     ____ |  | _____    ______ ____   ______######
@@ -110,7 +109,69 @@ class boton_inicio(buttonz):
     def __init__(self,img,img2):
         buttonz.__init__(self,img,img2)
     def action(self):
-        print "boton"
+        pygame.mixer.music.stop()
+        pygame.init()
+        tam = [ANCHO, ALTO]
+        pantalla = pygame.display.set_mode(tam)
+
+        pygame.display.set_caption("Place of Dead - Hunting Rabbits ", 'Spine Runtime')
+        tipo = pygame.font.SysFont("monospace", 15)
+
+        # Creamos maximus
+        maximus = Jugador()
+
+        maximus.rect.x = 340
+        maximus.rect.y = ALTO - maximus.rect.height
+
+        # Creamos los niveles
+        nivel_lista = []
+        nivel1 = Nivel_01(maximus,dirimg+"fondo6.jpg",dirsonido+"nivel1.wav")
+        nivel_lista.append( nivel1 )
+        nivel2 = Nivel_02(maximus,dirimg+"dracula.jpg",dirsonido+"nivel2.wav")
+        nivel_lista.append( nivel2 )
+
+
+        # Establecemos nivel actual
+        nivel_actual_no = 0
+        #maximus.setPos([300, ALTO/2])
+        nivel_actual = nivel_lista[nivel_actual_no]
+
+        # Indicamos a la clase jugador cual es el nivel
+        maximus.nivel = nivel_actual
+
+        #sonidos
+        shot_s = load_sound('/enviroment/levels/sounds/shot.wav',curdir)
+
+        #Grupos de sprites
+        ls_balaj = pygame.sprite.Group() #balas jugador
+        ls_enemigos_nivel1 = nivel1.getEnemies() #lista enemigos nivel1
+        ls_enemigos_nivel2 = nivel2.getEnemies() #lista enemigos nivel2
+        ls_balase = pygame.sprite.Group() #balas enemigos
+        ls_jugadores = pygame.sprite.Group() #jugadores
+        # Lista de sprites activos
+        activos_sp_lista = pygame.sprite.Group()
+
+        #listas para objetos
+
+        #NIVEL1
+        ls_todos_nivel1 = pygame.sprite.Group()
+        ls_mascota_nivel1 = pygame.sprite.Group()#Mascota
+        ls_vida_nivel1 = pygame.sprite.Group()#Pavos(vida)
+        ls_mascota_nivel1 = pygame.sprite.Group()#Mascota
+        ls_zapatos_nivel1 = pygame.sprite.Group()#Zapatos
+        ls_monedas_nivel1 = pygame.sprite.Group()#Monedas
+        ls_relojes_nivel1 = pygame.sprite.Group()#Relojes
+        ls_municiones_nivel1 = pygame.sprite.Group()#Municiones
+        #NIVEL2
+        ls_todos_nivel2 = pygame.sprite.Group()
+        ls_vida_nivel2 = pygame.sprite.Group()#Rayo
+        ls_mascota_nivel2 = pygame.sprite.Group()#Mascota
+        pantalla.fill(blanco)
+        pygame.display.flip()
+        while 1:
+            print 1
+
+        pygame.mixer.music.play(-1)
 
 class boton_tutorial(buttonz):
     def __init__(self,img,img2):

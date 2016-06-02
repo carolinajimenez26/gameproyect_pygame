@@ -1,3 +1,6 @@
+import pygame
+from func import *
+from objetos import *
 class Nivel(object):
     """ Esta es una superclase usada para definir un nivel
         Se crean clases hijas por cada nivel que desee emplearse """
@@ -54,6 +57,140 @@ class Nivel(object):
     def removeElement(self,e):
         self.plataforma_lista.remove(e)
 
+class Nivel_01(Nivel):
+    """ Definition for level 1. """
+
+    ls_vida = None
+
+    def __init__(self, jugador,imagen,sonido):
+        """ Creamos nivel 1. """
+
+        # Llamamos al padre
+        Nivel.__init__(self, jugador,imagen,sonido)
+        self.limite = -3000
+        self.jugador = jugador
+        self.ls_vida = pygame.sprite.Group()
+
+        #---------------Plataformas-----------------------
+        plataforma_tipo1 = [
+                             [500, ALTO - ALTO/5],
+                             [990, ALTO/10]
+                           ]
+        plataforma_tipo2 = [
+                             [1100, ALTO - ALTO/2 + 30],
+                             [1500, ALTO/3 + 30],
+                             [3000 - 400, ALTO/3 - 25]
+                            ]
+
+        plataforma_tipo3 = [
+                             [1900, ALTO/3 - 25],
+                             [3000 - 30, ALTO/3 - 25]
+                            ]
+
+        for plataforma in plataforma_tipo1:
+            bloque = Plataforma(dirimg+"plataforma1.png",[plataforma[0],plataforma[1]])
+            self.plataforma_lista.add(bloque)
+
+        for plataforma in plataforma_tipo2:
+            bloque = Plataforma(dirimg+"plataforma2.png",[plataforma[0],plataforma[1]])
+            self.plataforma_lista.add(bloque)
+
+        for plataforma in plataforma_tipo3:
+            bloque = Plataforma(dirimg+"plataforma3.png",[plataforma[0],plataforma[1]])
+            self.plataforma_lista.add(bloque)
+
+        caja_tipo1 = [
+                        [650,ALTO - ALTO/2 ],
+                        [650 + 80,(ALTO - ALTO/2) - 80],
+                        [650 + 2*80,(ALTO - ALTO/2) - 2*80],
+                        [3000,ALTO - ALTO/7.5],
+                        [3200,ALTO - ALTO/7.5],
+                        [3200,ALTO - 2*(ALTO/7.5)],
+                     ]
+
+        caja_tipo2 = [
+                        [-80,(ALTO - ALTO/3) + 80 ],
+                        [0,(ALTO - ALTO/3) ],
+                        [0 + 80,(ALTO - ALTO/3) - 80],
+                        [0 + 2*80,(ALTO - ALTO/3) - 2*80],
+                        [1750,ALTO - ALTO/3],
+                        [2500,ALTO - ALTO/3],
+                        [2600,ALTO - ALTO/3],
+                        [2700,ALTO - ALTO/3],
+                     ]
+
+        for caja in caja_tipo1:
+            bloque = Plataforma(dirimg+"caja.png",[caja[0],caja[1]])
+            self.plataforma_lista.add(bloque)
+
+        for caja in caja_tipo2:
+            bloque = Plataforma(dirimg+"caja2.png",[caja[0],caja[1]])
+            self.plataforma_lista.add(bloque)
+
+        rocas_tipo1 = [
+                        [1500,ALTO - ALTO/10],
+                        [2200,ALTO - ALTO/10]
+                      ]
+
+        rocas_tipo2 = [
+                        [1900,ALTO - ALTO/6],
+                        [2000,ALTO - ALTO/6]
+                      ]
+
+        for roca in rocas_tipo1:
+            bloque = Plataforma(dirimg+"rock.png",[roca[0],roca[1]])
+            self.plataforma_lista.add(bloque)
+
+        for roca in rocas_tipo2:
+            bloque = Plataforma(dirimg+"rock2.png",[roca[0],roca[1]])
+            self.plataforma_lista.add(bloque)
+
+
+        #Casa boss
+        casa_boss = Plataforma(dirimg+"casa_boss.png",[4100,ALTO - ALTO/3.5])
+        self.plataforma_lista.add(casa_boss)
+
+        #---------------Enemigos-----------------------
+
+        zombies_tipo1 = [
+                          [505,ALTO - ALTO/5 - 30],
+                          [505 + 490,30]
+                        ]
+
+        zombies_tipo2 = [
+                          [505 + 100,ALTO - 30],
+                          [505 + 490 + 100, ALTO - 30 ]
+                        ]
+
+        zombies_tipo3 = [
+                          [1900, ALTO/3 - 25 - 30],
+                          [3000 - 30, ALTO/3 - 25 - 30]
+                        ]
+
+        zombies_tipo5 = [
+                          [1200, ALTO - ALTO/2],
+                          [1600, ALTO/3],
+                        ]
+
+        for zombie in zombies_tipo1:
+            e = Zombie1(dirimg+"zombies1.png",[zombie[0],zombie[1]])
+            self.enemigos_lista.add(e)
+
+        for zombie in zombies_tipo2:
+            e = Zombie2(dirimg+"zombies1.png",[zombie[0],zombie[1]],self)
+            self.enemigos_lista.add(e)
+
+        for zombie in zombies_tipo3:
+            e = Zombie3(dirimg+"zombies1.png",[zombie[0],zombie[1]])
+            self.enemigos_lista.add(e)
+
+        e = Zombie4(dirimg+"zombies1.png",[3230,ALTO - 2*(ALTO/7.5) - 30])
+        self.enemigos_lista.add(e)
+
+        for zombie in zombies_tipo5:
+            e = Zombie5(dirimg+"zombies1.png",[zombie[0],zombie[1]])
+            self.enemigos_lista.add(e)
+
 class Nivel_02(Nivel):
     """ Definicion para el nivel 2. """
 
@@ -87,15 +224,15 @@ class Nivel_02(Nivel):
 
 
         for plataforma in plataforma_tipo4:
-            bloque = Plataforma("plataforma4.png",[plataforma[0],plataforma[1]])
+            bloque = Plataforma(dirimg+"plataforma4.png",[plataforma[0],plataforma[1]])
             self.plataforma_lista.add(bloque)
 
         for plataforma in plataforma_tipo5:
-            bloque = Plataforma("plataforma5.png",[plataforma[0],plataforma[1]])
+            bloque = Plataforma(dirimg+"plataforma5.png",[plataforma[0],plataforma[1]])
             self.plataforma_lista.add(bloque)
 
         for plataforma in plataforma_tipo6:
-            bloque = Plataforma("plataforma6.png",[plataforma[0],plataforma[1]])
+            bloque = Plataforma(dirimg+"plataforma6.png",[plataforma[0],plataforma[1]])
             self.plataforma_lista.add(bloque)
 
         caja_tipo3 = [
@@ -105,5 +242,16 @@ class Nivel_02(Nivel):
                      ]
 
         for caja in caja_tipo3:
-            bloque = Plataforma("caja3.png",[caja[0],caja[1]])
+            bloque = Plataforma(dirimg+"caja3.png",[caja[0],caja[1]])
             self.plataforma_lista.add(bloque)
+
+        #---------------------Enemigos----------------------
+        zombies_tipo6 = [
+                          [0, ALTO - ALTO/2],
+                          [400, ALTO/3],
+                          [800, ALTO - ALTO/3]
+                        ]
+
+        for zombie in zombies_tipo6:
+            e = Zombie1(dirimg+"zombies1.png",[zombie[0],zombie[1]])
+            self.enemigos_lista.add(e)
