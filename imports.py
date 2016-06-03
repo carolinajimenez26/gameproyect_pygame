@@ -264,7 +264,12 @@ class boton_inicio(buttonz):
         """for e in ls_enemigos_nivel2:
             e.StartMovements()"""
 
-
+        Config.read("config.ini")
+        Config.sections()
+        derecha = ConfigSectionMap("Movimientos")['derecha']
+        izquierda = ConfigSectionMap("Movimientos")['izquierda']
+        disparo = ConfigSectionMap("Movimientos")['disparo']
+        salto = ConfigSectionMap("Movimientos")['salto']
         # -------- Ciclo del juego -----------
         while not fin:
             for bil in ls_balaj:
@@ -421,10 +426,12 @@ class boton_inicio(buttonz):
                                 grunt.play() #se queja
                                 ls_balaj.remove(bala)
                                 ls_todos_nivel1.remove(bala)
-                                ls_todos_nivel2.remove(bala)
+                                #ls_todos_nivel2.remove(bala)
                                 flag2 = True
                                 if(enemigo.getLife() <= 0):
                                     ls_enemigos_nivel1.remove(enemigo)
+
+
 
                 #Colision bala enemigo
                 for bala in ls_balase:
@@ -490,6 +497,18 @@ class boton_inicio(buttonz):
                             print "life : " , maximus.getLife()
                             lifebars(maximus,pantalla,[ANCHO/2,ALTO])#cambia la bara de vida
                             flag = True
+
+                for enemigo2 in ls_enemigos_nivel2:
+                    for bala in ls_balaj:
+                        if(checkCollision(bala,enemigo2)): # si se choco
+                            if(cont == 0):
+                                enemigo2.crash()
+                                ls_balaj.remove(bala)
+                                ls_todos_nivel1.remove(bala)
+                                ls_todos_nivel2.remove(bala)
+                                flag2 = True
+                                if(enemigo2.getLife() <= 0):
+                                    ls_enemigos_nivel2.remove(enemigo2)
 
                 #collide con pavos
                 ls_vidas_i = pygame.sprite.spritecollide(maximus, ls_vida_nivel2, True)
@@ -656,7 +675,8 @@ class boton_inicio(buttonz):
             print "Perdiste"
         if(winner):
             print "ganaste"
-
+        for n in nivel_lista:
+            n.StopSound()
         pygame.mixer.music.play(-1)
 
 class boton_tutorial(buttonz):

@@ -521,6 +521,9 @@ class Zombie6(Enemy):#Hereda de la clase Enemigo
         self.r = 10
         self.moves = [0 for x in range(ANCHO)] #movimientos que debe realizar
 
+    def crash(self):
+        self.setLife(self.getLife() - random.randrange(8,15))
+
     def StartMovements(self):#se mueve sobre si mismo
         self.moves = CircunfPtoMedio(self.getPos(),self.r)#carga los nuevos movimientos
         self.order= sorted(self.moves, key=lambda tup: tup[1])

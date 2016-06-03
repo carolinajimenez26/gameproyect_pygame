@@ -20,7 +20,7 @@ class Nivel(object):
     def update(self):
         """ Actualiza todo lo que este en este nivel."""
         self.plataforma_lista.update()
-        self.enemigos_lista.update(
+        self.enemigos_lista.update()
 
     def draw(self, pantalla):
         """ Dibuja lo que se encuentre en el nivel. """
@@ -178,7 +178,7 @@ class Nivel_01(Nivel):
 
         for pavo in pavos:
             obj = Pavo(dirimg+"pavo.png",[pavo[0],pavo[1]])
-            self.mod.add(obj)
+            self.plataforma_lista.add(obj)
 
         for zombie in zombies_tipo1:
             e = Zombie1(dirimg+"zombies1.png",[zombie[0],zombie[1]])
