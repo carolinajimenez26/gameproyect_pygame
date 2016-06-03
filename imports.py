@@ -310,13 +310,13 @@ class boton_inicio(buttonz):
             if(maximus.getLife() <= 0): #si muere
                 nivel_actual.StopSound()
                 reloj.tick(60) #para que no sea un cambio tan repentino
-                #fin = True #sale del ciclo
+                fin = True #sale del ciclo
                 game_over = True
 
             ##En el nivel2 no puede tocar el suelo, pierde
             if((maximus.getPos()[1] == ALTO - maximus.getMargen()[1]) and nivel_actual_no != 0):
                 print "gameover"
-                #fin = True
+                fin = True
                 game_over = True
 
             #si mato a todos los enemigos y esta en el nivel2
@@ -763,8 +763,30 @@ class boton_inicio(buttonz):
         #---------------Fin del ciclo-----------------
 
         if(game_over):
+            pygame.init()
+            tam = [ANCHO, ALTO]
+            pantalla = pygame.display.set_mode(tam)
+
+            pygame.display.set_caption("Place of Dead - Game Over ", 'Spine Runtime')
+            tipo = pygame.font.SysFont("monospace", 15)
+            ad1 = pygame.image.load(curdir+"/enviroment/main/gameover.jpg")
+            ad1 = pygame.transform.scale(ad1,tam)
+            pantalla.blit(ad1,(0,0))
+            pygame.display.flip()
+            time.sleep(2)
             print "Perdiste"
         if(winner):
+            pygame.init()
+            tam = [ANCHO, ALTO]
+            pantalla = pygame.display.set_mode(tam)
+
+            pygame.display.set_caption("Place of Dead - Game Over ", 'Spine Runtime')
+            tipo = pygame.font.SysFont("monospace", 15)
+            ad1 = pygame.image.load(curdir+"/enviroment/main/winner.jpg")
+            ad1 = pygame.transform.scale(ad1,tam)
+            pantalla.blit(ad1,(0,0))
+            pygame.display.flip()
+            time.sleep(2)
             print "ganaste"
 
         pygame.mixer.music.play(-1)
