@@ -192,6 +192,55 @@ class Nivel_01(Nivel):
             e = Zombie5(dirimg+"zombies5.png",[zombie[0],zombie[1]])
             self.enemigos_lista.add(e)
 
+        #---------------Objetos NIVEL1-----------------------
+
+        mascota = Plataforma(dirimg+"mascota.png",[2150,ALTO - 25])
+        mascota.tipo = "mascota"
+        self.plataforma_lista.add(mascota)
+
+        pavos = [
+                  [1757,ALTO - ALTO/3 - 35],
+                  [3300,ALTO - 35]
+                ]
+
+        for pavo in pavos:
+            obj = Plataforma(dirimg+"pavo.png",[pavo[0],pavo[1]])
+            obj.tipo = "pavo"
+            self.plataforma_lista.add(obj)
+
+        zapatos = Plataforma(dirimg+"zapatos.png",[650 + 2*80 + 25,(ALTO - ALTO/2) - 2*80 - 25])
+        zapatos.tipo = "zapatos"
+        self.plataforma_lista.add(zapatos)
+
+        monedas = [
+                    [3150,ALTO - 50],
+                    [3100,ALTO - 50],
+                    [990 + 50 + 50*1, ALTO/10 - 50],
+                    [990 + 50 + 50*3, ALTO/10 - 50],
+                    [990 + 50+ 50*5, ALTO/10 - 50],
+                  ]
+
+        for moneda in monedas:
+            obj = Plataforma(dirimg+"coin.png",[moneda[0],moneda[1]])
+            obj.tipo = "moneda"
+            self.plataforma_lista.add(obj)
+
+        reloj = Plataforma(dirimg+"reloj.png",[3000 - 400 + 65, ALTO/3 - 25 - 45])
+        reloj.tipo = "reloj"
+        self.plataforma_lista.add(reloj)
+
+        municiones = [
+                       [3500 - 30 - 40*1*2, ALTO/3 - 60],
+                       [3500 - 30 - 40*3*2, ALTO/3 - 60],
+                       [3500 - 30 - 40*5*2, ALTO/3 - 60]
+                     ]
+
+        for municion in municiones:
+            obj = Plataforma(dirimg+"municion.png",[municion[0],municion[1]])
+            obj.tipo = "municion"
+            self.plataforma_lista.add(obj)
+
+
 class Nivel_02(Nivel):
     """ Definicion para el nivel 2. """
 
@@ -256,3 +305,12 @@ class Nivel_02(Nivel):
         for zombie in zombies_tipo6:
             e = Zombie6(dirimg+"zombies6.png",[zombie[0],zombie[1]])
             self.enemigos_lista.add(e)
+
+        #---------------Objetos NIVEL2-----------------------
+        rayo = Plataforma(dirimg+"rayo.png",[1050,ALTO/4 + 20])
+        rayo.tipo = "rayo"
+        self.plataforma_lista.add(rayo)
+
+        mascota = Plataforma(dirimg+"mascota.png",[500,ALTO/3 + 100 - 60])
+        mascota.tipo = "mascota"
+        self.plataforma_lista.add(mascota)

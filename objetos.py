@@ -62,11 +62,12 @@ class Jugador(pygame.sprite.Sprite):
         for bloque in bloque_col_list:
             # Si nos movemos a la derecha,
             # ubicar jugador a la izquierda del objeto golpeado
-            if self.vel_x > 0:
-                self.rect.right = bloque.rect.left
-            elif self.vel_x < 0:
-                # De otra forma nos movemos a la izquierda
-                self.rect.left = bloque.rect.right
+            if(bloque.tipo == ""):
+                if self.vel_x > 0:
+                    self.rect.right = bloque.rect.left
+                elif self.vel_x < 0:
+                    # De otra forma nos movemos a la izquierda
+                    self.rect.left = bloque.rect.right
 
         # Mover arriba/abajo
         self.rect.y += self.vel_y
@@ -74,15 +75,15 @@ class Jugador(pygame.sprite.Sprite):
         # Revisamos si chocamos
         bloque_col_list = pygame.sprite.spritecollide(self, self.nivel.plataforma_lista, False)
         for bloque in bloque_col_list:
+            if(bloque.tipo == ""):
+                # Reiniciamos posicion basado en el arriba/bajo del objeto
+                if self.vel_y > 0:
+                    self.rect.bottom = bloque.rect.top
+                elif self.vel_y < 0:
+                    self.rect.top = bloque.rect.bottom
 
-            # Reiniciamos posicion basado en el arriba/bajo del objeto
-            if self.vel_y > 0:
-                self.rect.bottom = bloque.rect.top
-            elif self.vel_y < 0:
-                self.rect.top = bloque.rect.bottom
-
-            # Detener movimiento vertical
-            self.vel_y = 0
+                # Detener movimiento vertical
+                self.vel_y = 0
 
     def calc_grav(self):
         """ Calculamos efecto de la gravedad. """
@@ -543,7 +544,4 @@ class Plataforma(pygame.sprite.Sprite): #Hereda de la clase sprite
     	self.pos = pos
     	self.rect.x = pos[0]
     	self.rect.y = pos[1]
-        self.name = img_name.split(".png")[0]
-
-    def getName(self):
-        return self.name
+        self.tipo = ""

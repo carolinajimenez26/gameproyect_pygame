@@ -162,63 +162,6 @@ class boton_inicio(buttonz):
         ls_vida_nivel2 = pygame.sprite.Group()#Rayo
         ls_mascota_nivel2 = pygame.sprite.Group()#Mascota
 
-        #---------------Objetos NIVEL1-----------------------
-
-        mascota = Plataforma(dirimg+"mascota.png",[2150,ALTO - 25])
-        ls_mascota_nivel1.add(mascota)
-        #ls_todos_nivel1.add(mascota)
-
-        pavos = [
-                  [1757,ALTO - ALTO/3 - 35],
-                  [3300,ALTO - 35]
-                ]
-
-        for pavo in pavos:
-            obj = Plataforma(dirimg+"pavo.png",[pavo[0],pavo[1]])
-            ls_vida_nivel1.add(obj)
-            ls_todos_nivel1.add(obj)
-
-        zapatos = Plataforma(dirimg+"zapatos.png",[650 + 2*80 + 25,(ALTO - ALTO/2) - 2*80 - 25])
-        ls_zapatos_nivel1.add(zapatos)
-        ls_todos_nivel1.add(zapatos)
-
-        monedas = [
-                    [3150,ALTO - 50],
-                    [3100,ALTO - 50],
-                    [990 + 50 + 50*1, ALTO/10 - 50],
-                    [990 + 50 + 50*3, ALTO/10 - 50],
-                    [990 + 50+ 50*5, ALTO/10 - 50],
-                  ]
-
-        for moneda in monedas:
-            obj = Plataforma(dirimg+"coin.png",[moneda[0],moneda[1]])
-            ls_monedas_nivel1.add(obj)
-            ls_todos_nivel1.add(obj)
-
-        reloj = Plataforma(dirimg+"reloj.png",[3000 - 400 + 65, ALTO/3 - 25 - 45])
-        ls_relojes_nivel1.add(reloj)
-        ls_todos_nivel1.add(reloj)
-
-        municiones = [
-                       [3500 - 30 - 40*1*2, ALTO/3 - 60],
-                       [3500 - 30 - 40*3*2, ALTO/3 - 60],
-                       [3500 - 30 - 40*5*2, ALTO/3 - 60]
-                     ]
-
-        for municion in municiones:
-            obj = Plataforma(dirimg+"municion.png",[municion[0],municion[1]])
-            ls_municiones_nivel1.add(obj)
-            ls_todos_nivel1.add(obj)
-
-        #---------------Objetos NIVEL2-----------------------
-        rayo = Plataforma(dirimg+"rayo.png",[1050,ALTO/4 + 20])
-        ls_vida_nivel2.add(rayo)
-        ls_todos_nivel2.add(rayo)
-
-        mascota = Plataforma(dirimg+"mascota.png",[500,ALTO/3 + 100 - 60])
-        ls_mascota_nivel2.add(mascota)
-        ls_todos_nivel2.add(mascota)
-
         print "len 1 : " ,len(ls_todos_nivel1) , "len 2 : " , len(ls_todos_nivel2)
 
         #Agregando objetos a grupos de sprites
@@ -327,6 +270,7 @@ class boton_inicio(buttonz):
                     if event.key == pygame.K_LEFT:
                         maximus.ir_izq()
                         maximus.setDir(1)
+
                         if(nivel_actual_no == 0):
 
                             for e in ls_enemigos_nivel1:
@@ -336,7 +280,6 @@ class boton_inicio(buttonz):
 
                             for e in ls_balase:
                                 if(e.tipo == "rata"):
-                                    print "name : ", e.getName()
                                     e.restartMovements(maximus.getPos())
 
                     if event.key == pygame.K_RIGHT:
@@ -405,15 +348,6 @@ class boton_inicio(buttonz):
                             lifebars(maximus,pantalla,[ANCHO/2,ALTO])#cambia la bara de vida
                             flag = True
 
-                #collide con pavos
-                ls_vidas_i = pygame.sprite.spritecollide(maximus, ls_vida_nivel1, True)
-                for vida in ls_vidas_i:
-                    #ls_vida_nivel1.remove(vida)
-                    ls_todos.remove(vida)
-                    #nivel1.removeElement(vida)
-                    maximus.setLife(maximus.getLife()+10)
-                    lifebars(maximus,pantalla,[ANCHO/2,ALTO])#cambia la bara de vida
-
                 for enemigo in ls_enemigos_nivel1:
                     for bala in ls_balaj:
                         if(checkCollision(bala,enemigo)): # si se choco
@@ -433,6 +367,13 @@ class boton_inicio(buttonz):
                         if(cont4 == 0):
                             maximus.setLife(maximus.getLife()-1)
                             flag4 = True
+
+                #Colision modificadores con maximus
+                ls_modificadores = pygame.sprite.spritecollide(maximus, nivel_actual.plataforma_lista, True)
+                for m in ls_modificadores:
+                    if(m.tipo != ""):
+                        print "modificador"
+                    nivel_actual.plataforma_lista.remove(m)
 
                 #--------------------Ataques--------------------
                 #Ataque zombie3
