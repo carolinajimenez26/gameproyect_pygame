@@ -375,11 +375,12 @@ class boton_inicio(buttonz):
                     if(m.tipo == "pavo"):
                         print "pavo"
                         nivel_actual.plataforma_lista.remove(m)
-                        maximus.setLife(maximus.getLife() + randint(1,15))
+                        maximus.setLife(maximus.getLife() + randint(8,15))
                         print "life : " , maximus.getLife()
                     if(m.tipo == "zapatos"):
                         print "zapatos"
                         nivel_actual.plataforma_lista.remove(m)
+                        maximus.increment_x += 5
                     if(m.tipo == "mascota"):
                         print "mascota"
                         nivel_actual.plataforma_lista.remove(m)
