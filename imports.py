@@ -340,7 +340,7 @@ class boton_inicio(buttonz):
                                     e.setDir(1)
 
                             for e in ls_balase:
-                                if(e.getName() == "rata"):
+                                if(e.tipo == "rata"):
                                     e.restartMovements(maximus.getPos())
 
                     if event.key == pygame.K_RIGHT:
@@ -354,7 +354,7 @@ class boton_inicio(buttonz):
                                     e.setDir(0)
 
                             for e in ls_balase:
-                                if(e.getName() == "rata"):
+                                if(e.tipo == "rata"):
                                     e.restartMovements(maximus.getPos())
 
                     if event.key == pygame.K_UP:
@@ -364,7 +364,7 @@ class boton_inicio(buttonz):
                             maximus.setDir(2)
 
                         for e in ls_balase:
-                            if(e.getName() == "rata"):
+                            if(e.tipo == "rata"):
                                 e.restartMovements(maximus.getPos())
 
                     if event.key == pygame.K_SPACE:
@@ -475,14 +475,14 @@ class boton_inicio(buttonz):
                 #----------------------Otros--------------------------
                 #Muerte ratas
                 for e in ls_balase:
-                    if(e.getName() == "rata"):
+                    if(e.tipo == "rata"):
                         if(e.getLife() <= 0):
                             ls_balase.remove(e) #las ratas se mueren
                             ls_todos_nivel1.remove(e)
 
                 #Desaparecen balas
                 for e in ls_balase:
-                    if(e.tipo == "rect"):
+                    if(e.tipo == "rata"):
                         if(e.getLife() <= 0):
                             ls_balase.remove(e) #las ratas se mueren
                             ls_todos_nivel1.remove(e)
@@ -620,6 +620,15 @@ class boton_inicio(buttonz):
             #------------Nivel1--------------
             if(nivel_actual_no == 0):
                 #ls_todos_nivel1.draw(pantalla)
+                for e in ls_balase:
+                    if(e.tipo == "rata"):
+                        e.restartMovements(maximus.getPos())
+
+                for bil in ls_balaj:
+                    ls_impactos=pygame.sprite.spritecollide(bil,ls_balase, False)
+                    for impacto in ls_impactos:
+                        ls_balaj.remove(bil)
+                        #ls_todos_nivel1.remove(bil)
 
                 #ls_todos_nivel1
                 #print "ls_mascota: " , ls_mascota_nivel1
