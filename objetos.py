@@ -277,7 +277,7 @@ class Enemy(pygame.sprite.Sprite): #Hereda de la clase sprite
         self.life = life
 
     def crash(self):
-        self.setLife(self.getLife() - 1)
+        self.setLife(self.getLife() - random.randrange(10,20))
 
 
 class Zombie1(Enemy):#Hereda de la clase Enemigo

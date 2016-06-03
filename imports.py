@@ -419,6 +419,9 @@ class boton_inicio(buttonz):
                             if(cont == 0):
                                 enemigo.crash()
                                 grunt.play() #se queja
+                                ls_balaj.remove(bala)
+                                ls_todos_nivel1.remove(bala)
+                                ls_todos_nivel2.remove(bala)
                                 flag2 = True
                                 if(enemigo.getLife() <= 0):
                                     ls_enemigos_nivel1.remove(enemigo)
@@ -637,7 +640,7 @@ class boton_inicio(buttonz):
 
             # Actualizamos elementos en el nivel
             nivel_actual.update()
-
+            ls_vida_nivel1
             #------------General--------------
             #renderiza objetos de informacion en la pantalla
             pantalla.blit(blood,[5,ALTO - ALTO+15])
