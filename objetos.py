@@ -515,7 +515,7 @@ class Zombie6(Enemy):#Hereda de la clase Enemigo
         self.moves = [0 for x in range(ANCHO)] #movimientos que debe realizar
 
     def StartMovements(self):#se mueve sobre si mismo
-        self.moves = CircunfPtoMedio(self.getPos(),self.r)#carga los nuevos movimientos
+        self.moves = CircunfPtoMedio([random.randrange(30,ANCHO - 30),random.randrange(30,ALTO/2 - 30)],self.r)#carga los nuevos movimientos
         self.order= sorted(self.moves, key=lambda tup: tup[1])
         self.i = 0 #debe empezar a recorrerla desde cero
 
@@ -530,7 +530,7 @@ class Zombie6(Enemy):#Hereda de la clase Enemigo
 class Mascota(Enemy):#Hereda de la clase Enemigo
     def __init__(self, img_name, pos):
         Enemy.__init__(self, img_name, pos)
-        self.i = 1
+        self.i = 0
         self.cont = 0
         self.reloj = 0
         self.life = 100
@@ -540,13 +540,16 @@ class Mascota(Enemy):#Hereda de la clase Enemigo
         self.moves = [0 for x in range(ANCHO)] #movimientos que debe realizar
 
     def StartMovements(self,pos):#se mueve sobre si mismo
+        print "start movements"
         self.moves = CircunfPtoMedio(pos,self.r)#carga los nuevos movimientos
         self.order= sorted(self.moves, key=lambda tup: tup[1])
         self.i = 0 #debe empezar a recorrerla desde cero
+        print self.moves
 
     def update(self): #se mueve
         if(self.moves[self.i] != 0):
             if(self.i < len(self.moves) - 1):
+                print "set : ", self.moves[self.i]
                 self.setPos(self.moves[self.i])
                 self.i += 1 #para que recorra el siguiente
             else :

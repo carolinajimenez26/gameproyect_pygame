@@ -205,7 +205,7 @@ class boton_inicio(buttonz):
 
         # Establecemos nivel actual
         nivel_actual_no = 0
-        #maximus.setPos([300, ALTO/2])
+        maximus.setPos([300, ALTO/2])
         nivel_actual = nivel_lista[nivel_actual_no]
 
         # Indicamos a la clase jugador cual es el nivel
@@ -220,6 +220,7 @@ class boton_inicio(buttonz):
         grunt = load_sound('enviroment/levels/sounds/gruntsound.wav',curdir)
         scream = load_sound('enviroment/levels/sounds/scream.ogg',curdir)
         moneda = load_sound('enviroment/levels/sounds/coin.ogg',curdir)
+        reloj_s = load_sound('enviroment/levels/sounds/ticking_clock.ogg',curdir)
 
         #Grupos de sprites
         ls_balaj = pygame.sprite.Group() #balas jugador
@@ -246,8 +247,6 @@ class boton_inicio(buttonz):
         ls_vida_nivel2 = pygame.sprite.Group()#Rayo
         ls_mascota_nivel2 = pygame.sprite.Group()#Mascota
 
-        print "len 1 : " ,len(ls_todos_nivel1) , "len 2 : " , len(ls_todos_nivel2)
-
         #Agregando objetos a grupos de sprites
         activos_sp_lista.add(maximus)
         ls_jugadores.add(maximus)
@@ -270,6 +269,8 @@ class boton_inicio(buttonz):
         flag8 = False
         cont8 = 0
         acompanante = False #si tiene la mascota protectora
+        cont_arena = 400 #tiempo en el que se quedan parados
+        countdown = False
 
         # Controlamos que tan rapido actualizamos pantalla
         reloj = pygame.time.Clock()
@@ -295,7 +296,7 @@ class boton_inicio(buttonz):
         closep=False
         # -------- Ciclo del juego -----------
         while not fin:
-
+            maximus.setLife(100)
             for bil in ls_balaj:
                 ls_impactos=pygame.sprite.spritecollide(bil,nivel_actual.getElements(), False)
                 for impacto in ls_impactos:
@@ -321,9 +322,9 @@ class boton_inicio(buttonz):
                 game_over = True
 
             #si mato a todos los enemigos y esta en el nivel2
-            if((len(ls_enemigos_nivel2) == 0 ) and (nivel_actual_no == 2)):
+            if((len(ls_enemigos_nivel2) == 0 ) and (nivel_actual_no == 1)):
                 nivel_actual.StopSound()
-                reloj.tick(0.3)
+                reloj.tick(1)
                 fin = True
                 winner = True
 
@@ -377,7 +378,10 @@ class boton_inicio(buttonz):
                                     e.restartMovements(maximus.getPos())
 
                             for e in nivel_actual.plataforma_lista:
+                                if(e.tipo == "mascota"):
+                                    print "entra"
                                 if(e.tipo == "mascota" and acompanante):
+                                    print "inicia"
                                     e.StartMovements(maximus.getPos())
 
                     if event.key == pygame.K_RIGHT:
@@ -391,7 +395,7 @@ class boton_inicio(buttonz):
                                     e.setDir(0)
 
                             for e in ls_balase:
-                                if(e.getName() == "rata"):
+                                if(e.tipo == "rata"):
                                     e.restartMovements(maximus.getPos())
 
                             for e in nivel_actual.plataforma_lista:
@@ -406,7 +410,7 @@ class boton_inicio(buttonz):
                             maximus.setDir(2)
 
                         for e in ls_balase:
-                            if(e.getName() == "rata"):
+                            if(e.tipo == "rata"):
                                 e.restartMovements(maximus.getPos())
 
                     if event.key == pygame.K_SPACE:
@@ -500,7 +504,8 @@ class boton_inicio(buttonz):
                     if(m.tipo == "reloj"):
                         print "reloj"
                         nivel_actual.plataforma_lista.remove(m)
-
+                        countdown = True
+                        reloj_s.play()
                         for e in ls_enemigos_nivel1:
                             if(e.tipo != 4):
                                 e.StopMovements()
@@ -551,11 +556,16 @@ class boton_inicio(buttonz):
                             ls_todos_nivel1.remove(e)
 
                 #Desaparecen balas
-                for e in ls_balase:
+                """for e in ls_balase:
                     if(e.tipo == "rata"):
                         if(e.getLife() <= 0):
                             ls_balase.remove(e) #las ratas se mueren
-                            ls_todos_nivel1.remove(e)
+                            ls_todos_nivel1.remove(e)"""
+
+                for e in ls_enemigos_nivel1:
+                    if(countdown <= 0):
+                        if(e.tipo != 4): #este no se mueve
+                            e.aux = True # se pueden volver a mover
             #--------------------NIVEL2----------------------------
             #--------------------Collides--------------------------
             if(nivel_actual_no == 1):
@@ -578,6 +588,7 @@ class boton_inicio(buttonz):
                     if(m.tipo == "mascota"):
                         print "elimina mascota"
                         nivel_actual.plataforma_lista.remove(m)
+                        acompanante = True
 
                 for enemigo2 in ls_enemigos_nivel2:
                     for bala in ls_balaj:
@@ -657,6 +668,11 @@ class boton_inicio(buttonz):
                 fin=True
                 nivel_actual.StopSound()
 
+            if(countdown): #cuenta regresiva, cogio el reloj
+                cont_arena -= 1
+            if(cont_arena <= 0):
+                countdown = False
+
             #  Si el maximus se aproxima al limite derecho de la pantalla (-x)
             if maximus.rect.x >= 500:
                 dif = maximus.rect.x - 500
@@ -684,14 +700,10 @@ class boton_inicio(buttonz):
                     maximus.setPos([300, ALTO/2])
 
                     for e in ls_enemigos_nivel2:
-                        e.StartMovements()
+                        e.StartMovements()#ejecuta
 
-                    for e in ls_balase:
+                    for e in ls_balase:#limpia
                         ls_balase.remove(e)
-
-                else: #se acabaron los niveles
-                    #fin = True
-                    print "se acabo"
 
             #------------Nivel1--------------
             if(nivel_actual_no == 0):

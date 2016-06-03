@@ -231,6 +231,10 @@ class Nivel_01(Nivel):
         reloj.tipo = "reloj"
         self.plataforma_lista.add(reloj)
 
+        """reloj = Plataforma(dirimg+"reloj.png",[30, ALTO - 45])
+        reloj.tipo = "reloj"
+        self.plataforma_lista.add(reloj)"""
+
         municiones = [
                        [3500 - 30 - 40*1*2, ALTO/3 - 60],
                        [3500 - 30 - 40*3*2, ALTO/3 - 60],
@@ -264,6 +268,7 @@ class Nivel_02(Nivel):
                              [400, ALTO - ALTO/7],
                              [300, ALTO - ALTO/4],
                              [500, ALTO - ALTO/7],
+                             [1200, ALTO - ALTO/2],
                              [600, ALTO - ALTO/4],
                              [1800, ALTO - ALTO/4],
                              [1600, ALTO - ALTO/7],
@@ -316,3 +321,4 @@ class Nivel_02(Nivel):
         mascota = Plataforma(dirimg+"mascota.png",[500,ALTO/3 + 100 - 60])
         mascota.tipo = "mascota"
         self.plataforma_lista.add(mascota)
+        print "plataforma len : ", len(self.plataforma_lista)
