@@ -94,9 +94,56 @@ class buttonz(pygame.sprite.Sprite):
             self.clicked=False
             self.image=self.images[0]
 
+class boton_unpause(buttonz):
+    def __init__(self,img,img2):
+        buttonz.__init__(self,img,img2)
+
+class boton_continuar(buttonz):
+    def __init__(self,img,img2):
+        buttonz.__init__(self,img,img2)
+    def action(self):
+        return True
+
+
 class boton_inicio(buttonz):
     def __init__(self,img,img2):
         buttonz.__init__(self,img,img2)
+
+    def pause(self,pt):
+        #pygame.image.save(pt, "example.jpg")
+        pr = pt.subsurface([0,0,800,600]) #Dibuja una surface sobre la pantalla
+        pr.fill((255,255,255))
+        ad1 = pygame.image.load(dirimg+'pausa.jpg')
+        ad1 = pygame.transform.scale(ad1,(800,600))
+        lsbtn = pygame.sprite.Group()
+        cerrarpau=False
+        btn1 = boton_continuar("btnco.png","btnco_p.png")
+        btn3 = boton_acercade("btn3.png","btn3_p.png")
+        rex,rey = btn1.getrect()
+        btn1.setpos([ANCHO/2-rex/2,ALTO/2-rey-50])
+        btn3.setpos([ANCHO/2-rex/2,ALTO/2-rey+250])
+
+        lsbtn.add(btn1)
+        lsbtn.add(btn3)
+
+        cerrar=False
+        pr.blit(ad1,(0,0))
+        while not(cerrar):
+            for event in pygame.event.get():
+                #if event.type == pygame.QUIT:
+                #    cerrar=True
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_p:
+                        cerrar=True
+                if event.type == pygame.MOUSEBUTTONUP:
+                    for btn in lsbtn:
+                        btn.setclicked()
+
+                pr.blit(ad1,(0,0))
+                lsbtn.draw(pr)
+                lsbtn.update()
+                pygame.display.flip()
+
     def action(self):
         pygame.mixer.music.stop()
 
@@ -136,6 +183,7 @@ class boton_inicio(buttonz):
         shot_se = load_sound('enviroment/levels/sounds/shot2.wav',curdir)
         grunt = load_sound('enviroment/levels/sounds/gruntsound.wav',curdir)
         scream = load_sound('enviroment/levels/sounds/scream.ogg',curdir)
+        moneda = load_sound('enviroment/levels/sounds/coin.ogg',curdir)
 
         #Grupos de sprites
         ls_balaj = pygame.sprite.Group() #balas jugador
@@ -162,63 +210,6 @@ class boton_inicio(buttonz):
         ls_vida_nivel2 = pygame.sprite.Group()#Rayo
         ls_mascota_nivel2 = pygame.sprite.Group()#Mascota
 
-        #---------------Objetos NIVEL1-----------------------
-
-        mascota = Plataforma(dirimg+"mascota.png",[2150,ALTO - 25])
-        ls_mascota_nivel1.add(mascota)
-        #ls_todos_nivel1.add(mascota)
-
-        pavos = [
-                  [1757,ALTO - ALTO/3 - 35],
-                  [3300,ALTO - 35]
-                ]
-
-        for pavo in pavos:
-            obj = Plataforma(dirimg+"pavo.png",[pavo[0],pavo[1]])
-            ls_vida_nivel1.add(obj)
-            ls_todos_nivel1.add(obj)
-
-        zapatos = Plataforma(dirimg+"zapatos.png",[650 + 2*80 + 25,(ALTO - ALTO/2) - 2*80 - 25])
-        ls_zapatos_nivel1.add(zapatos)
-        ls_todos_nivel1.add(zapatos)
-
-        monedas = [
-                    [3150,ALTO - 50],
-                    [3100,ALTO - 50],
-                    [990 + 50 + 50*1, ALTO/10 - 50],
-                    [990 + 50 + 50*3, ALTO/10 - 50],
-                    [990 + 50+ 50*5, ALTO/10 - 50],
-                  ]
-
-        for moneda in monedas:
-            obj = Plataforma(dirimg+"coin.png",[moneda[0],moneda[1]])
-            ls_monedas_nivel1.add(obj)
-            ls_todos_nivel1.add(obj)
-
-        reloj = Plataforma(dirimg+"reloj.png",[3000 - 400 + 65, ALTO/3 - 25 - 45])
-        ls_relojes_nivel1.add(reloj)
-        ls_todos_nivel1.add(reloj)
-
-        municiones = [
-                       [3500 - 30 - 40*1*2, ALTO/3 - 60],
-                       [3500 - 30 - 40*3*2, ALTO/3 - 60],
-                       [3500 - 30 - 40*5*2, ALTO/3 - 60]
-                     ]
-
-        for municion in municiones:
-            obj = Plataforma(dirimg+"municion.png",[municion[0],municion[1]])
-            ls_municiones_nivel1.add(obj)
-            ls_todos_nivel1.add(obj)
-
-        #---------------Objetos NIVEL2-----------------------
-        rayo = Plataforma(dirimg+"rayo.png",[1050,ALTO/4 + 20])
-        ls_vida_nivel2.add(rayo)
-        ls_todos_nivel2.add(rayo)
-
-        mascota = Plataforma(dirimg+"mascota.png",[500,ALTO/3 + 100 - 60])
-        ls_mascota_nivel2.add(mascota)
-        ls_todos_nivel2.add(mascota)
-
         print "len 1 : " ,len(ls_todos_nivel1) , "len 2 : " , len(ls_todos_nivel2)
 
         #Agregando objetos a grupos de sprites
@@ -242,6 +233,7 @@ class boton_inicio(buttonz):
         cont7 = 0
         flag8 = False
         cont8 = 0
+        acompanante = False #si tiene la mascota protectora
 
         # Controlamos que tan rapido actualizamos pantalla
         reloj = pygame.time.Clock()
@@ -264,12 +256,7 @@ class boton_inicio(buttonz):
         """for e in ls_enemigos_nivel2:
             e.StartMovements()"""
 
-        Config.read("config.ini")
-        Config.sections()
-        derecha = ConfigSectionMap("Movimientos")['derecha']
-        izquierda = ConfigSectionMap("Movimientos")['izquierda']
-        disparo = ConfigSectionMap("Movimientos")['disparo']
-        salto = ConfigSectionMap("Movimientos")['salto']
+
         # -------- Ciclo del juego -----------
         while not fin:
             for bil in ls_balaj:
@@ -318,6 +305,7 @@ class boton_inicio(buttonz):
             blood = tipo.render("Vida actual: " ,1, (255,0,0))
             pantalla.blit(blood, (0, ALTO))
             point = tipo.render(("Puntos: " + str(maximus.getScore())),1, (0,0,0))
+            municiones = tipo.render(("Municiones: " + str(maximus.municion)),1, ROJO)
 
             if(maximus.getLife() > 0):
               point = tipo.render(("Puntos: " + str(maximus.getScore())),1, (255,0,0))
@@ -329,9 +317,16 @@ class boton_inicio(buttonz):
                     fin = True
 
                 if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_p:
+                        self.pause(pantalla)
+
+                    if event.key == pygame.K_b:
+                        print maximus.getPos()
+
                     if event.key == pygame.K_LEFT:
                         maximus.ir_izq()
                         maximus.setDir(1)
+
                         if(nivel_actual_no == 0):
 
                             for e in ls_enemigos_nivel1:
@@ -342,6 +337,10 @@ class boton_inicio(buttonz):
                             for e in ls_balase:
                                 if(e.tipo == "rata"):
                                     e.restartMovements(maximus.getPos())
+
+                            for e in nivel_actual.plataforma_lista:
+                                if(e.tipo == "mascota" and acompanante):
+                                    e.StartMovements(maximus.getPos())
 
                     if event.key == pygame.K_RIGHT:
                         maximus.ir_der()
@@ -354,8 +353,13 @@ class boton_inicio(buttonz):
                                     e.setDir(0)
 
                             for e in ls_balase:
-                                if(e.tipo == "rata"):
+                                if(e.getName() == "rata"):
                                     e.restartMovements(maximus.getPos())
+
+                            for e in nivel_actual.plataforma_lista:
+                                if(e.tipo == "mascota" and acompanante):
+                                    print "start"
+                                    e.StartMovements(maximus.getPos())
 
                     if event.key == pygame.K_UP:
                         maximus.salto()
@@ -364,25 +368,27 @@ class boton_inicio(buttonz):
                             maximus.setDir(2)
 
                         for e in ls_balase:
-                            if(e.tipo == "rata"):
+                            if(e.getName() == "rata"):
                                 e.restartMovements(maximus.getPos())
 
                     if event.key == pygame.K_SPACE:
-                        bala = Bullet(dirimg+'bala.png',maximus.getPos())#la posicion inicial depende de objeto que este disparando
-                        dir = maximus.getDir()
-                        bala.setDir(dir)
-                        shot_s.play()
-                        if(dir == 0):#derecha
-                            bala.setPos([maximus.getPos()[0] + maximus.getMargen()[0]/2,maximus.getPos()[1]])
-                        if(dir == 1):#izquierda
-                            bala.setPos([maximus.getPos()[0] - maximus.getMargen()[0]/2,maximus.getPos()[1]])
-                        if(dir == 2 and nivel_actual_no != 0):#arriba
-                            bala.setPos([maximus.getPos()[0],maximus.getPos()[1] - maximus.getMargen()[1]])
-                        if(dir == 3 and nivel_actual_no != 0):#abajo
-                            bala.setPos([maximus.getPos()[0],maximus.getPos()[1] + maximus.getMargen()[1]])
-                        ls_balaj.add(bala)
-                        #ls_todos.add(bala)
-                        disparo = True
+                        if(maximus.municion > 0): #si tiene municiones
+                            bala = Bullet(dirimg+'bala.png',maximus.getPos())#la posicion inicial depende de objeto que este disparando
+                            dir = maximus.getDir()
+                            bala.setDir(dir)
+                            shot_s.play()
+                            maximus.municion -= 1 #le quita una municion
+                            if(dir == 0):#derecha
+                                bala.setPos([maximus.getPos()[0] + maximus.getMargen()[0]/2,maximus.getPos()[1]])
+                            if(dir == 1):#izquierda
+                                bala.setPos([maximus.getPos()[0] - maximus.getMargen()[0]/2,maximus.getPos()[1]])
+                            if(dir == 2 and nivel_actual_no != 0):#arriba
+                                bala.setPos([maximus.getPos()[0],maximus.getPos()[1] - maximus.getMargen()[1]])
+                            if(dir == 3 and nivel_actual_no != 0):#abajo
+                                bala.setPos([maximus.getPos()[0],maximus.getPos()[1] + maximus.getMargen()[1]])
+                            ls_balaj.add(bala)
+                            #ls_todos.add(bala)
+                            disparo = True
 
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_LEFT and maximus.vel_x < 0:
@@ -409,14 +415,6 @@ class boton_inicio(buttonz):
                             lifebars(maximus,pantalla,[ANCHO/2,ALTO])#cambia la bara de vida
                             flag = True
 
-                #collide con pavos
-                ls_vidas_i = pygame.sprite.spritecollide(maximus, ls_vida_nivel1, True)
-                for vida in ls_vidas_i:
-                    #ls_vida_nivel1.remove(vida)
-                    ls_todos.remove(vida)
-                    #nivel1.removeElement(vida)
-                    maximus.setLife(maximus.getLife()+10)
-                    lifebars(maximus,pantalla,[ANCHO/2,ALTO])#cambia la bara de vida
 
                 for enemigo in ls_enemigos_nivel1:
                     for bala in ls_balaj:
@@ -439,6 +437,40 @@ class boton_inicio(buttonz):
                         if(cont4 == 0):
                             maximus.setLife(maximus.getLife()-1)
                             flag4 = True
+
+                #Colision modificadores con maximus
+                ls_modificadores = pygame.sprite.spritecollide(maximus, nivel_actual.plataforma_lista, True)
+                for m in ls_modificadores:
+                    if(m.tipo == "pavo"):
+                        print "pavo"
+                        nivel_actual.plataforma_lista.remove(m)
+                        maximus.setLife(maximus.getLife() + random.randrange(8,15))
+                        print "life : " , maximus.getLife()
+                    if(m.tipo == "zapatos"):
+                        print "zapatos"
+                        nivel_actual.plataforma_lista.remove(m)
+                        maximus.increment_x += 5
+                    if(m.tipo == "mascota"):
+                        print "mascota"
+                        #nivel_actual.plataforma_lista.remove(m)
+                        acompanante = True
+                    if(m.tipo == "moneda"):
+                        print "moneda"
+                        nivel_actual.plataforma_lista.remove(m)
+                        moneda.play()
+                        maximus.score += random.randrange(5,10)
+                    if(m.tipo == "reloj"):
+                        print "reloj"
+                        nivel_actual.plataforma_lista.remove(m)
+
+                        for e in ls_enemigos_nivel1:
+                            if(e.tipo != 4):
+                                e.StopMovements()
+
+                    if(m.tipo == "municion"):
+                        print "municion"
+                        nivel_actual.plataforma_lista.remove(m)
+                        maximus.municion += 10
 
                 #--------------------Ataques--------------------
                 #Ataque zombie3
@@ -498,6 +530,17 @@ class boton_inicio(buttonz):
                             lifebars(maximus,pantalla,[ANCHO/2,ALTO])#cambia la bara de vida
                             flag = True
 
+                #Colision modificadores con maximus
+                ls_modificadores = pygame.sprite.spritecollide(maximus, nivel_actual.plataforma_lista, True)
+                for m in ls_modificadores:
+                    if(m.tipo == "rayo"):
+                        print "elimina rayo"
+                        nivel_actual.plataforma_lista.remove(m)
+                        maximus.setLife(100) #le devuelve toda la vida
+                    if(m.tipo == "mascota"):
+                        print "elimina mascota"
+                        nivel_actual.plataforma_lista.remove(m)
+
                 for enemigo2 in ls_enemigos_nivel2:
                     for bala in ls_balaj:
                         if(checkCollision(bala,enemigo2)): # si se choco
@@ -510,14 +553,6 @@ class boton_inicio(buttonz):
                                 if(enemigo2.getLife() <= 0):
                                     ls_enemigos_nivel2.remove(enemigo2)
 
-                #collide con pavos
-                ls_vidas_i = pygame.sprite.spritecollide(maximus, ls_vida_nivel2, True)
-                for vida in ls_vidas_i:
-                    #ls_vida_nivel1.remove(vida)
-                    ls_todos.remove(vida)
-                    #nivel1.removeElement(vida)
-                    maximus.setLife(maximus.getLife()+10)
-                    lifebars(maximus,pantalla,[ANCHO/2,ALTO])#cambia la bara de vida
 
                 #Colision bala enemigo
                 for bala in ls_balase:
@@ -624,11 +659,17 @@ class boton_inicio(buttonz):
                     if(e.tipo == "rata"):
                         e.restartMovements(maximus.getPos())
 
-                for bil in ls_balaj:
-                    ls_impactos=pygame.sprite.spritecollide(bil,ls_balase, False)
-                    for impacto in ls_impactos:
-                        ls_balaj.remove(bil)
-                        #ls_todos_nivel1.remove(bil)
+
+                for balae in ls_balase:
+                    for bala in ls_balaj:
+                        if(checkCollision(bala,balae)): # si se choco
+                            if(balae.tipo == "rata"):
+                                ls_balaj.remove(bala)
+                                ls_todos_nivel1.remove(bala)
+                            else:
+                                ls_balaj.remove(bala)
+                                ls_todos_nivel1.remove(bala)
+                                ls_balase.remove(balae)
 
                 #ls_todos_nivel1
                 #print "ls_mascota: " , ls_mascota_nivel1
@@ -674,6 +715,7 @@ class boton_inicio(buttonz):
             pantalla.blit(blood,[5,ALTO - ALTO+15])
             pantalla.blit(point,[5,(ALTO - ALTO+15) + 15]) #+ 15])
             pantalla.blit(reloj2, [5,(ALTO - ALTO+15) + 15*2])
+            pantalla.blit(municiones, [5,(ALTO - ALTO+15) + 15*3])
             lifebars(maximus,pantalla,[120,(ALTO - ALTO+15)])
             pygame.display.flip()
             reloj.tick(tasa_cambio)
@@ -684,8 +726,7 @@ class boton_inicio(buttonz):
             print "Perdiste"
         if(winner):
             print "ganaste"
-        for n in nivel_lista:
-            n.StopSound()
+
         pygame.mixer.music.play(-1)
 
 class boton_tutorial(buttonz):

@@ -47,6 +47,7 @@ class Jugador(pygame.sprite.Sprite):
         self.increment_x = 6
         self.increment_y = 0
         self.cont=0
+        self.municion = 40
 
 
     def update(self):
@@ -62,11 +63,12 @@ class Jugador(pygame.sprite.Sprite):
         for bloque in bloque_col_list:
             # Si nos movemos a la derecha,
             # ubicar jugador a la izquierda del objeto golpeado
-            if self.vel_x > 0:
-                self.rect.right = bloque.rect.left
-            elif self.vel_x < 0:
-                # De otra forma nos movemos a la izquierda
-                self.rect.left = bloque.rect.right
+            if(bloque.tipo == ""):
+                if self.vel_x > 0:
+                    self.rect.right = bloque.rect.left
+                elif self.vel_x < 0:
+                    # De otra forma nos movemos a la izquierda
+                    self.rect.left = bloque.rect.right
 
         # Mover arriba/abajo
         self.rect.y += self.vel_y
@@ -74,15 +76,15 @@ class Jugador(pygame.sprite.Sprite):
         # Revisamos si chocamos
         bloque_col_list = pygame.sprite.spritecollide(self, self.nivel.plataforma_lista, False)
         for bloque in bloque_col_list:
+            if(bloque.tipo == ""):
+                # Reiniciamos posicion basado en el arriba/bajo del objeto
+                if self.vel_y > 0:
+                    self.rect.bottom = bloque.rect.top
+                elif self.vel_y < 0:
+                    self.rect.top = bloque.rect.bottom
 
-            # Reiniciamos posicion basado en el arriba/bajo del objeto
-            if self.vel_y > 0:
-                self.rect.bottom = bloque.rect.top
-            elif self.vel_y < 0:
-                self.rect.top = bloque.rect.bottom
-
-            # Detener movimiento vertical
-            self.vel_y = 0
+                # Detener movimiento vertical
+                self.vel_y = 0
 
     def calc_grav(self):
         """ Calculamos efecto de la gravedad. """
@@ -289,6 +291,7 @@ class Zombie1(Enemy):#Hereda de la clase Enemigo
         self.life = 100
         self.speed = 1
         self.tipo = 1
+        self.aux = True
 
     def move(self): #se mueve solo
         self.rect.x += self.i
@@ -298,7 +301,14 @@ class Zombie1(Enemy):#Hereda de la clase Enemigo
             self.i *= -self.speed
 
     def update(self):
-        self.move()
+        if(self.aux):
+            self.move()
+
+    def StopMovements(self):
+        self.aux = False
+
+    def StartMovements(self):
+        self.aux = True
 
 class Zombie2(Enemy):#Hereda de la clase Enemigo
     vel_x = 0
@@ -316,78 +326,45 @@ class Zombie2(Enemy):#Hereda de la clase Enemigo
         self.dir = 0
         self.cont=0
         self.turn = 0
+        self.aux = True
+
     def setDir(self,dir):
         self.dir = dir
 
     def getDir(self):
         return self.dir
 
+    def StopMovements(self):
+        print "stop moving 2"
+        self.aux = False
+
+    def StartMovements(self):
+        self.aux = True
+
     def restartMovements(self,pos):#calcula el camino por donde debe moverse (recibe el punto final)
-        self.moves = Bresenhamrecta([self.getPos(),pos])#carga los nuevos movimientos
-        last_x = self.moves[-1][0]
-        aux =  self.getMargen()[0]
-        if(self.getDir() == 0):
-            aux *= -1
-        self.moves[-1] = [last_x + aux, self.moves[-1][1]]
-        self.i = 0 #debe empezar a recorrerla desde cero
+        if(self.aux):
+            self.moves = Bresenhamrecta([self.getPos(),pos])#carga los nuevos movimientos
+            last_x = self.moves[-1][0]
+            aux =  self.getMargen()[0]
+            if(self.getDir() == 0):
+                aux *= -1
+            self.moves[-1] = [last_x + aux, self.moves[-1][1]]
+            self.i = 0 #debe empezar a recorrerla desde cero
 
     def update(self): #se mueve
-        if self.turn == 0:
-            if self.rect.x > 120:
-                self.setPos([self.rect.x-5,self.rect.y])
-            else:
-                self.turn = 1
-        if self.turn==1:
-            bloque_col_list = pygame.sprite.spritecollide(self, self.nivel.plataforma_lista, False)
-            if(len(bloque_col_list) == 0):
-                self.setPos([self.rect.x+5,self.rect.y])
-            else:
-                self.turn=0
-        """bloques = self.nivel.plataforma_lista
-        if(self.i < len(self.moves)):
-            pos = self.moves[self.i]
-            bloque_col_list = pygame.sprite.spritecollide(self, self.nivel.plataforma_lista, False)
-            if(len(bloque_col_list) == 0):
-                if(pos == 0):
-                    for e in bloques:
-                        if(checkCollision(self,e) == False): # si no se choca con los objetos del nivel
-                            self.setPos([self.rect.x,self.rect.y])
+        if(self.aux):
+            if self.turn == 0:
+                if self.rect.x > 120:
+                    self.setPos([self.rect.x-5,self.rect.y])
                 else:
-                    if(pos[0] > self.rect.x):
-                        self.dir = 1
-                        print "izq"
-                    else:
-                        self.dir = 0
-                        print "dere"
-                    for e in bloques:
-                        if(checkCollision(self,e) == False): # si no se choca con los objetos del nivel
-                            self.setPos([pos[0],self.rect.y])#no vuela
+                    self.turn = 1
+            if self.turn==1:
+                bloque_col_list = pygame.sprite.spritecollide(self, self.nivel.plataforma_lista, False)
+                if(len(bloque_col_list) == 0):
+                    self.setPos([self.rect.x+5,self.rect.y])
+                else:
+                    self.turn=0
 
-                self.i += 1 #para que recorra el siguiente"""
-
-        # Revisar si golpeamos con algo (bloques con colision)
-        """bloque_col_list = pygame.sprite.spritecollide(self, self.nivel.plataforma_lista, False)
-        for bloque in bloque_col_list:
-            # Si nos movemos a la derecha,
-            # ubicar jugador a la izquierda del objeto golpeado
-            if self.vel_x > 0:
-                self.rect.right = bloque.rect.left
-            elif self.vel_x < 0:
-                # De otra forma nos movemos a la izquierda
-                self.rect.left = bloque.rect.right"""
-
-        # Mover arriba/abajo
-        """self.rect.y += self.vel_y
-        # Revisamos si chocamos
-        bloque_col_list = pygame.sprite.spritecollide(self, self.nivel.plataforma_lista, False)
-        for bloque in bloque_col_list:
-            # Reiniciamos posicion basado en el arriba/bajo del objeto
-            if self.vel_y > 0:
-                self.rect.bottom = bloque.rect.top
-            elif self.vel_y < 0:
-                self.rect.top = bloque.rect.bottom
-            # Detener movimiento vertical
-            self.vel_y = 0"""
 
 class Zombie3(Enemy):
     def __init__(self, img_name, pos):
@@ -400,12 +377,19 @@ class Zombie3(Enemy):
         self.tipo = 3
         self.dir = 0 #derecha
         self.speed_aux = 0
+        self.aux = True
 
     def setDir(self,dir):
         self.dir = dir
 
     def getDir(self):
         return self.dir
+
+    def StopMovements(self):
+        self.aux = False
+
+    def StartMovements(self):
+        self.aux = True
 
     def move(self): #se mueve solo
         if(self.speed_aux >= 1):
@@ -420,7 +404,8 @@ class Zombie3(Enemy):
             self.speed_aux += 1
 
     def update(self):
-        self.move()
+        if(self.aux):
+            self.move()
 
     def changeDirection(self):
         if(self.getDir() == 0): #der
@@ -487,6 +472,13 @@ class Zombie5(Enemy):#Hereda de la clase Enemigo
         self.tipo = 5
         self.increment_y = 0
         self.jumping = False
+        self.aux = True
+
+    def StopMovements(self):
+        self.aux = False
+
+    def StartMovements(self):
+        self.aux = True
 
     def calc_grav(self):
         """ Calculamos efecto de la gravedad. """
@@ -507,7 +499,8 @@ class Zombie5(Enemy):#Hereda de la clase Enemigo
             self.increment_y -= 10
 
     def update(self):
-        self.calc_grav()
+        if(self.aux):
+            self.calc_grav()
 
 class Zombie6(Enemy):#Hereda de la clase Enemigo
     def __init__(self, img_name, pos):
@@ -521,11 +514,33 @@ class Zombie6(Enemy):#Hereda de la clase Enemigo
         self.r = 10
         self.moves = [0 for x in range(ANCHO)] #movimientos que debe realizar
 
-    def crash(self):
-        self.setLife(self.getLife() - random.randrange(8,15))
-
     def StartMovements(self):#se mueve sobre si mismo
         self.moves = CircunfPtoMedio(self.getPos(),self.r)#carga los nuevos movimientos
+        self.order= sorted(self.moves, key=lambda tup: tup[1])
+        self.i = 0 #debe empezar a recorrerla desde cero
+
+    def update(self): #se mueve
+        if(self.moves[self.i] != 0):
+            if(self.i < len(self.moves) - 1):
+                self.setPos(self.moves[self.i])
+                self.i += 1 #para que recorra el siguiente
+            else :
+                self.i = 0
+
+class Mascota(Enemy):#Hereda de la clase Enemigo
+    def __init__(self, img_name, pos):
+        Enemy.__init__(self, img_name, pos)
+        self.i = 1
+        self.cont = 0
+        self.reloj = 0
+        self.life = 100
+        self.speed = 1
+        self.tipo = "mascota"
+        self.r = 10
+        self.moves = [0 for x in range(ANCHO)] #movimientos que debe realizar
+
+    def StartMovements(self,pos):#se mueve sobre si mismo
+        self.moves = CircunfPtoMedio(pos,self.r)#carga los nuevos movimientos
         self.order= sorted(self.moves, key=lambda tup: tup[1])
         self.i = 0 #debe empezar a recorrerla desde cero
 
@@ -545,21 +560,4 @@ class Plataforma(pygame.sprite.Sprite): #Hereda de la clase sprite
     	self.pos = pos
     	self.rect.x = pos[0]
     	self.rect.y = pos[1]
-        self.name = img_name.split(".png")[0]
-
-    def getName(self):
-        return self.name
-
-
-class Pavo(pygame.sprite.Sprite): #Hereda de la clase sprite
-    def __init__(self, img_name, pos):
-    	pygame.sprite.Sprite.__init__(self)
-    	self.image = pygame.image.load(img_name).convert_alpha()
-    	self.rect = self.image.get_rect()
-    	self.pos = pos
-    	self.rect.x = pos[0]
-    	self.rect.y = pos[1]
-        self.name = img_name.split(".png")[0]
-
-    def getName(self):
-        return self.name
+        self.tipo = ""
