@@ -9,7 +9,7 @@ def main():
     ls = pygame.sprite.Group() #Lista del background
     #Seccion de botones
     btn1 = boton_inicio("btn1.png","btn1_p.png")
-    btn2 = boton_ajustes("btn2.png","btn2_p.png",menu_d,ls,(ANCHO,ALTO))
+    btn2 = boton_ajustes("btn2.png","btn2_p.png",menu_d,ls,(ANCHO,ALTO),True)
     btn3 = boton_acercade("btn3.png","btn3_p.png")
     rex,rey = btn1.getrect()
     btn1.setpos([ANCHO/2-rex/2,ALTO/2-rey-50])

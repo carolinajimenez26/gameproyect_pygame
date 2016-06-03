@@ -94,15 +94,44 @@ class buttonz(pygame.sprite.Sprite):
             self.clicked=False
             self.image=self.images[0]
 
-class boton_unpause(buttonz):
-    def __init__(self,img,img2):
-        buttonz.__init__(self,img,img2)
+
 
 class boton_continuar(buttonz):
     def __init__(self,img,img2):
         buttonz.__init__(self,img,img2)
+        self.flag=False
+
     def action(self):
-        return True
+        if(self.flag):
+            return True
+        else:
+            return False
+
+    def update(self):
+        x_len,y_len = self.getrect()
+        button_x,button_y = self.getrectpos()
+        mos_x, mos_y = pygame.mouse.get_pos()
+        if mos_x>button_x and (mos_x<button_x+x_len):
+            x_inside = True
+        else:
+            x_inside = False
+        if mos_y>button_y and (mos_y<button_y+y_len):
+            y_inside = True
+        else:
+            y_inside = False
+        if x_inside and y_inside:
+            if self.clicked:
+                self.image=self.images[1]
+                self.clicked=False
+                self.flag=True
+                self.action()
+            else:
+                self.flag=False
+                self.image=self.images[1]
+        else:
+            self.clicked=False
+            self.image=self.images[0]
+
 
 
 class boton_inicio(buttonz):
@@ -110,6 +139,7 @@ class boton_inicio(buttonz):
         buttonz.__init__(self,img,img2)
 
     def pause(self,pt):
+        menupp=False
         #pygame.image.save(pt, "example.jpg")
         pr = pt.subsurface([0,0,800,600]) #Dibuja una surface sobre la pantalla
         pr.fill((255,255,255))
@@ -118,11 +148,13 @@ class boton_inicio(buttonz):
         lsbtn = pygame.sprite.Group()
         cerrarpau=False
         btn1 = boton_continuar("btnco.png","btnco_p.png")
-        btn3 = boton_acercade("btn3.png","btn3_p.png")
+        btn2 = boton_ajustes("btn2.png","btn2_p.png",pr,0,(800,600),False)
+        btn3 = boton_continuar("btnmenu.png","btnmenu_p.png")
         rex,rey = btn1.getrect()
-        btn1.setpos([ANCHO/2-rex/2,ALTO/2-rey-50])
-        btn3.setpos([ANCHO/2-rex/2,ALTO/2-rey+250])
-
+        btn1.setpos([800/2-rex/2,600/2-rey-50])
+        btn2.setpos([800/2-rex/2,600/2-rey+100])
+        btn3.setpos([800/2-rex/2,600/2-rey+250])
+        lsbtn.add(btn2)
         lsbtn.add(btn1)
         lsbtn.add(btn3)
 
@@ -142,8 +174,12 @@ class boton_inicio(buttonz):
                 pr.blit(ad1,(0,0))
                 lsbtn.draw(pr)
                 lsbtn.update()
+                cerrar=btn1.action()
+                menupp=btn3.action()
+                if(menupp):
+                    cerrar=True
                 pygame.display.flip()
-
+        return menupp
     def action(self):
         pygame.mixer.music.stop()
 
@@ -256,9 +292,10 @@ class boton_inicio(buttonz):
         """for e in ls_enemigos_nivel2:
             e.StartMovements()"""
 
-
+        closep=False
         # -------- Ciclo del juego -----------
         while not fin:
+
             for bil in ls_balaj:
                 ls_impactos=pygame.sprite.spritecollide(bil,nivel_actual.getElements(), False)
                 for impacto in ls_impactos:
@@ -318,7 +355,7 @@ class boton_inicio(buttonz):
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_p:
-                        self.pause(pantalla)
+                        closep=self.pause(pantalla)
 
                     if event.key == pygame.K_b:
                         print maximus.getPos()
@@ -615,6 +652,9 @@ class boton_inicio(buttonz):
                 cont8 += 1
             if(cont8 >= 200):
                 cont8 = 0
+            if(closep):
+                fin=True
+                nivel_actual.StopSound()
 
             #  Si el maximus se aproxima al limite derecho de la pantalla (-x)
             if maximus.rect.x >= 500:
@@ -817,15 +857,19 @@ class menu(window):
         okButton.pack(side=RIGHT)
 
 class boton_ajustes(buttonz):
-    def __init__(self,img,img2,ventana,backgrounl,DIM):
+    def __init__(self,img,img2,ventana,backgrounl,DIM,esmenu):
         buttonz.__init__(self,img,img2)
         self.ventana=ventana
         self.backgrounl=backgrounl
         self.ANCHO = DIM[0]
         self.ALTO = DIM [1]
+        self.esmenu=esmenu
     def action(self):
-        self.backgrounl.draw(self.ventana)
-        self.ventana = pygame.display.set_mode((2, 2))
+        if(self.esmenu):
+            self.backgrounl.draw(self.ventana)
+            self.ventana = pygame.display.set_mode((2, 2))
+        else:
+            self.ventana = pygame.display.set_mode((2, 2))
         #pr = self.ventana.subsurface([0,0,100,100]) #Dibuja una surface sobre la pantalla
         #pr.fill((255,255,255))
         pygame.display.flip()
