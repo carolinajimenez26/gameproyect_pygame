@@ -110,6 +110,7 @@ class Nivel_01(Nivel):
                      ]
 
         caja_tipo2 = [
+                        [350,ALTO - ALTO/2],
                         [-80,(ALTO - ALTO/3) + 80 ],
                         [0,(ALTO - ALTO/3) ],
                         [0 + 80,(ALTO - ALTO/3) - 80],
@@ -117,7 +118,7 @@ class Nivel_01(Nivel):
                         [1750,ALTO - ALTO/3],
                         [2500,ALTO - ALTO/3],
                         [2600,ALTO - ALTO/3],
-                        [2700,ALTO - ALTO/3],
+                        [2700,ALTO - ALTO/3]
                      ]
 
         for caja in caja_tipo1:
