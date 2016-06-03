@@ -316,6 +316,7 @@ class boton_inicio(buttonz):
             ##En el nivel2 no puede tocar el suelo, pierde
             if((maximus.getPos()[1] == ALTO - maximus.getMargen()[1]) and nivel_actual_no != 0):
                 print "gameover"
+                nivel_actual.StopSound()
                 fin = True
                 game_over = True
 
