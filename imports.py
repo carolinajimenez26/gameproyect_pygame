@@ -258,6 +258,7 @@ class boton_inicio(buttonz):
             blood = tipo.render("Vida actual: " ,1, (255,0,0))
             pantalla.blit(blood, (0, ALTO))
             point = tipo.render(("Puntos: " + str(maximus.getScore())),1, (0,0,0))
+            municiones = tipo.render(("Municiones: " + str(maximus.municion)),1, ROJO)
 
             if(maximus.getLife() > 0):
               point = tipo.render(("Puntos: " + str(maximus.getScore())),1, (255,0,0))
@@ -309,21 +310,23 @@ class boton_inicio(buttonz):
                                 e.restartMovements(maximus.getPos())
 
                     if event.key == pygame.K_SPACE:
-                        bala = Bullet(dirimg+'bala.png',maximus.getPos())#la posicion inicial depende de objeto que este disparando
-                        dir = maximus.getDir()
-                        bala.setDir(dir)
-                        shot_s.play()
-                        if(dir == 0):#derecha
-                            bala.setPos([maximus.getPos()[0] + maximus.getMargen()[0]/2,maximus.getPos()[1]])
-                        if(dir == 1):#izquierda
-                            bala.setPos([maximus.getPos()[0] - maximus.getMargen()[0]/2,maximus.getPos()[1]])
-                        if(dir == 2 and nivel_actual_no != 0):#arriba
-                            bala.setPos([maximus.getPos()[0],maximus.getPos()[1] - maximus.getMargen()[1]])
-                        if(dir == 3 and nivel_actual_no != 0):#abajo
-                            bala.setPos([maximus.getPos()[0],maximus.getPos()[1] + maximus.getMargen()[1]])
-                        ls_balaj.add(bala)
-                        #ls_todos.add(bala)
-                        disparo = True
+                        if(maximus.municion > 0): #si tiene municiones
+                            bala = Bullet(dirimg+'bala.png',maximus.getPos())#la posicion inicial depende de objeto que este disparando
+                            dir = maximus.getDir()
+                            bala.setDir(dir)
+                            shot_s.play()
+                            maximus.municion -= 1 #le quita una municion
+                            if(dir == 0):#derecha
+                                bala.setPos([maximus.getPos()[0] + maximus.getMargen()[0]/2,maximus.getPos()[1]])
+                            if(dir == 1):#izquierda
+                                bala.setPos([maximus.getPos()[0] - maximus.getMargen()[0]/2,maximus.getPos()[1]])
+                            if(dir == 2 and nivel_actual_no != 0):#arriba
+                                bala.setPos([maximus.getPos()[0],maximus.getPos()[1] - maximus.getMargen()[1]])
+                            if(dir == 3 and nivel_actual_no != 0):#abajo
+                                bala.setPos([maximus.getPos()[0],maximus.getPos()[1] + maximus.getMargen()[1]])
+                            ls_balaj.add(bala)
+                            #ls_todos.add(bala)
+                            disparo = True
 
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_LEFT and maximus.vel_x < 0:
@@ -397,6 +400,7 @@ class boton_inicio(buttonz):
                     if(m.tipo == "municion"):
                         print "municion"
                         nivel_actual.plataforma_lista.remove(m)
+                        maximus.municion += 10
 
                 #--------------------Ataques--------------------
                 #Ataque zombie3
@@ -613,6 +617,7 @@ class boton_inicio(buttonz):
             pantalla.blit(blood,[5,ALTO - ALTO+15])
             pantalla.blit(point,[5,(ALTO - ALTO+15) + 15]) #+ 15])
             pantalla.blit(reloj2, [5,(ALTO - ALTO+15) + 15*2])
+            pantalla.blit(municiones, [5,(ALTO - ALTO+15) + 15*3])
             lifebars(maximus,pantalla,[120,(ALTO - ALTO+15)])
             pygame.display.flip()
             reloj.tick(tasa_cambio)

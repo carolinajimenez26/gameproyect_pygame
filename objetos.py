@@ -47,6 +47,7 @@ class Jugador(pygame.sprite.Sprite):
         self.increment_x = 6
         self.increment_y = 0
         self.cont=0
+        self.municion = 40
 
 
     def update(self):
