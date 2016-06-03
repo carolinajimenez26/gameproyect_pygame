@@ -138,7 +138,7 @@ class boton_inicio(buttonz):
         grunt = load_sound('enviroment/levels/sounds/gruntsound.wav',curdir)
         scream = load_sound('enviroment/levels/sounds/scream.ogg',curdir)
         moneda = load_sound('enviroment/levels/sounds/coin.ogg',curdir)
-        
+
         #Grupos de sprites
         ls_balaj = pygame.sprite.Group() #balas jugador
         ls_enemigos_nivel1 = nivel1.getEnemies() #lista enemigos nivel1
@@ -362,6 +362,7 @@ class boton_inicio(buttonz):
                                 flag2 = True
                                 if(enemigo.getLife() <= 0):
                                     ls_enemigos_nivel1.remove(enemigo)
+                                    maximus.score += 2
 
                 #Colision bala enemigo
                 for bala in ls_balase:
@@ -389,6 +390,7 @@ class boton_inicio(buttonz):
                         print "moneda"
                         nivel_actual.plataforma_lista.remove(m)
                         moneda.play()
+                        maximus.score += 5
                     if(m.tipo == "reloj"):
                         print "reloj"
                         nivel_actual.plataforma_lista.remove(m)
