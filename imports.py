@@ -397,6 +397,11 @@ class boton_inicio(buttonz):
                     if(m.tipo == "reloj"):
                         print "reloj"
                         nivel_actual.plataforma_lista.remove(m)
+
+                        for e in ls_enemigos_nivel1:
+                            if(e.tipo != 4):
+                                e.StopMovements()
+
                     if(m.tipo == "municion"):
                         print "municion"
                         nivel_actual.plataforma_lista.remove(m)
@@ -467,6 +472,7 @@ class boton_inicio(buttonz):
                     if(m.tipo == "rayo"):
                         print "rayo"
                         nivel_actual.plataforma_lista.remove(m)
+                        maximus.setLife(100) #le devuelve toda la vida
                     if(m.tipo == "mascota"):
                         print "mascota"
                         nivel_actual.plataforma_lista.remove(m)
