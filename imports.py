@@ -187,6 +187,7 @@ class boton_inicio(buttonz):
         cont7 = 0
         flag8 = False
         cont8 = 0
+        acompanante = False #si tiene la mascota protectora
 
         # Controlamos que tan rapido actualizamos pantalla
         reloj = pygame.time.Clock()
@@ -270,6 +271,7 @@ class boton_inicio(buttonz):
                     fin = True
 
                 if event.type == pygame.KEYDOWN:
+
                     if event.key == pygame.K_LEFT:
                         maximus.ir_izq()
                         maximus.setDir(1)
@@ -285,6 +287,10 @@ class boton_inicio(buttonz):
                                 if(e.tipo == "rata"):
                                     e.restartMovements(maximus.getPos())
 
+                            for e in nivel_actual.plataforma_lista:
+                                if(e.tipo == "mascota" and acompanante):
+                                    e.StartMovements(maximus.getPos())
+
                     if event.key == pygame.K_RIGHT:
                         maximus.ir_der()
                         maximus.setDir(0)
@@ -298,6 +304,11 @@ class boton_inicio(buttonz):
                             for e in ls_balase:
                                 if(e.getName() == "rata"):
                                     e.restartMovements(maximus.getPos())
+
+                            for e in nivel_actual.plataforma_lista:
+                                if(e.tipo == "mascota" and acompanante):
+                                    print "start"
+                                    e.StartMovements(maximus.getPos())
 
                     if event.key == pygame.K_UP:
                         maximus.salto()
@@ -388,7 +399,8 @@ class boton_inicio(buttonz):
                         maximus.increment_x += 5
                     if(m.tipo == "mascota"):
                         print "mascota"
-                        nivel_actual.plataforma_lista.remove(m)
+                        #nivel_actual.plataforma_lista.remove(m)
+                        acompanante = True
                     if(m.tipo == "moneda"):
                         print "moneda"
                         nivel_actual.plataforma_lista.remove(m)
@@ -470,11 +482,11 @@ class boton_inicio(buttonz):
                 ls_modificadores = pygame.sprite.spritecollide(maximus, nivel_actual.plataforma_lista, True)
                 for m in ls_modificadores:
                     if(m.tipo == "rayo"):
-                        print "rayo"
+                        print "elimina rayo"
                         nivel_actual.plataforma_lista.remove(m)
                         maximus.setLife(100) #le devuelve toda la vida
                     if(m.tipo == "mascota"):
-                        print "mascota"
+                        print "elimina mascota"
                         nivel_actual.plataforma_lista.remove(m)
 
                 #Colision bala enemigo

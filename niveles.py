@@ -194,7 +194,8 @@ class Nivel_01(Nivel):
 
         #---------------Objetos NIVEL1-----------------------
 
-        mascota = Plataforma(dirimg+"mascota.png",[2150,ALTO - 25])
+        #mascota = Plataforma(dirimg+"mascota.png",[2150,ALTO - 25])
+        mascota = Mascota(dirimg+"mascota.png",[2150,ALTO - 25])
         mascota.tipo = "mascota"
         self.plataforma_lista.add(mascota)
 

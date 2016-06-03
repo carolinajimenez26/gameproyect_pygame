@@ -527,6 +527,31 @@ class Zombie6(Enemy):#Hereda de la clase Enemigo
             else :
                 self.i = 0
 
+class Mascota(Enemy):#Hereda de la clase Enemigo
+    def __init__(self, img_name, pos):
+        Enemy.__init__(self, img_name, pos)
+        self.i = 1
+        self.cont = 0
+        self.reloj = 0
+        self.life = 100
+        self.speed = 1
+        self.tipo = "mascota"
+        self.r = 10
+        self.moves = [0 for x in range(ANCHO)] #movimientos que debe realizar
+
+    def StartMovements(self,pos):#se mueve sobre si mismo
+        self.moves = CircunfPtoMedio(pos,self.r)#carga los nuevos movimientos
+        self.order= sorted(self.moves, key=lambda tup: tup[1])
+        self.i = 0 #debe empezar a recorrerla desde cero
+
+    def update(self): #se mueve
+        if(self.moves[self.i] != 0):
+            if(self.i < len(self.moves) - 1):
+                self.setPos(self.moves[self.i])
+                self.i += 1 #para que recorra el siguiente
+            else :
+                self.i = 0
+
 class Plataforma(pygame.sprite.Sprite): #Hereda de la clase sprite
     def __init__(self, img_name, pos):
     	pygame.sprite.Sprite.__init__(self)
