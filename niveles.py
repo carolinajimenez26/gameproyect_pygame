@@ -8,7 +8,6 @@ class Nivel(object):
 
     plataforma_lista = None
     enemigos_lista = None
-
     mov_fondo = 0
 
     def __init__(self, jugador,imagen,sonido):
@@ -17,12 +16,11 @@ class Nivel(object):
         self.jugador = jugador
         self.fondo = pygame.image.load(imagen)
         self.sonido = load_sound(sonido,curdir)
-
     # Actualizamos elementos en el nivel
     def update(self):
         """ Actualiza todo lo que este en este nivel."""
         self.plataforma_lista.update()
-        self.enemigos_lista.update()
+        self.enemigos_lista.update(
 
     def draw(self, pantalla):
         """ Dibuja lo que se encuentre en el nivel. """
@@ -173,6 +171,15 @@ class Nivel_01(Nivel):
                           [1600, ALTO/3],
                         ]
 
+        pavos = [
+                  [1757,ALTO - ALTO/3 - 35],
+                  [3300,ALTO - 35]
+                ]
+
+        for pavo in pavos:
+            obj = Pavo(dirimg+"pavo.png",[pavo[0],pavo[1]])
+            self.mod.add(obj)
+
         for zombie in zombies_tipo1:
             e = Zombie1(dirimg+"zombies1.png",[zombie[0],zombie[1]])
             self.enemigos_lista.add(e)
@@ -191,6 +198,7 @@ class Nivel_01(Nivel):
         for zombie in zombies_tipo5:
             e = Zombie5(dirimg+"zombies5.png",[zombie[0],zombie[1]])
             self.enemigos_lista.add(e)
+
 
 class Nivel_02(Nivel):
     """ Definicion para el nivel 2. """
