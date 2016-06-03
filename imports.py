@@ -6,6 +6,7 @@ from Tkinter import *
 import tkMessageBox
 from ttk import Frame, Button, Style
 from PIL import Image, ImageTk
+from random import randint
 #Fin
 
 # Dimensiones pantalla
@@ -371,9 +372,26 @@ class boton_inicio(buttonz):
                 #Colision modificadores con maximus
                 ls_modificadores = pygame.sprite.spritecollide(maximus, nivel_actual.plataforma_lista, True)
                 for m in ls_modificadores:
-                    if(m.tipo != ""):
-                        print "modificador"
-                    nivel_actual.plataforma_lista.remove(m)
+                    if(m.tipo == "pavo"):
+                        print "pavo"
+                        nivel_actual.plataforma_lista.remove(m)
+                        maximus.setLife(maximus.getLife() + randint(1,15))
+                        print "life : " , maximus.getLife()
+                    if(m.tipo == "zapatos"):
+                        print "zapatos"
+                        nivel_actual.plataforma_lista.remove(m)
+                    if(m.tipo == "mascota"):
+                        print "mascota"
+                        nivel_actual.plataforma_lista.remove(m)
+                    if(m.tipo == "moneda"):
+                        print "moneda"
+                        nivel_actual.plataforma_lista.remove(m)
+                    if(m.tipo == "reloj"):
+                        print "reloj"
+                        nivel_actual.plataforma_lista.remove(m)
+                    if(m.tipo == "reloj"):
+                        print "municion"
+                        nivel_actual.plataforma_lista.remove(m)
 
                 #--------------------Ataques--------------------
                 #Ataque zombie3
@@ -412,9 +430,7 @@ class boton_inicio(buttonz):
                 #Muerte ratas
                 for e in ls_balase:
                     if(e.tipo == "rata"):
-                        print "life rata : " , e.getLife()
                         if(e.getLife() <= 0):
-                            print "life in 0"
                             ls_balase.remove(e) #las ratas se mueren
                             ls_todos_nivel1.remove(e)
 
@@ -436,14 +452,15 @@ class boton_inicio(buttonz):
                             lifebars(maximus,pantalla,[ANCHO/2,ALTO])#cambia la bara de vida
                             flag = True
 
-                #collide con pavos
-                ls_vidas_i = pygame.sprite.spritecollide(maximus, ls_vida_nivel2, True)
-                for vida in ls_vidas_i:
-                    #ls_vida_nivel1.remove(vida)
-                    ls_todos.remove(vida)
-                    #nivel1.removeElement(vida)
-                    maximus.setLife(maximus.getLife()+10)
-                    lifebars(maximus,pantalla,[ANCHO/2,ALTO])#cambia la bara de vida
+                #Colision modificadores con maximus
+                ls_modificadores = pygame.sprite.spritecollide(maximus, nivel_actual.plataforma_lista, True)
+                for m in ls_modificadores:
+                    if(m.tipo == "rayo"):
+                        print "rayo"
+                        nivel_actual.plataforma_lista.remove(m)
+                    if(m.tipo == "mascota"):
+                        print "mascota"
+                        nivel_actual.plataforma_lista.remove(m)
 
                 #Colision bala enemigo
                 for bala in ls_balase:

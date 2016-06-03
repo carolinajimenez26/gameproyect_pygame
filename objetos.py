@@ -472,7 +472,6 @@ class Rata(Enemy):#Hereda de la clase Enemigo
                 for e in bloques:
                     if(checkCollision(self,e) == False): # si no se choca con los objetos del nivel
                         self.setPos(pos)
-                        print "holi"
 
             self.i += 1 #para que recorra el siguiente
 
