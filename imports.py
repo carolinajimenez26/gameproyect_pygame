@@ -335,7 +335,8 @@ class boton_inicio(buttonz):
                                     e.setDir(1)
 
                             for e in ls_balase:
-                                if(e.getName() == "rata"):
+                                if(e.tipo == "rata"):
+                                    print "name : ", e.getName()
                                     e.restartMovements(maximus.getPos())
 
                     if event.key == pygame.K_RIGHT:
@@ -452,6 +453,7 @@ class boton_inicio(buttonz):
                                 flag5 = True
                                 rata = Rata(dirimg+'rata.png',enemigo.getPos(),nivel_actual)
                                 ls_balase.add(rata) #lista balas enemigos
+                                ls_todos_nivel1.add(e)
                                 scream.play()
 
                 #Salto zombie tipo5
@@ -468,8 +470,10 @@ class boton_inicio(buttonz):
                 #----------------------Otros--------------------------
                 #Muerte ratas
                 for e in ls_balase:
-                    if(e.getName() == "rata"):
+                    if(e.tipo == "rata"):
+                        print "life rata : " , e.getLife()
                         if(e.getLife() <= 0):
+                            print "life in 0"
                             ls_balase.remove(e) #las ratas se mueren
                             ls_todos_nivel1.remove(e)
 
@@ -575,7 +579,7 @@ class boton_inicio(buttonz):
                nivel_actual.Mover_fondo(dif)
 
             #si pos maximus se ha desplazado hasta el limite del nivel
-            #Si llegamos al final del nivel
+            #Si llegamos al final del nivel1
             pos_actual = maximus.rect.x + nivel_actual.mov_fondo
             if pos_actual < nivel_actual.limite:
                 maximus.rect.x = 120
