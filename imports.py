@@ -115,9 +115,9 @@ class boton_inicio(buttonz):
         maximus.rect.y = ALTO - maximus.rect.height
         # Creamos los niveles
         nivel_lista = []
-        nivel1 = Nivel_01(maximus,dirimg+"fondo6.jpg","nivel1.wav")
+        nivel1 = Nivel_01(maximus,dirimg+"fondo6.jpg",dirsonido+"nivel1.wav")
         nivel_lista.append( nivel1 )
-        nivel2 = Nivel_02(maximus,dirimg+"dracula.jpg","nivel2.wav")
+        nivel2 = Nivel_02(maximus,dirimg+"dracula.jpg",dirsonido+"nivel2.wav")
         nivel_lista.append( nivel2 )
 
         # Establecemos nivel actual
@@ -127,6 +127,9 @@ class boton_inicio(buttonz):
 
         # Indicamos a la clase jugador cual es el nivel
         maximus.nivel = nivel_actual
+
+        for en in nivel_actual.enemigos_lista:
+            en.nivel=nivel_actual
 
         #sonidos
         shot_s = load_sound('enviroment/levels/sounds/shot.wav',curdir)
@@ -269,7 +272,12 @@ class boton_inicio(buttonz):
                 for impacto in ls_impactos:
                     ls_balaj.remove(bil)
                     #ls_todos_nivel1.remove(bil)
-                    
+
+            for bile in ls_balase:
+                ls_impactos=pygame.sprite.spritecollide(bile,nivel_actual.getElements(), False)
+                for impacto in ls_impactos:
+                    ls_balase.remove(bile)
+
             if(maximus.getLife() <= 0): #si muere
                 nivel_actual.StopSound()
                 reloj.tick(60) #para que no sea un cambio tan repentino
@@ -442,6 +450,7 @@ class boton_inicio(buttonz):
                                 rata = Rata(dirimg+'rata.png',enemigo.getPos(),nivel_actual)
                                 ls_balase.add(rata) #lista balas enemigos
                                 scream.play()
+
                 #Salto zombie tipo5
                 for enemigo in ls_enemigos_nivel1:
                     if(enemigo.tipo == 5):
@@ -459,13 +468,14 @@ class boton_inicio(buttonz):
                     if(e.getName() == "rata"):
                         if(e.getLife() <= 0):
                             ls_balase.remove(e) #las ratas se mueren
+                            ls_todos_nivel1.remove(e)
 
                 #Desaparecen balas
                 for e in ls_balase:
                     if(e.tipo == "rect"):
                         if(e.getLife() <= 0):
                             ls_balase.remove(e) #las ratas se mueren
-
+                            ls_todos_nivel1.remove(e)
             #--------------------NIVEL2----------------------------
             #--------------------Collides--------------------------
             if(nivel_actual_no == 1):
@@ -585,8 +595,6 @@ class boton_inicio(buttonz):
                     #fin = True
                     print "se acabo"
 
-
-
             #------------Nivel1--------------
             if(nivel_actual_no == 0):
                 #ls_todos_nivel1.draw(pantalla)
@@ -636,7 +644,6 @@ class boton_inicio(buttonz):
             pantalla.blit(point,[5,(ALTO - ALTO+15) + 15]) #+ 15])
             pantalla.blit(reloj2, [5,(ALTO - ALTO+15) + 15*2])
             lifebars(maximus,pantalla,[120,(ALTO - ALTO+15)])
-
             pygame.display.flip()
             reloj.tick(tasa_cambio)
 

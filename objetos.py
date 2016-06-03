@@ -240,6 +240,7 @@ class RectBullet(Weapon):
             self.i = 0
 
 class Enemy(pygame.sprite.Sprite): #Hereda de la clase sprite
+    nivel=None
     def __init__(self, img_name, pos):
     	pygame.sprite.Sprite.__init__(self)
     	self.image = load_image(img_name, curdir, alpha=True)
@@ -313,7 +314,8 @@ class Zombie2(Enemy):#Hereda de la clase Enemigo
         self.nivel = nivel
         self.tipo = 2
         self.dir = 0
-
+        self.cont=0
+        self.turn = 0
     def setDir(self,dir):
         self.dir = dir
 
@@ -330,20 +332,38 @@ class Zombie2(Enemy):#Hereda de la clase Enemigo
         self.i = 0 #debe empezar a recorrerla desde cero
 
     def update(self): #se mueve
-        bloques = self.nivel.plataforma_lista
-
+        if self.turn == 0:
+            if self.rect.x > 120:
+                self.setPos([self.rect.x-5,self.rect.y])
+            else:
+                self.turn = 1
+        if self.turn==1:
+            bloque_col_list = pygame.sprite.spritecollide(self, self.nivel.plataforma_lista, False)
+            if(len(bloque_col_list) == 0):
+                self.setPos([self.rect.x+5,self.rect.y])
+            else:
+                self.turn=0
+        """bloques = self.nivel.plataforma_lista
         if(self.i < len(self.moves)):
             pos = self.moves[self.i]
-            if(pos == 0):
-                for e in bloques:
-                    if(checkCollision(self,e) == False): # si no se choca con los objetos del nivel
-                        self.setPos([self.rect.x,self.rect.y])
-            else:
-                for e in bloques:
-                    if(checkCollision(self,e) == False): # si no se choca con los objetos del nivel
-                        self.setPos([pos[0],self.rect.y])#no vuela
+            bloque_col_list = pygame.sprite.spritecollide(self, self.nivel.plataforma_lista, False)
+            if(len(bloque_col_list) == 0):
+                if(pos == 0):
+                    for e in bloques:
+                        if(checkCollision(self,e) == False): # si no se choca con los objetos del nivel
+                            self.setPos([self.rect.x,self.rect.y])
+                else:
+                    if(pos[0] > self.rect.x):
+                        self.dir = 1
+                        print "izq"
+                    else:
+                        self.dir = 0
+                        print "dere"
+                    for e in bloques:
+                        if(checkCollision(self,e) == False): # si no se choca con los objetos del nivel
+                            self.setPos([pos[0],self.rect.y])#no vuela
 
-            self.i += 1 #para que recorra el siguiente
+                self.i += 1 #para que recorra el siguiente"""
 
         # Revisar si golpeamos con algo (bloques con colision)
         """bloque_col_list = pygame.sprite.spritecollide(self, self.nivel.plataforma_lista, False)
