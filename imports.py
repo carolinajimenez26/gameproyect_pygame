@@ -497,7 +497,7 @@ class boton_inicio(buttonz):
                         one_time = True
                     if(m.tipo == "mascota"):
                         print "mascota"
-                        new = Mascota(dirimg+"mascota.png",m.getPos())
+                        new = Mascota(dirimg+"escudo.png",m.getPos())
                         new.tipo = "mascota"
                         new.jugador = maximus
                         new.StartMovements()

@@ -547,22 +547,11 @@ class Mascota(Enemy):#Hereda de la clase Enemigo
 
     def StartMovements(self):#se mueve sobre si mismo
         self.aux = True
-        self.getMovement()
-
-    def getMovement(self):
-        pos = self.jugador.getPos()
-        self.moves = CircunfPtoMedio(pos,self.r)
-        self.order= sorted(self.moves, key=lambda tup: tup[1])
-        self.i = 0 #debe empezar a recorrerla desde cero
 
     def update(self): #se mueve
         if(self.aux):
-            if(self.moves[self.i] != 0): #si tiene definida posiciones donde moverse
-                if(self.i < len(self.moves) - 1):
-                    self.setPos([self.moves[self.i][0],self.moves[self.i][1]])
-                    self.i += 1 #para que recorra el siguiente
-                else :
-                    self.getMovement()
+            pos = self.jugador.getPos()
+            self.setPos([pos[0] - self.jugador.getMargen()[0],pos[1] - self.jugador.getMargen()[1]/2])
 
 class Plataforma(pygame.sprite.Sprite): #Hereda de la clase sprite
     def __init__(self, img_name, pos):
