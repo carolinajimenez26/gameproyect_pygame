@@ -299,6 +299,16 @@ class boton_inicio(buttonz):
             e.StartMovements()"""
 
         closep = False
+        Config.read("config.ini")
+        Config.sections()
+        derecha = ConfigSectionMap("Movimientos")['derecha']
+        izquierda = ConfigSectionMap("Movimientos")['izquierda']
+        disparo = ConfigSectionMap("Movimientos")['disparo']
+        salto = ConfigSectionMap("Movimientos")['salto']
+        derecha=int(derecha)
+        izquierda=int(izquierda)
+        disparo=int(disparo)
+        salto=int(salto)
         # -------- Ciclo del juego -----------
         while not fin:
             #maximus.setLife(100)#vida infinita
