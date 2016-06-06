@@ -540,7 +540,7 @@ class Mascota(Enemy):#Hereda de la clase Enemigo
         self.life = 100
         self.speed = 1
         self.tipo = "mascota"
-        self.r = 10
+        self.r = 45
         self.moves = [0 for x in range(ANCHO)] #movimientos que debe realizar
         self.aux = False
         self.jugador = None
@@ -559,11 +559,10 @@ class Mascota(Enemy):#Hereda de la clase Enemigo
         if(self.aux):
             if(self.moves[self.i] != 0): #si tiene definida posiciones donde moverse
                 if(self.i < len(self.moves) - 1):
-                    self.setPos(self.moves[self.i])
+                    self.setPos([self.moves[self.i][0],self.moves[self.i][1]])
                     self.i += 1 #para que recorra el siguiente
                 else :
                     self.getMovement()
-                    self.i = 0
 
 class Plataforma(pygame.sprite.Sprite): #Hereda de la clase sprite
     def __init__(self, img_name, pos):
