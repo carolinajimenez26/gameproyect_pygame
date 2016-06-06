@@ -221,6 +221,7 @@ class boton_inicio(buttonz):
         scream = load_sound('enviroment/levels/sounds/scream.ogg',curdir)
         moneda = load_sound('enviroment/levels/sounds/coin.ogg',curdir)
         reloj_s = load_sound('enviroment/levels/sounds/ticking_clock.ogg',curdir)
+        gotlife = load_sound('enviroment/levels/sounds/gotLife.ogg',curdir)
 
         #Grupos de sprites
         ls_balaj = pygame.sprite.Group() #balas jugador
@@ -274,6 +275,7 @@ class boton_inicio(buttonz):
         cont_zap = 400 #tiempo en el que tiene zapatos
         countdown_zap = False
         one_time = False
+        give_life = True
 
         # Controlamos que tan rapido actualizamos pantalla
         reloj = pygame.time.Clock()
@@ -300,6 +302,13 @@ class boton_inicio(buttonz):
         # -------- Ciclo del juego -----------
         while not fin:
             #maximus.setLife(100)#vida infinita
+
+            if(maximus.score >= 100 and give_life): #regala vida si cumple este puntaje
+                give_life = False
+                maximus.setLife(100)
+                gotlife.play()
+                print "you got a life!"
+
             for bil in ls_balaj:
                 ls_impactos = pygame.sprite.spritecollide(bil,nivel_actual.getElements(), False)
                 for impacto in ls_impactos:
@@ -472,6 +481,7 @@ class boton_inicio(buttonz):
                                 #ls_todos_nivel2.remove(bala)
                                 flag2 = True
                                 if(enemigo.getLife() <= 0):
+                                    maximus.score += 20
                                     ls_enemigos_nivel1.remove(enemigo)
 
 
@@ -776,6 +786,7 @@ class boton_inicio(buttonz):
         #---------------Fin del ciclo-----------------
 
         if(game_over):
+            nivel_actual.StopSound()
             pygame.init()
             tam = [ANCHO, ALTO]
             pantalla = pygame.display.set_mode(tam)
@@ -789,6 +800,7 @@ class boton_inicio(buttonz):
             time.sleep(2)
             print "Perdiste"
         if(winner):
+            nivel_actual.StopSound()
             pygame.init()
             tam = [ANCHO, ALTO]
             pantalla = pygame.display.set_mode(tam)
