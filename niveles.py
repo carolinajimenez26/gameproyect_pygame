@@ -265,7 +265,9 @@ class Nivel_02(Nivel):
                              [100, ALTO/3 - 25],
                              [0, ALTO/2],
                              [1200, ALTO - ALTO/5],
-                             [1400, ALTO - ALTO/3]
+                             [1400, ALTO - ALTO/4],
+                             [1800, ALTO - ALTO/4],
+                             [1650, ALTO - ALTO/4]
                             ]
 
         plataforma_tipo5 = [
@@ -274,8 +276,6 @@ class Nivel_02(Nivel):
                              [500, ALTO - ALTO/7],
                              [1200, ALTO - ALTO/2],
                              [600, ALTO - ALTO/4],
-                             [1800, ALTO - ALTO/4],
-                             [1600, ALTO - ALTO/7],
                             ]
 
         plataforma_tipo6 = [
