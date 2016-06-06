@@ -309,6 +309,8 @@ class boton_inicio(buttonz):
         izquierda=int(izquierda)
         disparo=int(disparo)
         salto=int(salto)
+
+        ls_balasboss = pygame.sprite.Group()
         # -------- Ciclo del juego -----------
         while not fin:
             #maximus.setLife(100)#vida infinita
@@ -394,6 +396,7 @@ class boton_inicio(buttonz):
                                 if(e.tipo == 2 ):
                                     e.restartMovements(maximus.getPos())
                                     e.setDir(1)
+
 
                             for e in ls_balase:
                                 if(e.tipo == "rata"):
@@ -596,6 +599,9 @@ class boton_inicio(buttonz):
                             lifebars(maximus,pantalla,[ANCHO/2,ALTO])#cambia la bara de vida
                             flag = True
 
+                    if(enemigo.tipo == 10 ):
+                        ls_balasboss = enemigo.getlsbalasb()
+
                 #Colision modificadores con maximus
                 ls_modificadores = pygame.sprite.spritecollide(maximus, nivel_actual.plataforma_lista, True)
                 for m in ls_modificadores:
@@ -766,11 +772,15 @@ class boton_inicio(buttonz):
             nivel_actual.draw(pantalla)
             activos_sp_lista.draw(pantalla)
 
+            #Actualizo las balas del boss
+            for bil in ls_balasboss:
+                bil.update()
             # Actualizamos al jugador
             activos_sp_lista.update()
 
             ls_balaj.draw(pantalla)
             ls_balase.draw(pantalla)
+            ls_balasboss.draw(pantalla)
             ls_balaj.update()
             ls_balase.update()
 

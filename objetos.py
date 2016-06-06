@@ -244,6 +244,29 @@ class RectBullet(Weapon):
         else :
             self.i = 0
 
+class RectBulletBoss(Weapon):
+    def __init__(self, img_name, pos): #img para cargar, y su padre(de donde debe salir la bala)
+    	Weapon.__init__(self, img_name, pos)
+        self.i = 0
+        self.life = 8000
+        self.moves = [] #movimientos que debe realizar
+        self.tipo = "rect"
+        self.playerpos = [0,0]
+
+    def getLife(self):
+        return self.life
+
+    def restartMovements(self):#calcula el camino por donde debe moverse (recibe el punto final)
+        self.moves = Bresenhamrecta([self.getPos(),self.playerpos])
+        self.i = 0 #debe empezar a recorrerla desde cero
+
+    def update(self): #se mueve
+        if(self.i < len(self.moves) - 1):
+            self.setPos(self.moves[self.i])
+            self.i += 2 #para que recorra el siguiente
+        else:
+            self.i = 0
+
 class Enemy(pygame.sprite.Sprite): #Hereda de la clase sprite
     nivel=None
     def __init__(self, img_name, pos):
@@ -539,11 +562,22 @@ class Boss(Enemy):#Hereda de la clase Enemigo
         self.rect.x = pos[0]
     	self.rect.y = pos[1]
         self.cont = 0
-        self.tipo = 3
+        self.tipo = 10
         self.dir = 0 #derecha
         self.speed_aux = 0
         self.aux = True
         self.des = 0
+        self.ls_balasboss = pygame.sprite.Group()
+        self.playerpos=[0,0]
+
+    def setplayerpos(pos):
+        self.playerpos = pos
+
+    def getlsbalasb(self):
+        return self.ls_balasboss
+
+    def getPos(self):
+    	return [self.rect.x,self.rect.y]
 
     def setDir(self,dir):
         self.dir = dir
@@ -575,7 +609,10 @@ class Boss(Enemy):#Hereda de la clase Enemigo
             if(self.aux):
                 self.move()
         elif (self.des > 20 and self.des < 50):
-            print "sisas"
+            bala = RectBulletBoss(dirimg+'bala.png',self.getPos())
+            bala.playerpos = self.setplayerpos
+            bala.restartMovements()
+            self.ls_balasboss.add(bala)
 
 
     def changeDirection(self):
