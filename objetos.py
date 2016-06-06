@@ -138,7 +138,10 @@ class Jugador(pygame.sprite.Sprite):
     	return self.life
 
     def setLife(self,life):
-    	self.life = life
+        if(life > 100):
+            self.life = 100
+        else:
+    	    self.life = life
 
     def crash(self):
         for e in self.nivel.enemigos_lista:

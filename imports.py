@@ -271,6 +271,9 @@ class boton_inicio(buttonz):
         acompanante = False #si tiene la mascota protectora
         cont_arena = 400 #tiempo en el que se quedan parados
         countdown = False
+        cont_zap = 400 #tiempo en el que tiene zapatos
+        countdown_zap = False
+        one_time = False
 
         # Controlamos que tan rapido actualizamos pantalla
         reloj = pygame.time.Clock()
@@ -296,15 +299,15 @@ class boton_inicio(buttonz):
         closep=False
         # -------- Ciclo del juego -----------
         while not fin:
-            maximus.setLife(100)
+            #maximus.setLife(100)#vida infinita
             for bil in ls_balaj:
-                ls_impactos=pygame.sprite.spritecollide(bil,nivel_actual.getElements(), False)
+                ls_impactos = pygame.sprite.spritecollide(bil,nivel_actual.getElements(), False)
                 for impacto in ls_impactos:
                     ls_balaj.remove(bil)
                     #ls_todos_nivel1.remove(bil)
 
             for bile in ls_balase:
-                ls_impactos=pygame.sprite.spritecollide(bile,nivel_actual.getElements(), False)
+                ls_impactos = pygame.sprite.spritecollide(bile,nivel_actual.getElements(), False)
                 for impacto in ls_impactos:
                     ls_balase.remove(bile)
 
@@ -492,9 +495,11 @@ class boton_inicio(buttonz):
                         print "zapatos"
                         nivel_actual.plataforma_lista.remove(m)
                         maximus.increment_x += 5
+                        countdown_zap = True
+                        one_time = True
                     if(m.tipo == "mascota"):
                         print "mascota"
-                        #nivel_actual.plataforma_lista.remove(m)
+                        nivel_actual.plataforma_lista.remove(m)
                         acompanante = True
                     if(m.tipo == "moneda"):
                         print "moneda"
@@ -673,6 +678,13 @@ class boton_inicio(buttonz):
             if(cont_arena <= 0):
                 countdown = False
 
+            if(countdown_zap): #cuenta regresiva, cogio los zapatos
+                cont_zap -= 1
+            if(cont_zap <= 0 and one_time):
+                countdown_zap = False
+                one_time = False
+                maximus.increment_x -= 5
+
             #  Si el maximus se aproxima al limite derecho de la pantalla (-x)
             if maximus.rect.x >= 500:
                 dif = maximus.rect.x - 500
@@ -727,21 +739,9 @@ class boton_inicio(buttonz):
                 #ls_todos_nivel1
                 #print "ls_mascota: " , ls_mascota_nivel1
                 ls_mascota_nivel1.draw(pantalla)
-                """ls_vida_nivel1.draw(pantalla)
-                ls_mascota_nivel1.draw(pantalla)
-                ls_zapatos_nivel1.draw(pantalla)
-                ls_monedas_nivel1.draw(pantalla)
-                ls_relojes_nivel1.draw(pantalla)
-                ls_municiones_nivel1.draw(pantalla)"""
 
                 #ls_todos_nivel1.update()
                 ls_mascota_nivel1.update()
-                """ls_vida_nivel1.update()
-                ls_mascota_nivel1.update()
-                ls_zapatos_nivel1.update()
-                ls_monedas_nivel1.update()
-                ls_relojes_nivel1.update()
-                ls_municiones_nivel1.update()"""
 
             #------------Nivel2--------------
             if(nivel_actual_no == 1):
