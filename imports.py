@@ -204,7 +204,7 @@ class boton_inicio(buttonz):
         nivel_lista.append( nivel2 )
 
         # Establecemos nivel actual
-        nivel_actual_no = 0
+        nivel_actual_no = 1
         maximus.setPos([300, ALTO/2])
         nivel_actual = nivel_lista[nivel_actual_no]
 
@@ -222,6 +222,7 @@ class boton_inicio(buttonz):
         moneda = load_sound('enviroment/levels/sounds/coin.ogg',curdir)
         reloj_s = load_sound('enviroment/levels/sounds/ticking_clock.ogg',curdir)
         gotlife = load_sound('enviroment/levels/sounds/gotLife.ogg',curdir)
+        charge = load_sound('enviroment/levels/sounds/charge.ogg',curdir)
 
         #Grupos de sprites
         ls_balaj = pygame.sprite.Group() #balas jugador
@@ -298,7 +299,7 @@ class boton_inicio(buttonz):
         """for e in ls_enemigos_nivel2:
             e.StartMovements()"""
 
-        closep=False
+        closep = False
         # -------- Ciclo del juego -----------
         while not fin:
             #maximus.setLife(100)#vida infinita
@@ -369,7 +370,7 @@ class boton_inicio(buttonz):
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_p:
-                        closep=self.pause(pantalla)
+                        closep = self.pause(pantalla)
 
                     if event.key == pygame.K_b:
                         print maximus.getPos()
@@ -526,6 +527,7 @@ class boton_inicio(buttonz):
                                 e.StopMovements()
 
                     if(m.tipo == "municion"):
+                        charge.play()
                         print "municion"
                         nivel_actual.plataforma_lista.remove(m)
                         maximus.municion += 10
@@ -600,10 +602,11 @@ class boton_inicio(buttonz):
                         print "elimina rayo"
                         nivel_actual.plataforma_lista.remove(m)
                         maximus.setLife(100) #le devuelve toda la vida
-                    if(m.tipo == "mascota"):
-                        print "elimina mascota"
+                    if(m.tipo == "municion"):
+                        charge.play()
+                        print "municion"
                         nivel_actual.plataforma_lista.remove(m)
-                        acompanante = True
+                        maximus.municion += 10
 
                 for enemigo2 in ls_enemigos_nivel2:
                     for bala in ls_balaj:

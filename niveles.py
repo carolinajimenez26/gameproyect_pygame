@@ -318,7 +318,6 @@ class Nivel_02(Nivel):
         rayo.tipo = "rayo"
         self.plataforma_lista.add(rayo)
 
-        mascota = Plataforma(dirimg+"mascota.png",[500,ALTO/3 + 100 - 60])
-        mascota.tipo = "mascota"
-        self.plataforma_lista.add(mascota)
-        print "plataforma len : ", len(self.plataforma_lista)
+        municion = Plataforma(dirimg+"municion.png",[500,ALTO/3 + 100 - 60])
+        municion.tipo = "municion"
+        self.plataforma_lista.add(municion)
