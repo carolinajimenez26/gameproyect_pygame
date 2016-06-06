@@ -530,6 +530,60 @@ class Zombie6(Enemy):#Hereda de la clase Enemigo
             else :
                 self.i = 0
 
+
+class Boss(Enemy):#Hereda de la clase Enemigo
+    def __init__(self, img_name, pos):
+        Enemy.__init__(self, img_name, pos)
+        self.life = 800
+        self.speed = 1
+        self.rect.x = pos[0]
+    	self.rect.y = pos[1]
+        self.cont = 0
+        self.tipo = 3
+        self.dir = 0 #derecha
+        self.speed_aux = 0
+        self.aux = True
+        self.des = 0
+
+    def setDir(self,dir):
+        self.dir = dir
+
+    def getDir(self):
+        return self.dir
+
+    def StopMovements(self):
+        self.aux = False
+
+    def StartMovements(self):
+        self.aux = True
+
+    def move(self): #se mueve solo
+        if(self.speed_aux >= 1):
+            self.speed_aux = 0
+            self.rect.x += self.speed
+            self.cont += 1
+            if(self.cont == 200):
+                self.cont = 0
+                self.speed *= -1
+                self.changeDirection()
+        else:
+            self.speed_aux += 1
+
+    def update(self):
+        self.des = random.randrange(0,100)
+        if(self.des > 0 and self.des < 20):
+            if(self.aux):
+                self.move()
+        elif (self.des > 20 and self.des < 50):
+            print "sisas"
+
+
+    def changeDirection(self):
+        if(self.getDir() == 0): #der
+            self.setDir(1) #izq
+        else: #izq
+            self.setDir(0)#der
+
 class Mascota(Enemy):#Hereda de la clase Enemigo
 
     def __init__(self, img_name, pos):
