@@ -200,6 +200,10 @@ class Nivel_01(Nivel):
         mascota.tipo = "mascota"
         self.plataforma_lista.add(mascota)
 
+        mascota = Mascota(dirimg+"mascota.png",[100,ALTO - 25])
+        mascota.tipo = "mascota"
+        self.plataforma_lista.add(mascota)
+
         pavos = [
                   [1757,ALTO - ALTO/3 - 35],
                   [3300,ALTO - 35]

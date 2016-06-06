@@ -541,20 +541,14 @@ class Mascota(Enemy):#Hereda de la clase Enemigo
         self.tipo = "mascota"
         self.r = 10
         self.moves = [0 for x in range(ANCHO)] #movimientos que debe realizar
+        self.aux = False
 
-    def StartMovements(self,pos):
-        pass
-
-    def update(self):
-        self.rect.y += 1
-
-
-    """def StartMovements(self,pos):#se mueve sobre si mismo
+    def StartMovements(self,pos):#se mueve sobre si mismo
         print "start movements"
-        self.moves = CircunfPtoMedio(pos,self.r)#carga los nuevos movimientos
+        self.moves = Bresenhamrecta([self.getPos(),pos])#CircunfPtoMedio(pos,self.r)#carga los nuevos movimientos
         self.order= sorted(self.moves, key=lambda tup: tup[1])
         self.i = 0 #debe empezar a recorrerla desde cero
-        print self.moves
+        #print self.moves
 
     def update(self): #se mueve
         if(self.moves[self.i] != 0):
@@ -562,8 +556,6 @@ class Mascota(Enemy):#Hereda de la clase Enemigo
                 print "set : ", self.moves[self.i]
                 self.setPos(self.moves[self.i])
                 self.i += 1 #para que recorra el siguiente
-            else :
-                self.i = 0"""
 
 class Plataforma(pygame.sprite.Sprite): #Hereda de la clase sprite
     def __init__(self, img_name, pos):

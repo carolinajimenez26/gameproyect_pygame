@@ -204,7 +204,7 @@ class boton_inicio(buttonz):
         nivel_lista.append( nivel2 )
 
         # Establecemos nivel actual
-        nivel_actual_no = 1
+        nivel_actual_no = 0
         maximus.setPos([300, ALTO/2])
         nivel_actual = nivel_lista[nivel_actual_no]
 
@@ -391,10 +391,7 @@ class boton_inicio(buttonz):
                                     e.restartMovements(maximus.getPos())
 
                             for e in nivel_actual.plataforma_lista:
-                                if(e.tipo == "mascota"):
-                                    print "entra"
                                 if(e.tipo == "mascota" and acompanante):
-                                    print "inicia"
                                     e.StartMovements(maximus.getPos())
 
                     if event.key == pygame.K_RIGHT:
@@ -413,11 +410,14 @@ class boton_inicio(buttonz):
 
                             for e in nivel_actual.plataforma_lista:
                                 if(e.tipo == "mascota" and acompanante):
-                                    print "start"
                                     e.StartMovements(maximus.getPos())
 
                     if event.key == pygame.K_UP:
                         maximus.salto()
+
+                        for e in nivel_actual.plataforma_lista:
+                            if(e.tipo == "mascota" and acompanante):
+                                e.StartMovements(maximus.getPos())
 
                         if(nivel_actual_no != 0):
                             maximus.setDir(2)
@@ -510,8 +510,11 @@ class boton_inicio(buttonz):
                         one_time = True
                     if(m.tipo == "mascota"):
                         print "mascota"
-                        nivel_actual.plataforma_lista.remove(m)
                         acompanante = True
+                        new= Mascota(dirimg+"mascota.png",m.getPos())
+                        new.tipo = "mascota"
+                        nivel_actual.plataforma_lista.remove(m)
+                        nivel_actual.plataforma_lista.add(new)
                     if(m.tipo == "moneda"):
                         print "moneda"
                         nivel_actual.plataforma_lista.remove(m)
