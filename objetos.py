@@ -268,7 +268,8 @@ class RectBulletBoss(Weapon):
             self.i = 0
 
 class Enemy(pygame.sprite.Sprite): #Hereda de la clase sprite
-    nivel=None
+    nivel = None
+    plat = None
     def __init__(self, img_name, pos):
     	pygame.sprite.Sprite.__init__(self)
     	self.image = load_image(img_name, curdir, alpha=True)
@@ -378,18 +379,40 @@ class Zombie2(Enemy):#Hereda de la clase Enemigo
             self.i = 0 #debe empezar a recorrerla desde cero
 
     def update(self): #se mueve
-        if(self.aux):
-            if self.turn == 0:
-                if self.rect.x > 120:
-                    self.setPos([self.rect.x-5,self.rect.y])
-                else:
-                    self.turn = 1
-            if self.turn==1:
-                bloque_col_list = pygame.sprite.spritecollide(self, self.nivel.plataforma_lista, False)
-                if(len(bloque_col_list) == 0):
-                    self.setPos([self.rect.x+5,self.rect.y])
-                else:
-                    self.turn=0
+        check = False
+        for platx in self.nivel.plataforma_lista:
+            if(platx.tipo == "mascota"):
+                if(platx.tipo2 == "escudo"):
+                    if not(checkCollision(self,platx)):
+                        if(self.aux):
+                            if self.turn == 0:
+                                if self.rect.x > 120:
+                                    self.setPos([self.rect.x-5,self.rect.y])
+                                else:
+                                    self.turn = 1
+                            if self.turn == 1:
+                                bloque_col_list = pygame.sprite.spritecollide(self, self.nivel.plataforma_lista, False)
+                                if(len(bloque_col_list) == 0):
+                                    self.setPos([self.rect.x+5,self.rect.y])
+                                else:
+                                    self.turn = 0
+            else:
+                check = True
+
+        if(check):
+            check = False
+            if(self.aux):
+                if self.turn == 0:
+                    if self.rect.x > 120:
+                        self.setPos([self.rect.x-5,self.rect.y])
+                    else:
+                        self.turn = 1
+                if self.turn == 1:
+                    bloque_col_list = pygame.sprite.spritecollide(self, self.nivel.plataforma_lista, False)
+                    if(len(bloque_col_list) == 0):
+                        self.setPos([self.rect.x+5,self.rect.y])
+                    else:
+                        self.turn = 0
 
 
 class Zombie3(Enemy):
@@ -567,59 +590,7 @@ class Boss(Enemy):#Hereda de la clase Enemigo
         self.speed_aux = 0
         self.aux = True
         self.des = 0
-        self.ls_balasboss = pygame.sprite.Group()
         self.playerpos=[0,0]
-
-    def setplayerpos(pos):
-        self.playerpos = pos
-
-    def getlsbalasb(self):
-        return self.ls_balasboss
-
-    def getPos(self):
-    	return [self.rect.x,self.rect.y]
-
-    def setDir(self,dir):
-        self.dir = dir
-
-    def getDir(self):
-        return self.dir
-
-    def StopMovements(self):
-        self.aux = False
-
-    def StartMovements(self):
-        self.aux = True
-
-    def move(self): #se mueve solo
-        if(self.speed_aux >= 1):
-            self.speed_aux = 0
-            self.rect.x += self.speed
-            self.cont += 1
-            if(self.cont == 200):
-                self.cont = 0
-                self.speed *= -1
-                self.changeDirection()
-        else:
-            self.speed_aux += 1
-
-    def update(self):
-        self.des = random.randrange(0,100)
-        if(self.des > 0 and self.des < 20):
-            if(self.aux):
-                self.move()
-        elif (self.des > 20 and self.des < 50):
-            bala = RectBulletBoss(dirimg+'bala.png',self.getPos())
-            bala.playerpos = self.setplayerpos
-            bala.restartMovements()
-            self.ls_balasboss.add(bala)
-
-
-    def changeDirection(self):
-        if(self.getDir() == 0): #der
-            self.setDir(1) #izq
-        else: #izq
-            self.setDir(0)#der
 
 class Mascota(Enemy):#Hereda de la clase Enemigo
 
@@ -631,6 +602,7 @@ class Mascota(Enemy):#Hereda de la clase Enemigo
         self.life = 100
         self.speed = 1
         self.tipo = "mascota"
+        self.tipo2 = ""
         self.r = 45
         self.moves = [0 for x in range(ANCHO)] #movimientos que debe realizar
         self.aux = False

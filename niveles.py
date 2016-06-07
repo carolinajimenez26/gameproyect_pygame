@@ -313,13 +313,8 @@ class Nivel_02(Nivel):
                           [800, ALTO - ALTO/3]
                         ]
 
-        boss =  [
-                    [1650, ALTO - 50 - ALTO/4]
-                ]
-
-        for bossx in boss:
-            b = Boss(dirimg+"pavo.png",[bossx[0],bossx[1]])
-            self.enemigos_lista.add(b)
+        boss = Boss(dirimg+"boss_ini.png",[1650, ALTO - 33 - ALTO/4])
+        self.enemigos_lista.add(boss)
 
         for zombie in zombies_tipo6:
             e = Zombie6(dirimg+"zombies6.png",[zombie[0],zombie[1]])

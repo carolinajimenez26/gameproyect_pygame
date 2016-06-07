@@ -314,6 +314,8 @@ class boton_inicio(buttonz):
         # -------- Ciclo del juego -----------
         while not fin:
             #maximus.setLife(100)#vida infinita
+            for en in nivel_actual.enemigos_lista:
+                en.plat = nivel_actual.getElements()
 
             if(maximus.score >= 100 and give_life): #regala vida si cumple este puntaje
                 give_life = False
@@ -321,11 +323,12 @@ class boton_inicio(buttonz):
                 gotlife.play()
                 print "you got a life!"
 
+            #Colision de las balas con la plataforma
             for bil in ls_balaj:
-                ls_impactos = pygame.sprite.spritecollide(bil,nivel_actual.getElements(), False)
-                for impacto in ls_impactos:
-                    ls_balaj.remove(bil)
-                    #ls_todos_nivel1.remove(bil)
+                for plat in nivel_actual.getElements():
+                    if(checkCollision(bil,plat)): # si se choco
+                        if not(plat.tipo == "mascota"): #ESCUDO
+                            ls_balaj.remove(bil)
 
             for bile in ls_balase:
                 ls_impactos = pygame.sprite.spritecollide(bile,nivel_actual.getElements(), False)
@@ -512,6 +515,7 @@ class boton_inicio(buttonz):
                         print "mascota"
                         new = Mascota(dirimg+"escudo.png",m.getPos())
                         new.tipo = "mascota"
+                        new.tipo2 = "escudo"
                         new.jugador = maximus
                         new.StartMovements()
                         nivel_actual.plataforma_lista.remove(m)
@@ -576,13 +580,6 @@ class boton_inicio(buttonz):
                             ls_balase.remove(e) #las ratas se mueren
                             ls_todos_nivel1.remove(e)
 
-                #Desaparecen balas
-                """for e in ls_balase:
-                    if(e.tipo == "rata"):
-                        if(e.getLife() <= 0):
-                            ls_balase.remove(e) #las ratas se mueren
-                            ls_todos_nivel1.remove(e)"""
-
                 for e in ls_enemigos_nivel1:
                     if(countdown <= 0):
                         if(e.tipo != 4): #este no se mueve
@@ -598,9 +595,6 @@ class boton_inicio(buttonz):
                             print "life : " , maximus.getLife()
                             lifebars(maximus,pantalla,[ANCHO/2,ALTO])#cambia la bara de vida
                             flag = True
-
-                    if(enemigo.tipo == 10 ):
-                        ls_balasboss = enemigo.getlsbalasb()
 
                 #Colision modificadores con maximus
                 ls_modificadores = pygame.sprite.spritecollide(maximus, nivel_actual.plataforma_lista, True)
@@ -641,6 +635,7 @@ class boton_inicio(buttonz):
                         bala = RectBullet(dirimg+'bala3.png',enemigo.getPos())
                         bala.restartMovements(maximus.getPos())
                         ls_balase.add(bala)
+                        shot_se.play()
                         flag6 = True
 
                 #----------------------Otros--------------------------
@@ -756,12 +751,6 @@ class boton_inicio(buttonz):
                                 ls_todos_nivel1.remove(bala)
                                 ls_balase.remove(balae)
 
-                #ls_todos_nivel1
-                #print "ls_mascota: " , ls_mascota_nivel1
-                ls_mascota_nivel1.draw(pantalla)
-
-                #ls_todos_nivel1.update()
-                ls_mascota_nivel1.update()
 
             #------------Nivel2--------------
             if(nivel_actual_no == 1):
@@ -926,6 +915,7 @@ class boton_ajustes(buttonz):
         self.ALTO = DIM [1]
         self.esmenu=esmenu
     def action(self):
+        self.clicked=False
         if(self.esmenu):
             self.backgrounl.draw(self.ventana)
             self.ventana = pygame.display.set_mode((2, 2))
