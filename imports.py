@@ -262,7 +262,7 @@ class boton_inicio(buttonz):
         countdown_zap = False
         one_time = False
         give_life = True
-        cont_esc = 400 #tiempo en el que tiene escudo
+        cont_esc = 4000 #tiempo en el que tiene escudo
         countdown_esc = False
 
         # Controlamos que tan rapido actualizamos pantalla

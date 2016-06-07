@@ -309,7 +309,7 @@ class Enemy(pygame.sprite.Sprite): #Hereda de la clase sprite
         self.setLife(self.getLife() - random.randrange(10,20))
 
 
-class Zombie1(Enemy):#Hereda de la clase Enemigo
+class Zombie1(Enemy):
     def __init__(self, img_name, pos):
         Enemy.__init__(self, img_name, pos)
         self.i = 1
@@ -323,6 +323,13 @@ class Zombie1(Enemy):#Hereda de la clase Enemigo
     def move(self): #se mueve solo
         self.rect.x += self.i
         self.cont += 1
+        for platx in self.nivel.plataforma_lista:
+            if(platx.tipo == "mascota"):
+                if(platx.tipo2 == "escudo"):
+                    if(checkCollision(self,platx)):
+                        self.rect.x -= self.i #deshace el movimiento
+                        self.cont -= 1
+
         if(self.cont == 380):
             self.cont = 0
             self.i *= -self.speed
@@ -337,7 +344,7 @@ class Zombie1(Enemy):#Hereda de la clase Enemigo
     def StartMovements(self):
         self.aux = True
 
-class Zombie2(Enemy):#Hereda de la clase Enemigo
+class Zombie2(Enemy):#El que me persigue
     vel_x = 0
     vel_y = 0
     def __init__(self, img_name, pos,nivel):
@@ -397,7 +404,7 @@ class Zombie2(Enemy):#Hereda de la clase Enemigo
                 else:
                     self.turn = 0
 
-class Zombie3(Enemy):
+class Zombie3(Enemy):#El que me dispara y esta en la plataforma de arriba
     def __init__(self, img_name, pos):
         Enemy.__init__(self, img_name, pos)
         self.life = 150
@@ -427,6 +434,12 @@ class Zombie3(Enemy):
             self.speed_aux = 0
             self.rect.x += self.speed
             self.cont += 1
+            for platx in self.nivel.plataforma_lista:
+                if(platx.tipo == "mascota"):
+                    if(platx.tipo2 == "escudo"):
+                        if(checkCollision(self,platx)):
+                            self.rect.x -= self.speed
+                            self.cont -= 1
             if(self.cont == 400):
                 self.cont = 0
                 self.speed *= -1
@@ -444,7 +457,7 @@ class Zombie3(Enemy):
         else: #izq
             self.setDir(0)#der
 
-class Zombie4(Enemy):
+class Zombie4(Enemy):#El que no se mueve, solo lanza ratas
     def __init__(self, img_name, pos):
         Enemy.__init__(self, img_name, pos)
         self.life = 100
@@ -490,7 +503,7 @@ class Rata(Enemy):#Hereda de la clase Enemigo
 
             self.i += 1 #para que recorra el siguiente
 
-class Zombie5(Enemy):#Hereda de la clase Enemigo
+class Zombie5(Enemy):#El que salta y dispara
     vel_x = 0
     vel_y = 0
     def __init__(self, img_name, pos):
