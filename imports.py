@@ -204,7 +204,7 @@ class boton_inicio(buttonz):
         nivel_lista.append( nivel2 )
 
         # Establecemos nivel actual
-        nivel_actual_no = 0
+        nivel_actual_no = 1
         maximus.setPos([300, ALTO/2])
         nivel_actual = nivel_lista[nivel_actual_no]
 
@@ -266,6 +266,8 @@ class boton_inicio(buttonz):
         cont5 = 0
         flag6 = False
         cont6 = 0
+        flag10 = False
+        cont10 = 0
         flag7 = False
         cont7 = 0
         flag8 = False
@@ -631,18 +633,29 @@ class boton_inicio(buttonz):
 
                 #------------------Ataques---------------------------
                 for enemigo in ls_enemigos_nivel2:
-                    if(cont6 == 0):
+                    if(cont6 == 0 and enemigo.tipo != 10):
                         bala = RectBullet(dirimg+'bala3.png',enemigo.getPos())
                         bala.restartMovements(maximus.getPos())
                         ls_balase.add(bala)
                         shot_se.play()
                         flag6 = True
+                    else: #es el boss
+                        if(cont10 == 0):
+                            bala = RectBulletBoss(dirimg+'bala3.png',enemigo.getPos())
+                            bala.restartMovements(maximus.getPos())
+                            ls_balase.add(bala)
+                            shot_se.play()
+                            flag10 = True
 
                 #----------------------Otros--------------------------
                 #Desaparecen balas
                 for e in ls_balase:
                     if(e.getLife() <= 0):
                         ls_balase.remove(e) #las ratas se mueren
+                    if(e.tipo == "rect"):
+                        if(e.tipo2 == "bulletboss"):
+                            if(e.die):
+                                ls_balase.remove(e)#la elimina cuando termina el recorrido de la bala
 
             #Para collide con enemigos
             if(flag):
@@ -674,6 +687,11 @@ class boton_inicio(buttonz):
                 cont6 += 1
             if(cont6 >= 200):
                 cont6 = 0
+            #Para balas boss
+            if(flag10):
+                cont10 += 1
+            if(cont10 >= 100):
+                cont10 = 0
             #Para colision balas enemigos nivel2 con maximus
             if(flag7):
                 cont7 += 1
