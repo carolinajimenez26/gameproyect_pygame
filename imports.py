@@ -233,22 +233,6 @@ class boton_inicio(buttonz):
         # Lista de sprites activos
         activos_sp_lista = pygame.sprite.Group()
 
-        #listas para objetos
-
-        #NIVEL1
-        ls_todos_nivel1 = pygame.sprite.Group()
-        ls_mascota_nivel1 = pygame.sprite.Group()#Mascota
-        ls_vida_nivel1 = pygame.sprite.Group()#Pavos(vida)
-        ls_mascota_nivel1 = pygame.sprite.Group()#Mascota
-        ls_zapatos_nivel1 = pygame.sprite.Group()#Zapatos
-        ls_monedas_nivel1 = pygame.sprite.Group()#Monedas
-        ls_relojes_nivel1 = pygame.sprite.Group()#Relojes
-        ls_municiones_nivel1 = pygame.sprite.Group()#Municiones
-        #NIVEL2
-        ls_todos_nivel2 = pygame.sprite.Group()
-        ls_vida_nivel2 = pygame.sprite.Group()#Rayo
-        ls_mascota_nivel2 = pygame.sprite.Group()#Mascota
-
         #Agregando objetos a grupos de sprites
         activos_sp_lista.add(maximus)
         ls_jugadores.add(maximus)
@@ -314,7 +298,6 @@ class boton_inicio(buttonz):
         disparo=int(disparo)
         salto=int(salto)
 
-        ls_balasboss = pygame.sprite.Group()
         # -------- Ciclo del juego -----------
         while not fin:
             #maximus.setLife(100)#vida infinita
@@ -485,7 +468,7 @@ class boton_inicio(buttonz):
                                 enemigo.crash()
                                 grunt.play() #se queja
                                 ls_balaj.remove(bala)
-                                ls_todos_nivel1.remove(bala)
+                                #ls_todos_nivel1.remove(bala)
                                 #ls_todos_nivel2.remove(bala)
                                 flag2 = True
                                 if(enemigo.getLife() <= 0):
@@ -584,7 +567,7 @@ class boton_inicio(buttonz):
                     if(e.tipo == "rata"):
                         if(e.getLife() <= 0):
                             ls_balase.remove(e) #las ratas se mueren
-                            ls_todos_nivel1.remove(e)
+                            #ls_todos_nivel1.remove(e)
 
                 #Reloj, vuelve a activar el movimiento de los enemigos
                 for e in ls_enemigos_nivel1:
@@ -599,6 +582,22 @@ class boton_inicio(buttonz):
                             if(cont_esc <= 0):
                                 print "quita escudo-------------------------"
                                 nivel_actual.plataforma_lista.remove(m)
+
+                for e in ls_balase:
+                    if(e.tipo == "rata"):
+                        e.restartMovements(maximus.getPos())
+
+
+                for balae in ls_balase:
+                    for bala in ls_balaj:
+                        if(checkCollision(bala,balae)): # si se choco
+                            if(balae.tipo == "rata"):
+                                ls_balaj.remove(bala)
+                                #ls_todos_nivel1.remove(bala)
+                            else:
+                                ls_balaj.remove(bala)
+                                #ls_todos_nivel1.remove(bala)
+                                ls_balase.remove(balae)
 
             #--------------------NIVEL2----------------------------
             #--------------------Collides--------------------------
@@ -631,8 +630,8 @@ class boton_inicio(buttonz):
                             if(cont == 0):
                                 enemigo2.crash()
                                 ls_balaj.remove(bala)
-                                ls_todos_nivel1.remove(bala)
-                                ls_todos_nivel2.remove(bala)
+                                #ls_todos_nivel1.remove(bala)
+                                #ls_todos_nivel2.remove(bala)
                                 flag2 = True
                                 if(enemigo2.getLife() <= 0):
                                     ls_enemigos_nivel2.remove(enemigo2)
@@ -770,50 +769,22 @@ class boton_inicio(buttonz):
                     for e in ls_balase:#limpia
                         ls_balase.remove(e)
 
-            #------------Nivel1--------------
-            if(nivel_actual_no == 0):
-                #ls_todos_nivel1.draw(pantalla)
-                for e in ls_balase:
-                    if(e.tipo == "rata"):
-                        e.restartMovements(maximus.getPos())
 
-
-                for balae in ls_balase:
-                    for bala in ls_balaj:
-                        if(checkCollision(bala,balae)): # si se choco
-                            if(balae.tipo == "rata"):
-                                ls_balaj.remove(bala)
-                                ls_todos_nivel1.remove(bala)
-                            else:
-                                ls_balaj.remove(bala)
-                                ls_todos_nivel1.remove(bala)
-                                ls_balase.remove(balae)
-
-
-            #------------Nivel2--------------
-            if(nivel_actual_no == 1):
-                ls_todos_nivel2.draw(pantalla)
-                ls_todos_nivel2.update()
-
+            #--------------Actualizaciones de pantalla------------
             # Dibujamos y refrescamos
             nivel_actual.draw(pantalla)
             activos_sp_lista.draw(pantalla)
 
-            #Actualizo las balas del boss
-            for bil in ls_balasboss:
-                bil.update()
             # Actualizamos al jugador
             activos_sp_lista.update()
 
             ls_balaj.draw(pantalla)
             ls_balase.draw(pantalla)
-            ls_balasboss.draw(pantalla)
             ls_balaj.update()
             ls_balase.update()
 
             # Actualizamos elementos en el nivel
             nivel_actual.update()
-            ls_vida_nivel1
             #------------General--------------
             #renderiza objetos de informacion en la pantalla
             pantalla.blit(blood,[5,ALTO - ALTO+15])
