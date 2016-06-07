@@ -228,7 +228,6 @@ class RectBullet(Weapon):
         self.moves = [] #movimientos que debe realizar
         self.life = 300
         self.tipo = "rect"
-        self.tipo2 = ""
 
     def getLife(self):
         return self.life
@@ -245,18 +244,28 @@ class RectBullet(Weapon):
         else :
             self.i = 0
 
-class RectBulletBoss(RectBullet):
+class RectBulletBoss(Weapon):
     def __init__(self, img_name, pos): #img para cargar, y su padre(de donde debe salir la bala)
-    	RectBullet.__init__(self, img_name, pos)
-        self.tipo2 = "bulletboss"
-        self.die = False
+    	Weapon.__init__(self, img_name, pos)
+        self.i = 0
+        self.life = 8000
+        self.moves = [] #movimientos que debe realizar
+        self.tipo = "rect"
+        self.playerpos = [0,0]
+
+    def getLife(self):
+        return self.life
+
+    def restartMovements(self):#calcula el camino por donde debe moverse (recibe el punto final)
+        self.moves = Bresenhamrecta([self.getPos(),self.playerpos])
+        self.i = 0 #debe empezar a recorrerla desde cero
 
     def update(self): #se mueve
         if(self.i < len(self.moves) - 1):
             self.setPos(self.moves[self.i])
-            self.i += 3 #para que recorra el siguiente
-        else :
-            self.die = True
+            self.i += 2 #para que recorra el siguiente
+        else:
+            self.i = 0
 
 class Enemy(pygame.sprite.Sprite): #Hereda de la clase sprite
     nivel = None
@@ -370,41 +379,23 @@ class Zombie2(Enemy):#Hereda de la clase Enemigo
             self.i = 0 #debe empezar a recorrerla desde cero
 
     def update(self): #se mueve
-        check = False
-        for platx in self.nivel.plataforma_lista:
-            if(platx.tipo == "mascota"):
-                if(platx.tipo2 == "escudo"):
-                    if not(checkCollision(self,platx)):
-                        if(self.aux):
-                            if self.turn == 0:
-                                if self.rect.x > 120:
-                                    self.setPos([self.rect.x-5,self.rect.y])
-                                else:
-                                    self.turn = 1
-                            if self.turn == 1:
-                                bloque_col_list = pygame.sprite.spritecollide(self, self.nivel.plataforma_lista, False)
-                                if(len(bloque_col_list) == 0):
+        if(self.aux):
+            if self.turn == 0:
+                if self.rect.x > 120:
+                    self.setPos([self.rect.x-5,self.rect.y])
+                    for platx in self.nivel.plataforma_lista:
+                        if(platx.tipo == "mascota"):
+                            if(platx.tipo2 == "escudo"):
+                                if(checkCollision(self,platx)):
                                     self.setPos([self.rect.x+5,self.rect.y])
-                                else:
-                                    self.turn = 0
-            else:
-                check = True
-
-        if(check):
-            check = False
-            if(self.aux):
-                if self.turn == 0:
-                    if self.rect.x > 120:
-                        self.setPos([self.rect.x-5,self.rect.y])
-                    else:
-                        self.turn = 1
-                if self.turn == 1:
-                    bloque_col_list = pygame.sprite.spritecollide(self, self.nivel.plataforma_lista, False)
-                    if(len(bloque_col_list) == 0):
-                        self.setPos([self.rect.x+5,self.rect.y])
-                    else:
-                        self.turn = 0
-
+                else:
+                    self.turn = 1
+            if self.turn == 1:
+                bloque_col_list = pygame.sprite.spritecollide(self, self.nivel.plataforma_lista, False)
+                if(len(bloque_col_list) == 0):
+                    self.setPos([self.rect.x+5,self.rect.y])
+                else:
+                    self.turn = 0
 
 class Zombie3(Enemy):
     def __init__(self, img_name, pos):
@@ -582,12 +573,6 @@ class Boss(Enemy):#Hereda de la clase Enemigo
         self.aux = True
         self.des = 0
         self.playerpos=[0,0]
-
-    def StartMovements(self):
-        pass
-
-    def update(self):
-        pass
 
 class Mascota(Enemy):#Hereda de la clase Enemigo
 

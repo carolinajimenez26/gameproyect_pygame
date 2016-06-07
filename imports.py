@@ -448,7 +448,8 @@ class boton_inicio(buttonz):
                 for enemigo in ls_enemigos_nivel1:
                     if(checkCollision(maximus,enemigo)): # si se choco
                         if(cont == 0):
-                            maximus.crash()
+                            if not(countdown_esc): #si no tiene el escudo protector
+                                maximus.crash()
 
                             if(enemigo.tipo == 2):
                                 aux = maximus.getMargen()[0]
@@ -733,7 +734,6 @@ class boton_inicio(buttonz):
 
             if(countdown_esc): #cuenta regresiva, cogio la mascota
                 cont_esc -= 1
-                print cont_esc
             if(cont_esc <= 0):
                 countdown_esc = False
 
