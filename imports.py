@@ -204,7 +204,7 @@ class boton_inicio(buttonz):
         nivel_lista.append( nivel2 )
 
         # Establecemos nivel actual
-        nivel_actual_no = 1
+        nivel_actual_no = 0
         maximus.setPos([300, ALTO/2])
         nivel_actual = nivel_lista[nivel_actual_no]
 
@@ -278,6 +278,8 @@ class boton_inicio(buttonz):
         countdown_zap = False
         one_time = False
         give_life = True
+        cont_esc = 400 #tiempo en el que tiene escudo
+        countdown_esc = False
 
         # Controlamos que tan rapido actualizamos pantalla
         reloj = pygame.time.Clock()
@@ -522,6 +524,8 @@ class boton_inicio(buttonz):
                         new.StartMovements()
                         nivel_actual.plataforma_lista.remove(m)
                         nivel_actual.plataforma_lista.add(new)
+                        countdown_esc = True #para que empiece a contar el tiempo que se puede quedar con la mascota
+
                     if(m.tipo == "moneda"):
                         print "moneda"
                         nivel_actual.plataforma_lista.remove(m)
@@ -582,10 +586,20 @@ class boton_inicio(buttonz):
                             ls_balase.remove(e) #las ratas se mueren
                             ls_todos_nivel1.remove(e)
 
+                #Reloj, vuelve a activar el movimiento de los enemigos
                 for e in ls_enemigos_nivel1:
                     if(countdown <= 0):
                         if(e.tipo != 4): #este no se mueve
                             e.aux = True # se pueden volver a mover
+
+                #Remueve escudo si ya es tiempo
+                for m in nivel_actual.plataforma_lista:
+                    if(m.tipo == "mascota"):
+                        if(m.tipo2 == "escudo"):
+                            if(cont_esc <= 0):
+                                print "quita escudo-------------------------"
+                                nivel_actual.plataforma_lista.remove(m)
+
             #--------------------NIVEL2----------------------------
             #--------------------Collides--------------------------
             if(nivel_actual_no == 1):
@@ -717,6 +731,12 @@ class boton_inicio(buttonz):
                 countdown_zap = False
                 one_time = False
                 maximus.increment_x -= 5
+
+            if(countdown_esc): #cuenta regresiva, cogio la mascota
+                cont_esc -= 1
+                print cont_esc
+            if(cont_esc <= 0):
+                countdown_esc = False
 
             #  Si el maximus se aproxima al limite derecho de la pantalla (-x)
             if maximus.rect.x >= 500:
