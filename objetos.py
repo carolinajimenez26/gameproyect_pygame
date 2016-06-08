@@ -315,21 +315,22 @@ class Zombie1(Enemy):
     imagei=[]
     def __init__(self, img_name, pos):
         Enemy.__init__(self, img_name, pos)
-        matrizimg = cargar_fondo(curdir+"/enviroment/levels/images/zombie.png", 32,32)
+        matrizimg = cargar_fondo(dirimg+"zombie2.png", 32,32)
 
-    	self.image = matrizimg[6][5]
+    	self.image = matrizimg[0][1]
         self.imaged.append(self.image)
-        self.image = matrizimg[7][5]
+        self.image = matrizimg[1][1]
         self.imaged.append(self.image)
-        self.image = matrizimg[8][5]
+        self.image = matrizimg[2][1]
         self.imaged.append(self.image)
 
-        self.image = matrizimg[6][6]
+        self.image = matrizimg[0][2]
         self.imagei.append(self.image)
-        self.image = matrizimg[7][6]
+        self.image = matrizimg[1][2]
         self.imagei.append(self.image)
-        self.image = matrizimg[8][6]
+        self.image = matrizimg[2][2]
         self.imagei.append(self.image)
+
 
         self.i = 1
         self.cont = 0
