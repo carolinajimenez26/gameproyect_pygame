@@ -270,6 +270,7 @@ class RectBulletBoss(Weapon):
 class Enemy(pygame.sprite.Sprite): #Hereda de la clase sprite
     nivel = None
     plat = None
+
     def __init__(self, img_name, pos):
     	pygame.sprite.Sprite.__init__(self)
     	self.image = load_image(img_name, curdir, alpha=True)
@@ -347,8 +348,30 @@ class Zombie1(Enemy):
 class Zombie2(Enemy):#El que me persigue
     vel_x = 0
     vel_y = 0
+    imaged=[]
+    imagei=[]
     def __init__(self, img_name, pos,nivel):
         Enemy.__init__(self, img_name, pos)
+        matrizimg = cargar_fondo(curdir+"/enviroment/levels/images/zombie.png", 32,32)
+
+    	self.image = matrizimg[0][1]
+        self.imaged.append(self.image)
+        self.image = matrizimg[1][1]
+        self.imaged.append(self.image)
+        self.image = matrizimg[2][1]
+        self.imaged.append(self.image)
+        self.image = matrizimg[3][1]
+        self.imaged.append(self.image)
+        self.image = matrizimg[0][2]
+        self.imagei.append(self.image)
+        self.image = matrizimg[1][2]
+        self.imagei.append(self.image)
+        self.image = matrizimg[2][2]
+        self.imagei.append(self.image)
+        self.image = matrizimg[3][2]
+        self.imagei.append(self.image)
+    	self.rect = self.image.get_rect()
+
         self.life = 80
         self.speed = 2
         self.rect.x = pos[0]
@@ -361,6 +384,7 @@ class Zombie2(Enemy):#El que me persigue
         self.cont=0
         self.turn = 0
         self.aux = True
+        self.cont = 0
 
     def setDir(self,dir):
         self.dir = dir
@@ -389,6 +413,11 @@ class Zombie2(Enemy):#El que me persigue
         if(self.aux):
             if self.turn == 0:
                 if self.rect.x > 120:
+                    if self.cont <= 2:
+                        self.image = self.imaged[self.cont]
+                        self.cont+=1
+                    else:
+                        self.cont=0
                     self.setPos([self.rect.x-5,self.rect.y])
                     for platx in self.nivel.plataforma_lista:
                         if(platx.tipo == "mascota"):
@@ -399,6 +428,11 @@ class Zombie2(Enemy):#El que me persigue
                     self.turn = 1
             if self.turn == 1:
                 bloque_col_list = pygame.sprite.spritecollide(self, self.nivel.plataforma_lista, False)
+                if self.cont <= 2:
+                    self.image = self.imagei[self.cont]
+                    self.cont+=1
+                else:
+                    self.cont=0
                 if(len(bloque_col_list) == 0):
                     self.setPos([self.rect.x+5,self.rect.y])
                 else:
