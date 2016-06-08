@@ -311,33 +311,78 @@ class Enemy(pygame.sprite.Sprite): #Hereda de la clase sprite
 
 
 class Zombie1(Enemy):
+    imaged=[]
+    imagei=[]
     def __init__(self, img_name, pos):
         Enemy.__init__(self, img_name, pos)
+        matrizimg = cargar_fondo(curdir+"/enviroment/levels/images/zombie.png", 32,32)
+
+    	self.image = matrizimg[6][5]
+        self.imaged.append(self.image)
+        self.image = matrizimg[7][5]
+        self.imaged.append(self.image)
+        self.image = matrizimg[8][5]
+        self.imaged.append(self.image)
+
+        self.image = matrizimg[6][6]
+        self.imagei.append(self.image)
+        self.image = matrizimg[7][6]
+        self.imagei.append(self.image)
+        self.image = matrizimg[8][6]
+        self.imagei.append(self.image)
+
         self.i = 1
         self.cont = 0
+        self.speed_aux = 0
         self.reloj = 0
         self.life = 100
         self.speed = 1
         self.tipo = 1
         self.aux = True
+        self.cont3 = 0
 
     def move(self): #se mueve solo
-        self.rect.x += self.i
-        self.cont += 1
-        for platx in self.nivel.plataforma_lista:
-            if(platx.tipo == "mascota"):
-                if(platx.tipo2 == "escudo"):
-                    if(checkCollision(self,platx)):
-                        self.rect.x -= self.i #deshace el movimiento
-                        self.cont -= 1
-
-        if(self.cont == 380):
-            self.cont = 0
-            self.i *= -self.speed
+        if(self.speed_aux >= 1):
+            self.speed_aux = 0
+            self.rect.x += self.speed
+            self.cont += 1
+            for platx in self.nivel.plataforma_lista:
+                if(platx.tipo == "mascota"):
+                    if(platx.tipo2 == "escudo"):
+                        if(checkCollision(self,platx)):
+                            self.rect.x -= self.speed
+                            self.cont -= 1
+            if(self.cont == 350):
+                self.cont = 0
+                self.speed *= -1
+                self.changeDirection()
+        else:
+            self.speed_aux += 1
 
     def update(self):
         if(self.aux):
             self.move()
+            if(self.getDir() == 0):
+                if self.cont3 <= 2:
+                    self.image = self.imagei[self.cont3]
+                    self.cont3+=1
+                else:
+                    self.cont3=0
+            elif (self.getDir() == 1):
+                if self.cont3 <= 2:
+                    self.image = self.imaged[self.cont3]
+                    self.cont3+=1
+                else:
+                    self.cont3=0
+
+
+
+    def changeDirection(self):
+        if(self.getDir() == 0): #der
+            self.setDir(1) #izq
+        else: #izq
+            self.setDir(0)#der
+
 
     def StopMovements(self):
         self.aux = False
@@ -439,8 +484,29 @@ class Zombie2(Enemy):#El que me persigue
                     self.turn = 0
 
 class Zombie3(Enemy):#El que me dispara y esta en la plataforma de arriba
+    imaged=[]
+    imagei=[]
     def __init__(self, img_name, pos):
         Enemy.__init__(self, img_name, pos)
+
+        matrizimg = cargar_fondo(curdir+"/enviroment/levels/images/zombie.png", 32,32)
+
+    	self.image = matrizimg[6][1]
+        self.imaged.append(self.image)
+        self.image = matrizimg[7][1]
+        self.imaged.append(self.image)
+        self.image = matrizimg[8][1]
+        self.imaged.append(self.image)
+
+        self.image = matrizimg[6][2]
+        self.imagei.append(self.image)
+        self.image = matrizimg[7][2]
+        self.imagei.append(self.image)
+        self.image = matrizimg[8][2]
+        self.imagei.append(self.image)
+
+    	self.rect = self.image.get_rect()
+
         self.life = 150
         self.speed = 1
         self.rect.x = pos[0]
@@ -450,6 +516,8 @@ class Zombie3(Enemy):#El que me dispara y esta en la plataforma de arriba
         self.dir = 0 #derecha
         self.speed_aux = 0
         self.aux = True
+        self.cont = 0
+        self.cont3 = 0
 
     def setDir(self,dir):
         self.dir = dir
@@ -484,6 +552,20 @@ class Zombie3(Enemy):#El que me dispara y esta en la plataforma de arriba
     def update(self):
         if(self.aux):
             self.move()
+            if(self.getDir() == 0):
+                if self.cont3 <= 2:
+                    self.image = self.imagei[self.cont3]
+                    self.cont3+=1
+                else:
+                    self.cont3=0
+            elif (self.getDir() == 1):
+                if self.cont3 <= 2:
+                    self.image = self.imaged[self.cont3]
+                    self.cont3+=1
+                else:
+                    self.cont3=0
+
+
 
     def changeDirection(self):
         if(self.getDir() == 0): #der

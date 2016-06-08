@@ -954,7 +954,6 @@ class boton_acercade(buttonz):
         print "boton de creditos y mas"
 
 class mainsplash(pygame.sprite.Sprite): #Hereda de la clase sprite
-    #cargar_fondo('zombie1.png',ancho,alto)
     def __init__(self):
     	pygame.sprite.Sprite.__init__(self)
     	self.image = load_image("o_7ecb0b0ccb0a3aa5-0.jpg", curdir+"/enviroment/main", alpha=False)
