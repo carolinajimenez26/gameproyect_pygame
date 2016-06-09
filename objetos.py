@@ -204,6 +204,7 @@ class Bullet(Weapon): #Hereda de la clase sprite
     	Weapon.__init__(self, img_name, pos)
         self.magiciandir = 0 #dispara dependiendo de la posicion del magician
         self.tipo = "normal"
+        self.tipo2 = ""
 
     def setDir(self,dir):
         self.magiciandir = dir
@@ -626,6 +627,7 @@ class Rata(Enemy):#Hereda de la clase Enemigo
         self.dir = 0
         self.name = img_name.split(".png")[0]
         self.tipo = "rata"
+        self.tipo2 = ""
 
     def getName(self):
         return self.name
