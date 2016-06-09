@@ -223,6 +223,7 @@ class boton_inicio(buttonz):
         reloj_s = load_sound('enviroment/levels/sounds/ticking_clock.ogg',curdir)
         gotlife = load_sound('enviroment/levels/sounds/gotLife.ogg',curdir)
         charge = load_sound('enviroment/levels/sounds/charge.ogg',curdir)
+        fire = load_sound('enviroment/levels/sounds/fire.ogg',curdir)
 
         #Grupos de sprites
         ls_balaj = pygame.sprite.Group() #balas jugador
@@ -252,6 +253,8 @@ class boton_inicio(buttonz):
         cont6 = 0
         flag10 = False
         cont10 = 0
+        flag11 = False #supernova boss
+        cont11 = 0
         flag7 = False
         cont7 = 0
         flag8 = False
@@ -662,9 +665,9 @@ class boton_inicio(buttonz):
                         shot_se.play()
                         flag6 = True
                     else: #es el boss
-                        op = random.randrange(0,3) #ataque del boss
+                        op = random.randrange(0,4) #ataque del boss
                         print "op : ", op
-                        #op = 1
+                        op = 3
                         if(op == 0):#se pone un escudo
                             print "enemy life : ", enemigo.getLife()
                             if not(countdown_esc_enemigo): # si es true significa que todavia tiene puesto un escudo
@@ -690,9 +693,22 @@ class boton_inicio(buttonz):
                                             nivel_actual.plataforma_lista.remove(m)
                                             cont_esc_enemigo = 200 #podria volver a salir este ataque
                                             countdown_esc_enemigo = False
-                        if(op == 3):#disparo epecial de fuego con presentacion circular (dispara a un lugar aleatorio)
-                            pass
-                            #se debe implementar sonidos de fuego
+                        if(op == 3 and cont11 <= 0):#disparo epecial de fuego con presentacion circular (dispara a un lugar aleatorio)
+                            print "supernova"
+                            #Primero me quito el escudo
+                            for m in nivel_actual.plataforma_lista:
+                                if(m.tipo == "mascota"):
+                                    if(m.tipo2 == "escudo"):
+                                        if(cont_esc_enemigo <= 0):
+                                            nivel_actual.plataforma_lista.remove(m)
+                                            cont_esc_enemigo = 200 #podria volver a salir este ataque
+                                            countdown_esc_enemigo = False
+
+                            bala_boss = CircleBullet(dirimg+'sn.png',enemigo.getPos(), enemigo.getMargen()[0] + enemigo.getMargen()[0]/2)
+                            ls_balase.add(bala_boss)
+                            bala_boss.restartMovements(enemigo.getPos())
+                            fire.play()
+                            flag11 = True
 
 
                 #----------------------Otros--------------------------
@@ -749,6 +765,11 @@ class boton_inicio(buttonz):
                 cont10 += 1
             if(cont10 >= 100):
                 cont10 = 0
+            #Para supernova boss
+            if(flag11):
+                cont11 += 1
+            if(cont11 >= 100):
+                cont11 = 0
             #Para colision balas enemigos nivel2 con maximus
             if(flag7):
                 cont7 += 1
