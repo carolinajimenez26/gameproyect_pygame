@@ -206,6 +206,7 @@ class boton_inicio(buttonz):
         # Establecemos nivel actual
         nivel_actual_no = 1
         maximus.setPos([300, ALTO/2])
+        maximus.score = 31
         nivel_actual = nivel_lista[nivel_actual_no]
 
         # Indicamos a la clase jugador cual es el nivel
@@ -276,6 +277,7 @@ class boton_inicio(buttonz):
         cont_sinesc_enemigo = 200 #tiempo en el que el boss no puede tener el escudo
         countdown_sinesc_enemigo = False
         disparos = 0 #con X disparos le quita el escudo al boss
+        cont_mun = 800 #Para regalarle municiones
 
         # Controlamos que tan rapido actualizamos pantalla
         reloj = pygame.time.Clock()
@@ -313,6 +315,15 @@ class boton_inicio(buttonz):
         # -------- Ciclo del juego -----------
         while not fin:
             #maximus.setLife(100)#vida infinita
+            cont_mun -= 1
+            #print cont_mun
+            if(nivel_actual_no == 1 and maximus.municion == 0 and maximus.getLife() < 50 and cont_mun <= 0 and maximus.score > 30):
+                #le regala municiones con las condiciones de arriba
+                cont_mun = 800
+                municion = Plataforma(dirimg+"municion.png",[500,ALTO/3 + 100 - 60])
+                municion.tipo = "municion"
+                nivel_actual.plataforma_lista.add(municion)
+
             for en in nivel_actual.enemigos_lista:
                 en.plat = nivel_actual.getElements()
 
@@ -628,6 +639,7 @@ class boton_inicio(buttonz):
 
             #--------------------NIVEL2----------------------------
             #--------------------Collides--------------------------
+            #colision de los enemigos y maximus
             if(nivel_actual_no == 1):
                 maximus.enemigos = len(ls_enemigos_nivel2)
                 for enemigo in ls_enemigos_nivel2:
@@ -651,6 +663,7 @@ class boton_inicio(buttonz):
                         nivel_actual.plataforma_lista.remove(m)
                         maximus.municion += 10
 
+                #Colision de los enemigos con las balas del jugador
                 for enemigo2 in ls_enemigos_nivel2:
                     for bala in ls_balaj:
                         if(checkCollision(bala,enemigo2)): # si se choco
@@ -668,13 +681,22 @@ class boton_inicio(buttonz):
 
                                 if(enemigo2.getLife() <= 0):
                                     ls_enemigos_nivel2.remove(enemigo2)
+                                    #Puntaje por matar a los enemigos
+                                    if(enemigo2.tipo == 10):
+                                        #Premio por matar al boss
+                                        maximus.score += 100
+                                        maximus.setLife(100)
+                                        maximus.municion += 20
+                                    else:
+                                        maximus.score += 20
 
 
-                #Colision bala enemigo
+                #Colision balas enemigos con maximus
                 for bala in ls_balase:
                     if(checkCollision(bala,maximus)): # si le disparan a maximus
                         if(cont7 == 0):
                             maximus.setLife(maximus.getLife()-1)
+                            ls_balase.remove(bala)
                             flag7 = True
 
                 #------------------Ataques---------------------------
