@@ -204,7 +204,7 @@ class boton_inicio(buttonz):
         nivel_lista.append( nivel2 )
 
         # Establecemos nivel actual
-        nivel_actual_no = 0
+        nivel_actual_no = 1
         maximus.setPos([300, ALTO/2])
         nivel_actual = nivel_lista[nivel_actual_no]
 
@@ -262,7 +262,7 @@ class boton_inicio(buttonz):
         countdown_zap = False
         one_time = False
         give_life = True
-        cont_esc = 4000 #tiempo en el que tiene escudo
+        cont_esc = 400 #tiempo en el que tiene escudo
         countdown_esc = False
 
         # Controlamos que tan rapido actualizamos pantalla

@@ -228,6 +228,7 @@ class RectBullet(Weapon):
         self.moves = [] #movimientos que debe realizar
         self.life = 300
         self.tipo = "rect"
+        self.tipo2 = ""
 
     def getLife(self):
         return self.life
@@ -248,24 +249,26 @@ class RectBulletBoss(Weapon):
     def __init__(self, img_name, pos): #img para cargar, y su padre(de donde debe salir la bala)
     	Weapon.__init__(self, img_name, pos)
         self.i = 0
-        self.life = 8000
         self.moves = [] #movimientos que debe realizar
         self.tipo = "rect"
+        self.tipo2 = "bulletboss"
         self.playerpos = [0,0]
+        self.die = False
+        self.life = 100 #no importa, pero hay que tenerla definida
 
     def getLife(self):
         return self.life
 
-    def restartMovements(self):#calcula el camino por donde debe moverse (recibe el punto final)
-        self.moves = Bresenhamrecta([self.getPos(),self.playerpos])
+    def restartMovements(self,pos):#calcula el camino por donde debe moverse (recibe el punto final)
+        self.moves = Bresenhamrecta([self.getPos(),pos])#self.playerpos
         self.i = 0 #debe empezar a recorrerla desde cero
 
     def update(self): #se mueve
         if(self.i < len(self.moves) - 1):
             self.setPos(self.moves[self.i])
             self.i += 2 #para que recorra el siguiente
-        else:
-            self.i = 0
+        else :
+            self.die = True
 
 class Enemy(pygame.sprite.Sprite): #Hereda de la clase sprite
     nivel = None
@@ -692,7 +695,7 @@ class Zombie6(Enemy):#Hereda de la clase Enemigo
 class Boss(Enemy):#Hereda de la clase Enemigo
     def __init__(self, img_name, pos):
         Enemy.__init__(self, img_name, pos)
-        self.life = 800
+        self.life = 200
         self.speed = 1
         self.rect.x = pos[0]
     	self.rect.y = pos[1]
@@ -703,6 +706,12 @@ class Boss(Enemy):#Hereda de la clase Enemigo
         self.aux = True
         self.des = 0
         self.playerpos=[0,0]
+
+    def StartMovements(self):
+        pass
+
+    def update(self):
+        pass
 
 class Mascota(Enemy):#Hereda de la clase Enemigo
 
