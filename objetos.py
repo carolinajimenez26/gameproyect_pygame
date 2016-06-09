@@ -706,12 +706,50 @@ class Boss(Enemy):#Hereda de la clase Enemigo
         self.aux = True
         self.des = 0
         self.playerpos=[0,0]
+        self.cont3 = 0
+        self.i = 1
+        self.speed = 3
+
+    def changeDirection(self):
+        if(self.getDir() == 0): #der
+            self.setDir(1) #izq
+        else: #izq
+            self.setDir(0)#der
+
+    def StopMovements(self):
+        self.aux = False
 
     def StartMovements(self):
-        pass
+        self.aux = True
+
+    def move(self): #se mueve solo
+        if(self.speed_aux >= 1):
+            self.speed_aux = 0
+            self.rect.x += self.speed
+            self.cont += 1
+
+            if(self.cont == 290/3):
+                self.cont = 0
+                self.speed *= -1
+                self.changeDirection()
+        else:
+            self.speed_aux += 1
 
     def update(self):
-        pass
+        if(self.aux):
+            self.move()
+            if(self.getDir() == 0):
+                if self.cont3 <= 2:
+                    #self.image = self.imagei[self.cont3]
+                    self.cont3 += 1
+                else:
+                    self.cont3 = 0
+            elif (self.getDir() == 1):
+                if self.cont3 <= 2:
+                    #self.image = self.imaged[self.cont3]
+                    self.cont3 += 1
+                else:
+                    self.cont3 = 0
 
 class Mascota(Enemy):#Hereda de la clase Enemigo
 
