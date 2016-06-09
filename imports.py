@@ -204,7 +204,7 @@ class boton_inicio(buttonz):
         nivel_lista.append( nivel2 )
 
         # Establecemos nivel actual
-        nivel_actual_no = 0
+        nivel_actual_no = 1
         maximus.setPos([300, ALTO/2])
         nivel_actual = nivel_lista[nivel_actual_no]
 
@@ -275,7 +275,7 @@ class boton_inicio(buttonz):
         moving = True # el boss se esta moviendo ?
         cont_sinesc_enemigo = 200 #tiempo en el que el boss no puede tener el escudo
         countdown_sinesc_enemigo = False
-
+        disparos = 0 #con X disparos le quita el escudo al boss
 
         # Controlamos que tan rapido actualizamos pantalla
         reloj = pygame.time.Clock()
@@ -326,8 +326,19 @@ class boton_inicio(buttonz):
             for bil in ls_balaj:
                 for plat in nivel_actual.getElements():
                     if(checkCollision(bil,plat)): # si se choco
-                        if not(plat.tipo == "mascota" or plat.tipo2 == "escudo"): #ESCUDO
-                            ls_balaj.remove(bil)
+                        if(nivel_actual_no == 0):
+                            if not(plat.tipo == "mascota" or plat.tipo2 == "escudo"):
+                                ls_balaj.remove(bil)
+                        else:
+                            if(plat.tipo == "mascota" or plat.tipo2 == "escudo"):
+                                disparos += 1
+                                print "disparos : ", disparos
+                                if(disparos == 100): #con X disparos le quita el escudo
+                                #100 no se mide por las veces que dispara, si no por el tiempo en el collide
+                                    print "boss vulnerable"
+                                    ls_balaj.remove(bil)
+                                    nivel_actual.plataforma_lista.remove(plat)
+                                    disparos = 0
 
             for bile in ls_balase:
                 ls_impactos = pygame.sprite.spritecollide(bile,nivel_actual.getElements(), False)
@@ -677,8 +688,8 @@ class boton_inicio(buttonz):
                     #------------Ataque BOSS--------------
                     elif(enemigo.tipo == 10): #es el boss
                         op = random.randrange(0,6) #ataque del boss
-                        print "op : ", op
-                        #op = 3
+                        #print "op : ", op
+                        #op = 0
                         if(op == 0 and not cont11 <= 0 and moving and not countdown_sinesc_enemigo):#se pone un escudo
                             enemigo.StartMovements()
                             print "enemy life : ", enemigo.getLife()

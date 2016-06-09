@@ -813,3 +813,4 @@ class Plataforma(pygame.sprite.Sprite): #Hereda de la clase sprite
     	self.rect.x = pos[0]
     	self.rect.y = pos[1]
         self.tipo = ""
+        self.tipo2 = ""
