@@ -326,7 +326,7 @@ class boton_inicio(buttonz):
             for bil in ls_balaj:
                 for plat in nivel_actual.getElements():
                     if(checkCollision(bil,plat)): # si se choco
-                        if not(plat.tipo == "mascota"): #ESCUDO
+                        if not(plat.tipo == "mascota" or plat.tipo2 == "escudo"): #ESCUDO
                             ls_balaj.remove(bil)
 
             for bile in ls_balase:
