@@ -672,7 +672,7 @@ class boton_inicio(buttonz):
                         flag6 = True
                     #------------Ataque BOSS--------------
                     elif(enemigo.tipo == 10): #es el boss
-                        op = random.randrange(0,4) #ataque del boss
+                        op = random.randrange(0,6) #ataque del boss
                         print "op : ", op
                         #op = 3
                         if(op == 0 and not cont11 <= 0 and moving):#se pone un escudo
@@ -686,23 +686,23 @@ class boton_inicio(buttonz):
                                 new.jugador = enemigo
                                 new.StartMovements()
                                 nivel_actual.plataforma_lista.add(new)
-                                countdown_esc_enemigo = True #para que empiece a contar el tiempo que se puede quedar con la mascota
-                        if(cont10 <= 0 and op == 1 and moving): #dispara
+                                countdown_esc_enemigo = True #para que empiece a contar el tiempo que se puede quedar con el escudo
+
+                        if(op == 1):
+                            pass #no haga nada, para que haya momentos de vulnerabilidad
+
+                        if(cont10 <= 0 and op == 2 and moving): #dispara
                             enemigo.StartMovements()
                             bala = RectBulletBoss(dirimg+'bala3.png',enemigo.getPos())
                             bala.restartMovements(maximus.getPos())
                             ls_balase.add(bala)
                             shot_se.play()
                             flag10 = True
-                        if(op == 2):#se quita el escudo
-                            for m in nivel_actual.plataforma_lista:
-                                if(m.tipo == "mascota"):
-                                    if(m.tipo2 == "escudo"):
-                                        if(cont_esc_enemigo <= 0):
-                                            nivel_actual.plataforma_lista.remove(m)
-                                            cont_esc_enemigo = 200 #podria volver a salir este ataque
-                                            countdown_esc_enemigo = False
-                        if(op == 3 and cont11 <= 0 and moving):#disparo epecial
+
+                        if(op == 3):
+                            pass #no haga nada, para que haya momentos de vulnerabilidad
+
+                        if(op == 4 and cont11 <= 0 and moving):#disparo epecial
                             print "supernova circular"
                             #Primero me quito el escudo
                             for m in nivel_actual.plataforma_lista:
@@ -722,6 +722,8 @@ class boton_inicio(buttonz):
                             enemigo.StopMovements()
                             moving = False
 
+                        if(op == 5):
+                            pass #no haga nada, para que haya momentos de vulnerabilidad
 
                 #----------------------Otros--------------------------
                 #quita escudo al boss
@@ -828,6 +830,14 @@ class boton_inicio(buttonz):
                 cont_esc_enemigo -= 1
             if(cont_esc_enemigo <= 0):
                 countdown_esc_enemigo = False
+                #Tiempo de quitarse el escudo
+                for m in nivel_actual.plataforma_lista:
+                    if(m.tipo == "mascota"):
+                        if(m.tipo2 == "escudo"):
+                            if(cont_esc_enemigo <= 0):
+                                nivel_actual.plataforma_lista.remove(m)
+                                cont_esc_enemigo = 200 #podria volver a salir este ataque
+                                countdown_esc_enemigo = False
 
             #  Si el maximus se aproxima al limite derecho de la pantalla (-x)
             if maximus.rect.x >= 500:
