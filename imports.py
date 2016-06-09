@@ -204,9 +204,9 @@ class boton_inicio(buttonz):
         nivel_lista.append( nivel2 )
 
         # Establecemos nivel actual
-        nivel_actual_no = 1
-        maximus.setPos([300, ALTO/2])
-        maximus.score = 31
+        nivel_actual_no = 0
+        #maximus.setPos([300, ALTO/2])
+        #maximus.score = 31
         nivel_actual = nivel_lista[nivel_actual_no]
 
         # Indicamos a la clase jugador cual es el nivel
