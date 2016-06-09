@@ -272,7 +272,7 @@ class boton_inicio(buttonz):
         countdown_esc = False
         cont_esc_enemigo = 200 #tiempo en el que el boss tiene escudo
         countdown_esc_enemigo = False
-        finished = True
+        moving = True # el boss se esta moviendo ?
 
         # Controlamos que tan rapido actualizamos pantalla
         reloj = pygame.time.Clock()
@@ -670,11 +670,12 @@ class boton_inicio(buttonz):
                         ls_balase.add(bala)
                         shot_se.play()
                         flag6 = True
+                    #------------Ataque BOSS--------------
                     elif(enemigo.tipo == 10): #es el boss
                         op = random.randrange(0,4) #ataque del boss
                         print "op : ", op
                         #op = 3
-                        if(op == 0 and finished):#se pone un escudo
+                        if(op == 0 and not cont11 <= 0 and moving):#se pone un escudo
                             enemigo.StartMovements()
                             print "enemy life : ", enemigo.getLife()
                             if not(countdown_esc_enemigo): # si es true significa que todavia tiene puesto un escudo
@@ -686,7 +687,7 @@ class boton_inicio(buttonz):
                                 new.StartMovements()
                                 nivel_actual.plataforma_lista.add(new)
                                 countdown_esc_enemigo = True #para que empiece a contar el tiempo que se puede quedar con la mascota
-                        if(cont10 <= 0 and op == 1 and finished): #dispara
+                        if(cont10 <= 0 and op == 1 and moving): #dispara
                             enemigo.StartMovements()
                             bala = RectBulletBoss(dirimg+'bala3.png',enemigo.getPos())
                             bala.restartMovements(maximus.getPos())
@@ -694,7 +695,6 @@ class boton_inicio(buttonz):
                             shot_se.play()
                             flag10 = True
                         if(op == 2):#se quita el escudo
-                            enemigo.StartMovements()
                             for m in nivel_actual.plataforma_lista:
                                 if(m.tipo == "mascota"):
                                     if(m.tipo2 == "escudo"):
@@ -702,7 +702,7 @@ class boton_inicio(buttonz):
                                             nivel_actual.plataforma_lista.remove(m)
                                             cont_esc_enemigo = 200 #podria volver a salir este ataque
                                             countdown_esc_enemigo = False
-                        if(op == 3 and cont11 <= 0 and finished):#disparo epecial
+                        if(op == 3 and cont11 <= 0 and moving):#disparo epecial
                             print "supernova circular"
                             #Primero me quito el escudo
                             for m in nivel_actual.plataforma_lista:
@@ -720,7 +720,7 @@ class boton_inicio(buttonz):
                             fire.play()
                             flag11 = True
                             enemigo.StopMovements()
-                            finished = False
+                            moving = False
 
 
                 #----------------------Otros--------------------------
@@ -751,7 +751,7 @@ class boton_inicio(buttonz):
                             ls_balase.add(bala)
                             bum.play()
                             print "BUUUMMMM"
-                            finished = True
+                            moving = True #puede volver a moverse
 
             #Para collide con enemigos
             if(flag):
