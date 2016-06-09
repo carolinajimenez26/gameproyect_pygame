@@ -663,9 +663,9 @@ class boton_inicio(buttonz):
                         flag6 = True
                     else: #es el boss
                         op = random.randrange(0,3) #ataque del boss
-                        #print "op : ", op
-                        op = 1
-                        if(op == 0):
+                        print "op : ", op
+                        #op = 1
+                        if(op == 0):#se pone un escudo
                             print "enemy life : ", enemigo.getLife()
                             if not(countdown_esc_enemigo): # si es true significa que todavia tiene puesto un escudo
                                 print "escudo enemigo"
@@ -676,12 +676,24 @@ class boton_inicio(buttonz):
                                 new.StartMovements()
                                 nivel_actual.plataforma_lista.add(new)
                                 countdown_esc_enemigo = True #para que empiece a contar el tiempo que se puede quedar con la mascota
-                        if(cont10 <= 0 and op == 1): #este es el unico
+                        if(cont10 <= 0 and op == 1): #dispara
                             bala = RectBulletBoss(dirimg+'bala3.png',enemigo.getPos())
                             bala.restartMovements(maximus.getPos())
                             ls_balase.add(bala)
                             shot_se.play()
                             flag10 = True
+                        if(op == 2):#se quita el escudo
+                            for m in nivel_actual.plataforma_lista:
+                                if(m.tipo == "mascota"):
+                                    if(m.tipo2 == "escudo"):
+                                        if(cont_esc_enemigo <= 0):
+                                            nivel_actual.plataforma_lista.remove(m)
+                                            cont_esc_enemigo = 200 #podria volver a salir este ataque
+                                            countdown_esc_enemigo = False
+                        if(op == 3):#disparo epecial de fuego con presentacion circular (dispara a un lugar aleatorio)
+                            pass
+                            #se debe implementar sonidos de fuego
+
 
                 #----------------------Otros--------------------------
                 #quita escudo al boss
