@@ -1097,7 +1097,12 @@ class boton_acercade(buttonz):
     def __init__(self,img,img2):
         buttonz.__init__(self,img,img2)
     def action(self):
-        print "boton de creditos y mas"
+        ventana_acercade = pygame.display.set_mode((800, 600))#, pygame.FULLSCREEN)
+        pr = ventana_acercade.subsurface([0,0,200,200]) #Dibuja una surface sobre la pantalla
+        pr.fill((255,0,0))
+        pygame.display.flip()
+        while 1:
+            print 1
 
 class mainsplash(pygame.sprite.Sprite): #Hereda de la clase sprite
     def __init__(self):
