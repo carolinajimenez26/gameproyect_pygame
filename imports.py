@@ -264,6 +264,8 @@ class boton_inicio(buttonz):
         give_life = True
         cont_esc = 400 #tiempo en el que tiene escudo
         countdown_esc = False
+        cont_esc_enemigo = 200 #tiempo en el que el boss tiene escudo
+        countdown_esc_enemigo = False
 
         # Controlamos que tan rapido actualizamos pantalla
         reloj = pygame.time.Clock()
@@ -628,12 +630,18 @@ class boton_inicio(buttonz):
                 for enemigo2 in ls_enemigos_nivel2:
                     for bala in ls_balaj:
                         if(checkCollision(bala,enemigo2)): # si se choco
-                            if(cont == 0):
-                                enemigo2.crash()
-                                ls_balaj.remove(bala)
-                                #ls_todos_nivel1.remove(bala)
-                                #ls_todos_nivel2.remove(bala)
-                                flag2 = True
+                            if(cont <= 0):
+                                if(enemigo2.tipo == 10): #si es el boss
+                                    if not(countdown_esc_enemigo):#si no tiene escudo
+                                        enemigo2.crash()
+                                        print "boss crashed"
+                                        ls_balaj.remove(bala)
+                                        flag2 = True
+                                else:
+                                    enemigo2.crash()
+                                    ls_balaj.remove(bala)
+                                    flag2 = True
+
                                 if(enemigo2.getLife() <= 0):
                                     ls_enemigos_nivel2.remove(enemigo2)
 
@@ -654,7 +662,21 @@ class boton_inicio(buttonz):
                         shot_se.play()
                         flag6 = True
                     else: #es el boss
-                        if(cont10 == 0):
+                        op = random.randrange(0,3) #ataque del boss
+                        #print "op : ", op
+                        op = 1
+                        if(op == 0):
+                            print "enemy life : ", enemigo.getLife()
+                            if not(countdown_esc_enemigo): # si es true significa que todavia tiene puesto un escudo
+                                print "escudo enemigo"
+                                new = Mascota(dirimg+"escudo.png",enemigo.getPos())
+                                new.tipo = "mascota"
+                                new.tipo2 = "escudo"
+                                new.jugador = enemigo
+                                new.StartMovements()
+                                nivel_actual.plataforma_lista.add(new)
+                                countdown_esc_enemigo = True #para que empiece a contar el tiempo que se puede quedar con la mascota
+                        if(cont10 <= 0 and op == 1): #este es el unico
                             bala = RectBulletBoss(dirimg+'bala3.png',enemigo.getPos())
                             bala.restartMovements(maximus.getPos())
                             ls_balase.add(bala)
@@ -662,6 +684,15 @@ class boton_inicio(buttonz):
                             flag10 = True
 
                 #----------------------Otros--------------------------
+                #quita escudo al boss
+                for m in nivel_actual.plataforma_lista:
+                    if(m.tipo == "mascota"):
+                        if(m.tipo2 == "escudo"):
+                            if(cont_esc_enemigo <= 0):
+                                nivel_actual.plataforma_lista.remove(m)
+                                cont_esc_enemigo = 200 #podria volver a salir este ataque
+                                countdown_esc_enemigo = False
+
                 #Desaparecen balas
                 for e in ls_balase:
                     if(e.getLife() <= 0):
@@ -736,6 +767,11 @@ class boton_inicio(buttonz):
                 cont_esc -= 1
             if(cont_esc <= 0):
                 countdown_esc = False
+
+            if(countdown_esc_enemigo): #cuenta regresiva, escudo boss
+                cont_esc_enemigo -= 1
+            if(cont_esc_enemigo <= 0):
+                countdown_esc_enemigo = False
 
             #  Si el maximus se aproxima al limite derecho de la pantalla (-x)
             if maximus.rect.x >= 500:

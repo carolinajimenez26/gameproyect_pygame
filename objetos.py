@@ -735,6 +735,17 @@ class Boss(Enemy):#Hereda de la clase Enemigo
         else:
             self.speed_aux += 1
 
+    def attack(self,op):#ataque sorpresa, recibe posicion del enemigo (por si debe disparar)
+        if(op == 0): #Se protege con un escudo
+            #si ya tiene el escudo, no haga nada
+            pass
+        if(op == 1):#dispara
+            pass #lo hace desde el main
+        if(op == 2):#Se quita el escudo
+            pass
+        if(op == 3):#disparo epecial de fuego con presentacion circular (dispara a un lugar aleatorio)
+            pass
+
     def update(self):
         if(self.aux):
             self.move()
