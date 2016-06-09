@@ -273,6 +273,9 @@ class boton_inicio(buttonz):
         cont_esc_enemigo = 200 #tiempo en el que el boss tiene escudo
         countdown_esc_enemigo = False
         moving = True # el boss se esta moviendo ?
+        cont_sinesc_enemigo = 200 #tiempo en el que el boss no puede tener el escudo
+        countdown_sinesc_enemigo = False
+
 
         # Controlamos que tan rapido actualizamos pantalla
         reloj = pygame.time.Clock()
@@ -330,7 +333,8 @@ class boton_inicio(buttonz):
                 ls_impactos = pygame.sprite.spritecollide(bile,nivel_actual.getElements(), False)
                 for impacto in ls_impactos:
                     if(bile.tipo != "circle"):
-                        ls_balase.remove(bile)
+                        if(bile.tipo2 != "bulletboss"):
+                            ls_balase.remove(bile)
 
             if(maximus.getLife() <= 0): #si muere
                 nivel_actual.StopSound()
@@ -675,7 +679,7 @@ class boton_inicio(buttonz):
                         op = random.randrange(0,6) #ataque del boss
                         print "op : ", op
                         #op = 3
-                        if(op == 0 and not cont11 <= 0 and moving):#se pone un escudo
+                        if(op == 0 and not cont11 <= 0 and moving and not countdown_sinesc_enemigo):#se pone un escudo
                             enemigo.StartMovements()
                             print "enemy life : ", enemigo.getLife()
                             if not(countdown_esc_enemigo): # si es true significa que todavia tiene puesto un escudo
@@ -838,6 +842,13 @@ class boton_inicio(buttonz):
                                 nivel_actual.plataforma_lista.remove(m)
                                 cont_esc_enemigo = 200 #podria volver a salir este ataque
                                 countdown_esc_enemigo = False
+
+                countdown_sinesc_enemigo = True
+
+            if(countdown_sinesc_enemigo): #cuenta regresiva, no va a tener el escudo por este tiempo
+                cont_sinesc_enemigo -= 1
+            if(cont_sinesc_enemigo <= 0):
+                countdown_sinesc_enemigo = False
 
             #  Si el maximus se aproxima al limite derecho de la pantalla (-x)
             if maximus.rect.x >= 500:
