@@ -328,3 +328,10 @@ class Nivel_02(Nivel):
         municion = Plataforma(dirimg+"municion.png",[500,ALTO/3 + 100 - 60])
         municion.tipo = "municion"
         self.plataforma_lista.add(municion)
+
+    def Mover_fondo(self, mov_x):
+        self.mov_fondo += mov_x
+        for plataforma in self.plataforma_lista:
+            plataforma.rect.x += mov_x
+        for enemigo in self.enemigos_lista:
+            enemigo.rect.x += mov_x

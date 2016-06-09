@@ -224,6 +224,7 @@ class boton_inicio(buttonz):
         gotlife = load_sound('enviroment/levels/sounds/gotLife.ogg',curdir)
         charge = load_sound('enviroment/levels/sounds/charge.ogg',curdir)
         fire = load_sound('enviroment/levels/sounds/fire.ogg',curdir)
+        bum = load_sound('enviroment/levels/sounds/bum.wav',curdir)
 
         #Grupos de sprites
         ls_balaj = pygame.sprite.Group() #balas jugador
@@ -255,6 +256,8 @@ class boton_inicio(buttonz):
         cont10 = 0
         flag11 = False #supernova boss
         cont11 = 0
+        supernova = False #dispara
+        supernova_cont = 300
         flag7 = False
         cont7 = 0
         flag8 = False
@@ -269,6 +272,7 @@ class boton_inicio(buttonz):
         countdown_esc = False
         cont_esc_enemigo = 200 #tiempo en el que el boss tiene escudo
         countdown_esc_enemigo = False
+        finished = True
 
         # Controlamos que tan rapido actualizamos pantalla
         reloj = pygame.time.Clock()
@@ -325,7 +329,8 @@ class boton_inicio(buttonz):
             for bile in ls_balase:
                 ls_impactos = pygame.sprite.spritecollide(bile,nivel_actual.getElements(), False)
                 for impacto in ls_impactos:
-                    ls_balase.remove(bile)
+                    if(bile.tipo != "circle"):
+                        ls_balase.remove(bile)
 
             if(maximus.getLife() <= 0): #si muere
                 nivel_actual.StopSound()
@@ -489,6 +494,7 @@ class boton_inicio(buttonz):
                         if(cont4 == 0):
                             maximus.setLife(maximus.getLife()-1)
                             flag4 = True
+                            ls_balase.remove(bala)
 
                 #Colision modificadores con maximus
                 ls_modificadores = pygame.sprite.spritecollide(maximus, nivel_actual.plataforma_lista, True)
@@ -664,11 +670,12 @@ class boton_inicio(buttonz):
                         ls_balase.add(bala)
                         shot_se.play()
                         flag6 = True
-                    else: #es el boss
+                    elif(enemigo.tipo == 10): #es el boss
                         op = random.randrange(0,4) #ataque del boss
                         print "op : ", op
-                        op = 3
-                        if(op == 0):#se pone un escudo
+                        #op = 3
+                        if(op == 0 and finished):#se pone un escudo
+                            enemigo.StartMovements()
                             print "enemy life : ", enemigo.getLife()
                             if not(countdown_esc_enemigo): # si es true significa que todavia tiene puesto un escudo
                                 print "escudo enemigo"
@@ -679,13 +686,15 @@ class boton_inicio(buttonz):
                                 new.StartMovements()
                                 nivel_actual.plataforma_lista.add(new)
                                 countdown_esc_enemigo = True #para que empiece a contar el tiempo que se puede quedar con la mascota
-                        if(cont10 <= 0 and op == 1): #dispara
+                        if(cont10 <= 0 and op == 1 and finished): #dispara
+                            enemigo.StartMovements()
                             bala = RectBulletBoss(dirimg+'bala3.png',enemigo.getPos())
                             bala.restartMovements(maximus.getPos())
                             ls_balase.add(bala)
                             shot_se.play()
                             flag10 = True
                         if(op == 2):#se quita el escudo
+                            enemigo.StartMovements()
                             for m in nivel_actual.plataforma_lista:
                                 if(m.tipo == "mascota"):
                                     if(m.tipo2 == "escudo"):
@@ -693,8 +702,8 @@ class boton_inicio(buttonz):
                                             nivel_actual.plataforma_lista.remove(m)
                                             cont_esc_enemigo = 200 #podria volver a salir este ataque
                                             countdown_esc_enemigo = False
-                        if(op == 3 and cont11 <= 0):#disparo epecial de fuego con presentacion circular (dispara a un lugar aleatorio)
-                            print "supernova"
+                        if(op == 3 and cont11 <= 0 and finished):#disparo epecial
+                            print "supernova circular"
                             #Primero me quito el escudo
                             for m in nivel_actual.plataforma_lista:
                                 if(m.tipo == "mascota"):
@@ -705,10 +714,13 @@ class boton_inicio(buttonz):
                                             countdown_esc_enemigo = False
 
                             bala_boss = CircleBullet(dirimg+'sn.png',enemigo.getPos(), enemigo.getMargen()[0] + enemigo.getMargen()[0]/2)
+                            bala_boss.owner = enemigo
                             ls_balase.add(bala_boss)
                             bala_boss.restartMovements(enemigo.getPos())
                             fire.play()
                             flag11 = True
+                            enemigo.StopMovements()
+                            finished = False
 
 
                 #----------------------Otros--------------------------
@@ -729,6 +741,17 @@ class boton_inicio(buttonz):
                         if(e.tipo2 == "bulletboss"):
                             if(e.die):
                                 ls_balase.remove(e)#la elimina cuando termina el recorrido de la bala
+                    if(e.tipo == "circle"):
+                        if(e.die):
+                            ls_balase.remove(e)
+
+                            #Super disparo
+                            bala = RectBulletBoss(dirimg+'sn.png',e.getPos())
+                            bala.restartMovements(maximus.getPos())
+                            ls_balase.add(bala)
+                            bum.play()
+                            print "BUUUMMMM"
+                            finished = True
 
             #Para collide con enemigos
             if(flag):

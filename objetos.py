@@ -148,7 +148,7 @@ class Jugador(pygame.sprite.Sprite):
             #Quita vida segun el tipo de zombie
             if(e.tipo == 1 or e.tipo == 2):
                 self.setLife(self.getLife() - 1) #dano normal
-            if(e.tipo == 3 or e.tipo == 5):
+            if(e.tipo == 3 or e.tipo == 5 or e.tipo == 10):
                 self.setLife(self.getLife() - 3)#dano muy alto
             if(e.tipo == 4):
                 self.setLife(self.getLife() - 0.5)#dano bajo
@@ -246,29 +246,31 @@ class RectBullet(Weapon):
             self.i = 0
 
 class CircleBullet(Weapon): #Primero va a la izquierda y despues va todo a la derecha
+    owner = None
     def __init__(self, img_name, pos, r): #img para cargar, y su padre(de donde debe salir la bala)
     	Weapon.__init__(self, img_name, pos)
-        self.r = r #radio de la circunferencia
+        self.r = r + 5 #radio de la circunferencia
         self.i = 0
         self.moves = [0 for x in range(16)] #movimientos que debe realizar
         self.life = 100
         self.tipo = "circle"
         self.tipo2 = ""
+        self.die = False
 
     def getLife(self):
         return self.life
 
     def restartMovements(self,pos):#calcula el camino por donde debe moverse (recibe el punto final)
-        self.moves = CircunfPtoMedio(self.getPos(),self.r)#carga los nuevos movimientos
+        self.moves = CircunfPtoMedio(self.owner.getPos(),self.r)#carga los nuevos movimientos
         self.order= sorted(self.moves, key=lambda tup: tup[1])
         self.i = 0 #debe empezar a recorrerla desde cero
 
     def update(self): #se mueve
         if(self.i < len(self.moves)):
-            #print "self.moves_copy[self.i] : " , self.moves[self.i]
             self.setPos(self.moves[self.i])
-            self.i += 1 #para que recorra el siguiente
-            #print "i : " , self.i
+            self.i += 2 #para que recorra el siguiente
+        else:
+            self.die = True
 
 class RectBulletBoss(Weapon):
     def __init__(self, img_name, pos): #img para cargar, y su padre(de donde debe salir la bala)
