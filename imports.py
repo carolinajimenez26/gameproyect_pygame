@@ -184,14 +184,67 @@ class boton_inicio(buttonz):
                 pygame.display.flip()
         return menupp
     def action(self):
-        pygame.mixer.music.stop()
 
+        #---------------HISTORIA DEL JUEGO----------------
         pygame.init()
         tam = [ANCHO, ALTO]
         pantalla = pygame.display.set_mode(tam)
+        backgroundm = load_image(curdir+"/enviroment/main/historia.jpg",curdir,alpha=False)
 
         pygame.display.set_caption("Place of Dead - Hunting Rabbits ", 'Spine Runtime')
         tipo = pygame.font.SysFont("monospace", 15)
+        tipo.set_bold(True)
+
+        header = tipo.render("PLACE OF DEAD: ",1, (255,255,255))
+
+        p1 = "Lord Evil ha conformado un imperio malvado a su beneficio aprovechandose"
+        p2 = "de la apocalipsis zombie y de sus poderes telequineticos para controlarlos."
+        p3 = "Redujo las demas razas a cenizas, solo los magos con la capacidad de resistir"
+        p4 = "ante el crecimiento de este imperio se han defendido y han intentado restablecer"
+        p5 = "el orden. Lord Evil, al enterarse, dispuso todo su ejercito contra los magos y "
+        p6 = "masacro a todo aquel mago que se cruzara en su camino; creyo haber terminado "
+        p7 = "con toda la raza de los magos pero uno llamado Maximus escapo y ahora va en busca "
+        p8 = "de venganza.  Podra Maximus vengar a su raza ?"
+
+        Salida0 = tipo.render(p1,1, (255,255,255))
+        Salida1 = tipo.render(p2,1, (255,255,255))
+        Salida2 = tipo.render(p3,1, (255,255,255))
+        Salida3 = tipo.render(p4,1, (255,255,255))
+        Salida4 = tipo.render(p5,1, (255,255,255))
+        Salida5 = tipo.render(p6,1, (255,255,255))
+        Salida6 = tipo.render(p7,1, (255,255,255))
+        Salida7 = tipo.render(p8,1, (255,255,255))
+
+        Salir = tipo.render("Para seguir, presione ENTER",1, (255,255,255))
+        terminar = False
+
+        while(not terminar):
+
+            events = pygame.event.get()
+
+            for event in events:
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:
+                        terminar = True
+
+            pantalla.fill((0,0,0))
+            pantalla.blit(backgroundm,(0,ALTO/2))
+            pantalla.blit(header,(10, 30))
+
+            pantalla.blit(Salida0,(30, 30+50))
+            pantalla.blit(Salida1,(30, 30+70))
+            pantalla.blit(Salida2,(30, 50+90))
+            pantalla.blit(Salida3,(30, 50+110))
+            pantalla.blit(Salida4,(30, 50+130))
+            pantalla.blit(Salida5,(30, 50+150))
+            pantalla.blit(Salida6,(30, 50+170))
+            pantalla.blit(Salida7,(30, 50+190))
+
+            pantalla.blit(Salir,(0, ALTO - 50))
+            pygame.display.flip()
+
+        pygame.mixer.music.stop()
+        #-----------------------------------------------
 
         # Creamos maximus
         #maximus = Jugador("maximus_der.jpg")
@@ -407,6 +460,7 @@ class boton_inicio(buttonz):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     fin = True
+                    nivel_actual.StopSound()
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_p:
