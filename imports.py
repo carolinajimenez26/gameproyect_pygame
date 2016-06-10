@@ -1106,10 +1106,10 @@ class boton_acercade(buttonz):
         text = """CREDITOS
         _                                                 _
 
-        _Historia del juego_\\Juan Diego Hoyos Monroy
+        •Historia del juego:\\Juan Diego Hoyos Monroy
         \\Carolina Jimenez Gomez
 
-        _Desarrolladores_\\Juan Diego Hoyos Monroy
+        •Desarrolladores:\\Juan Diego Hoyos Monroy
         \\Carolina Jimenez Gomez
 
 
