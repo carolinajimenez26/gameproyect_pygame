@@ -1,5 +1,8 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from objetos import *
 from niveles import *
+from credit import credit
 import inputbox
 #Imports del tkinter
 from Tkinter import *
@@ -1097,12 +1100,32 @@ class boton_acercade(buttonz):
     def __init__(self,img,img2):
         buttonz.__init__(self,img,img2)
     def action(self):
-        ventana_acercade = pygame.display.set_mode((800, 600))#, pygame.FULLSCREEN)
-        pr = ventana_acercade.subsurface([0,0,200,200]) #Dibuja una surface sobre la pantalla
-        pr.fill((255,0,0))
-        pygame.display.flip()
-        while 1:
-            print 1
+        pygame.mixer.music.stop()
+        acercade_w = pygame.display.set_mode((800,600))
+        pygame.display.set_caption("Place of dead - [Creditos y mas] ", 'Spine Runtime')
+        text = """CREDITOS
+        _                                                 _
+
+        _Historia del juego_\\Juan Diego Hoyos Monroy
+        \\Carolina Jimenez Gomez
+
+        _Desarrolladores_\\Juan Diego Hoyos Monroy
+        \\Carolina Jimenez Gomez
+
+
+
+        Mayor informacion acerca del juego:
+        https://github.com/jdiegoh3/gameproyect_pygame
+
+        _                                                 _
+
+        ©Copyright 2016"""
+
+        font = pygame.font.Font("Roboto-MediumItalic.ttf",20)
+        color = 0xa0a0a000
+
+        credit(text,font,color)
+        pygame.mixer.music.play(-1)
 
 class mainsplash(pygame.sprite.Sprite): #Hereda de la clase sprite
     def __init__(self):
